@@ -1,13 +1,14 @@
 import React from "react";
 import { useRoutes } from "react-router-dom";
-import First from "../container/First";
 import ProtectedRoute from "./ProtectedRoute";
+import SignUp from "../presentation/SignUp";
+import SignIn from "../presentation/SignIn";
 
 const Routing = () => {
   const routes = useRoutes([
-    { path: "/", element: <First /> },
-    { path: "/login", element: <h2>LOG IN</h2> },
-    { path: "/sign-up", element: <h1>SIGN UP</h1> },
+    { path: "/", element: <SignUp /> },
+    { path: "/sign-up", element: <SignUp /> },
+    { path: "/sign-in", element: <SignIn /> },
     {
       element: <ProtectedRoute />,
       children: [{ path: "page", element: <h1>Hello</h1> }],

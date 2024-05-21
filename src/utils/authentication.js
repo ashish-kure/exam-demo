@@ -6,7 +6,6 @@ import {
 
 export const isLoggedIn = () => {
   const result = JSON.parse(getLocalStorage("isLoggedIn"));
-
   return result || false;
 };
 

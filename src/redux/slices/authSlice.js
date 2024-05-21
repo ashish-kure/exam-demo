@@ -1,27 +1,45 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getLocalStorage } from "../../utils/javascript";
-import { isLoggedIn } from "../../utils/authentication";
+import { setLocalStorage } from "../../utils/javascript";
+import { setLoggedIn } from "../../utils/authentication";
+import auth from "../actions/authAction";
 
 const initialState = {
-  token: getLocalStorage("token") || "",
-  isLoggedIn: isLoggedIn() || false,
+  data: {},
+  id: null,
+  token: null,
+  loading: false,
+  error: "",
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    setAuth: (state, action) => {
-      state.token = action.payload;
-      state.isLoggedIn = true;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(auth.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(auth.fulfilled, (state, action) => {
+        const { token, id } = action.payload?.data ?? "";
 
-    removeAuth: (state, action) => {
-      state.token = "";
-      state.isLoggedIn = false;
-    },
+        state.loading = false;
+        state.data = action.payload;
+        state.error = "";
+
+        id && (state.id = id);
+
+        if (token) {
+          setLoggedIn();
+          setLocalStorage("token", token);
+
+          state.token = token;
+        }
+      })
+      .addCase(auth.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 
 export default authSlice.reducer;
-export const { setAuth, removeAuth } = authSlice.actions;
