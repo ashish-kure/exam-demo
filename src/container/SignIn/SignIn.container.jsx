@@ -7,7 +7,7 @@ import { validateForm } from "../../utils/validation";
 import { resetForm } from "../../redux/slices/formSlice";
 import { objectKeys } from "../../utils/javascript";
 
-const SignIn = () => {
+const SignInContainer = () => {
   const dispatch = useDispatch();
   const { formData, errors } = useSelector((state) => state.form);
   const { statusCode, message } = useSelector((state) => state.auth.data);
@@ -23,12 +23,8 @@ const SignIn = () => {
     }
   };
 
-  return (
-    <>
-      <Form fields={signInFields} onSubmit={handleSubmit} />
-      {statusCode === 500 && <p>{message}</p>}
-    </>
-  );
+  return { signInFields, handleSubmit, statusCode, message };
 };
 
-export default SignIn;
+export default SignInContainer;
+// "react-hooks/rules-of-hooks": "off",

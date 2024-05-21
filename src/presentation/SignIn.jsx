@@ -1,8 +1,16 @@
 import React from "react";
-import SignInComponent from "../container/SignIn/SignIn.container";
+import Form from "../shared/Form";
+import SignInContainer from "../container/SignIn/SignIn.container";
 
 const SignIn = () => {
-  return <SignInComponent />;
+  const { signInFields, handleSubmit, statusCode, message } = SignInContainer();
+
+  return (
+    <>
+      <Form fields={signInFields} onSubmit={handleSubmit} />
+      {statusCode === 500 && <p>{message}</p>}
+    </>
+  );
 };
 
 export default SignIn;

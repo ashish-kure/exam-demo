@@ -23,9 +23,7 @@ const SignUp = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     const existingError = objectKeys(errors).length !== 0;
-
     if (validateForm(signUpFields) && !existingError) {
       dispatch(auth({ url: "/users/SignUp", data: formData }));
       dispatch(resetForm());
