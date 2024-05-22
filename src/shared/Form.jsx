@@ -1,9 +1,8 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearError, onChange, setError } from "../redux/slices/formSlice";
-import RenderFormFields from "../container/Form/RenderFormFields";
 import { validate } from "../utils/validation";
 import { capitalize } from "../utils/javascript";
+import FormField from "../presentation/FormField";
 
 const Form = ({ fields, onSubmit }) => {
   const dispatch = useDispatch();
@@ -12,8 +11,6 @@ const Form = ({ fields, onSubmit }) => {
   const handleChange = (event, message) => {
     const { name, value } = event.target;
     const errorMessage = message ?? `${capitalize(name)} is Invalid!`;
-
-    dispatch(onChange({ name, value }));
 
     const isValid = validate(name, value);
 
@@ -38,7 +35,8 @@ const Form = ({ fields, onSubmit }) => {
     <form onSubmit={onSubmit}>
       {fields.map((attributes, ind) => (
         <section key={ind}>
-          <RenderFormFields
+          <FormField
+            formData={formData}
             attributes={attributes}
             onChange={handleChange}
             onCheckbox={handleCheckbox}

@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import {
   button,
   checkbox,
@@ -7,15 +6,13 @@ import {
   reset,
   select,
   submit,
-} from "../../constants/formConstants";
-import CustomInput from "../../shared/CustomInput";
-import CustomDropdown from "../../shared/CustomDropdown";
-import CustomButton from "../../shared/CustomButton";
-import CustomChoices from "../../shared/CustomChoices";
+} from "../constants/formConstants";
+import CustomInput from "../shared/CustomInput";
+import CustomDropdown from "../shared/CustomDropdown";
+import CustomButton from "../shared/CustomButton";
+import CustomChoices from "../shared/CustomChoices";
 
-const RenderFormFields = ({ attributes, onChange, onCheckbox }) => {
-  const { formData } = useSelector((state) => state.form);
-
+const FormField = ({ formData, attributes, onChange, onCheckbox }) => {
   const { type, name, ...otherAttributes } = attributes;
   const value = formData[name] || "";
 
@@ -52,4 +49,4 @@ const RenderFormFields = ({ attributes, onChange, onCheckbox }) => {
   }
 };
 
-export default RenderFormFields;
+export default FormField;

@@ -1,10 +1,10 @@
 import { setError } from "../redux/slices/formSlice";
 import store from "../redux/store";
-import { capitalize } from "./javascript";
+import { capitalize, objectKeys } from "./javascript";
 import { emailValidation, nameValidation, passwordValidation } from "./regex";
 
 export const validate = (name, value) => {
-  switch (name) {
+  switch (name.toLowerCase()) {
     case "name":
       return nameValidation(value);
 
@@ -33,4 +33,9 @@ export const validateForm = (formFields) => {
   });
 
   return valid;
+};
+
+export const checkExistingErrors = () => {
+  const { errors } = store.getState().form;
+  return objectKeys(errors).length !== 0;
 };
