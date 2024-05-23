@@ -5,6 +5,7 @@ import { checkExistingErrors, validateForm } from "../../utils/validation";
 import { POST, SUCCESS_CODE } from "../../constants/apiConstants";
 import api from "../../redux/actions/apiAction";
 import { newPassword } from "../../constants/nameConstants";
+import { resetForm } from "../../redux/slices/formSlice";
 
 const NewPasswordContainer = () => {
   const navigate = useNavigate();
@@ -13,6 +14,9 @@ const NewPasswordContainer = () => {
   const dispatch = useDispatch();
   const { formData } = useSelector((state) => state.form);
   const { loading } = useSelector((state) => state.api);
+  const { statusCode, message } = useSelector(
+    (state) => state.api.data.newPassword || ""
+  );
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,10 +37,18 @@ const NewPasswordContainer = () => {
         alert("Your Password Changed Successfully!");
         navigate("/sign-in");
       }
+
+      dispatch(resetForm());
     }
   };
 
-  return { newPasswordFields, handleSubmit, loading: loading.newPassword };
+  return {
+    message,
+    statusCode,
+    handleSubmit,
+    newPasswordFields,
+    loading: loading.newPassword,
+  };
 };
 
 export default NewPasswordContainer;

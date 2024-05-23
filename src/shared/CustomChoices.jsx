@@ -11,7 +11,7 @@ const CustomChoices = (props) => {
 
   return (
     <div>
-      <label>{label}</label>
+      <label>{label}</label> <br />
       {options.map((optionProps, ind) => (
         <label key={ind}>
           <input

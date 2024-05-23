@@ -3,6 +3,7 @@ import { clearError, onChange, setError } from "../redux/slices/formSlice";
 import { validate } from "../utils/validation";
 import { capitalize } from "../utils/javascript";
 import FormField from "../presentation/FormField";
+import { confirmPassword } from "../constants/formConstants";
 
 const Form = ({ fields, onSubmit }) => {
   const dispatch = useDispatch();
@@ -14,8 +15,13 @@ const Form = ({ fields, onSubmit }) => {
 
     dispatch(onChange({ name, value }));
 
-    const isValid = validate(name, value);
+    // Validate Field
+    const isValid =
+      name === confirmPassword
+        ? validate(name, value, formData["Password"])
+        : validate(name, value);
 
+    // Dispatch Error or Not
     value && !isValid
       ? dispatch(setError({ name, error: errorMessage }))
       : dispatch(clearError(name));
@@ -34,7 +40,7 @@ const Form = ({ fields, onSubmit }) => {
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} style={formStyle}>
       {fields.map((attributes, ind) => (
         <section key={ind}>
           <FormField
@@ -54,5 +60,12 @@ const Form = ({ fields, onSubmit }) => {
 export default Form;
 
 const errorStyle = {
+  fontSize: 14,
   color: "indianred",
+};
+
+const formStyle = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 10,
 };

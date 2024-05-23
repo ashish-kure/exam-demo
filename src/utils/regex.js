@@ -17,3 +17,8 @@ export const emailValidation = (email) => {
   const regex = /^[^.][^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   return regex.test(email);
 };
+
+export const confirmPasswordValidation = (value, compare) => {
+  console.log(value, compare);
+  return value === compare;
+};

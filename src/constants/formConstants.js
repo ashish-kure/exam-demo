@@ -21,3 +21,5 @@ export const submit = "submit";
 export const reset = "reset";
 
 export const button = "button";
+
+export const confirmPassword = "ConfirmPassword";

@@ -14,7 +14,10 @@ const apiSlice = createSlice({
     builder
       .addCase(api.pending, (state, action) => {
         const { name } = action.meta.arg;
+
         state.loading[name] = true;
+        state.error[name] = "";
+        delete state.data[name];
       })
 
       .addCase(api.fulfilled, (state, action) => {

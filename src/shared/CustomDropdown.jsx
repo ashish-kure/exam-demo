@@ -5,7 +5,7 @@ const CustomDropdown = (props) => {
 
   return (
     <div>
-      <label>{label}</label>
+      <label>{label}</label> <br />
       <select {...otherProps}>
         <option value="select" hidden>
           Select

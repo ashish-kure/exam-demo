@@ -5,7 +5,7 @@ const CustomInput = (props) => {
 
   return (
     <div>
-      <label>{label}</label>
+      <label>{label}</label> <br />
       <input onChange={(event) => onChange(event, message)} {...otherProps} />
     </div>
   );

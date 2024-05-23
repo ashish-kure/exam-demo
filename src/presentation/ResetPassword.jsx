@@ -1,25 +1,25 @@
 import React from "react";
 import Form from "../shared/Form";
 import ButtonLoader from "../shared/ButtonLoader";
-import NewPasswordContainer from "../container/ForgotPassword/NewPasswordContainer";
+import ResetPasswordContainer from "../container/ResetPassword/ResetPasswordContainer";
 import Message from "../shared/Message";
 
-const NewPassword = () => {
-  const { handleSubmit, newPasswordFields, loading, statusCode, message } =
-    NewPasswordContainer();
+const ResetPassword = () => {
+  const { handleSubmit, resetPasswordFields, loading, statusCode, message } =
+    ResetPasswordContainer();
 
   return (
-    <section style={newPassStyle}>
-      <Form fields={newPasswordFields} onSubmit={handleSubmit} />
+    <section style={resetPassStyle}>
+      <Form fields={resetPasswordFields} onSubmit={handleSubmit} />
       {loading && <ButtonLoader />}
       {statusCode && <Message message={message} />}
     </section>
   );
 };
 
-export default NewPassword;
+export default ResetPassword;
 
-const newPassStyle = {
+const resetPassStyle = {
   padding: 16,
   position: "absolute",
   top: "50%",
