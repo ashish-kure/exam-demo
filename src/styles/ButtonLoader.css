@@ -1,0 +1,22 @@
+.inner-circle {
+    height: 20px;
+    width: 20px;
+
+    border-radius: 50%;
+    border: 3px solid transparent;
+
+    border-top-color: #222;
+    border-right-color: #222;
+
+    animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        rotate: 0
+    }
+
+    100% {
+        rotate: 360deg;
+    }
+}
