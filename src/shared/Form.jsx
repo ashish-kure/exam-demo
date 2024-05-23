@@ -12,6 +12,8 @@ const Form = ({ fields, onSubmit }) => {
     const { name, value } = event.target;
     const errorMessage = message ?? `${capitalize(name)} is Invalid!`;
 
+    dispatch(onChange({ name, value }));
+
     const isValid = validate(name, value);
 
     value && !isValid
