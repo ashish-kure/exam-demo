@@ -4,10 +4,10 @@ import ErrorPage from "../shared/ErrorPage";
 import SignUp from "../presentation/SignUp";
 import SignIn from "../presentation/SignIn";
 import NewPassword from "../presentation/NewPassword";
+import Homepage from "../presentation/dashboard/Homepage";
 import ForgotPassword from "../presentation/ForgotPassword";
-import AllStudents from "../presentation/Teacher/AllStudents";
-import TeacherDashboard from "../presentation/dashboard/TeacherDashboard";
-import StudentDashboard from "../presentation/dashboard/StudentDashboard";
+import AllStudents from "../presentation/teacher/AllStudents";
+import VerifiedStudents from "../presentation/teacher/VerifiedStudents";
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -24,8 +24,9 @@ const AppRoutes = () => {
           path: "teacher",
           element: <ProtectedRoute role="teacher" />,
           children: [
-            { path: "", element: <TeacherDashboard /> },
-            { path: "view-all-students", element: <AllStudents /> },
+            { path: "", element: <Homepage /> },
+            { path: "all-students", element: <AllStudents /> },
+            { path: "verified-students", element: <VerifiedStudents /> },
           ],
         },
 
@@ -33,8 +34,8 @@ const AppRoutes = () => {
           path: "student",
           element: <ProtectedRoute role="student" />,
           children: [
-            { path: "", element: <StudentDashboard /> },
-            { path: "view-all-exams", element: <h1>View All Exams</h1> },
+            { path: "", element: <Homepage /> },
+            { path: "all-exams", element: <h1>View All Exams</h1> },
           ],
         },
       ],

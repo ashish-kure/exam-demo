@@ -3,14 +3,14 @@ import api from "../../redux/actions/apiAction";
 import { POST } from "../../constants/apiConstants";
 import forgotPasswordFields from "../../description/forgotPassword";
 import { checkExistingErrors, validateForm } from "../../utils/validation";
-import { forgotPassword } from "../../constants/nameConstants";
+import { FORGOT_PASSWORD } from "../../constants/nameConstants";
 
 const ForgotPasswordContainer = () => {
   const dispatch = useDispatch();
   const { formData } = useSelector((state) => state.form);
   const { loading } = useSelector((state) => state.api);
   const { statusCode, message } = useSelector(
-    (state) => state.api.data.forgotPassword || ""
+    (state) => state.api.data[FORGOT_PASSWORD] || ""
   );
 
   const handleSubmit = (event) => {
@@ -23,7 +23,7 @@ const ForgotPasswordContainer = () => {
     };
 
     if (validateForm(forgotPasswordFields) && !checkExistingErrors()) {
-      dispatch(api({ name: forgotPassword, config }));
+      dispatch(api({ name: FORGOT_PASSWORD, config }));
     }
   };
 
@@ -32,7 +32,7 @@ const ForgotPasswordContainer = () => {
     statusCode,
     handleSubmit,
     forgotPasswordFields,
-    loading: loading.forgotPassword,
+    loading: loading[FORGOT_PASSWORD],
   };
 };
 

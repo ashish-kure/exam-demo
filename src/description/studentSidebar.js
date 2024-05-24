@@ -1,3 +1,3 @@
-const studentSidebarFields = [{ url: "view-all-exams", label: "Exams" }];
+const studentSidebarFields = [{ url: "all-exams", label: "Exams" }];
 
 export default studentSidebarFields;

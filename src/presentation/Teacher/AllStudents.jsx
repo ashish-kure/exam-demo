@@ -1,15 +1,22 @@
 import React from "react";
 import AllStudentsContainer from "../../container/Teacher/AllStudentsContainer";
+import Table from "../../shared/Table";
 import ButtonLoader from "../../shared/ButtonLoader";
+import StudentContainer from "../../container/Teacher/StudentContainer";
 
 const AllStudents = () => {
-  const { students, loading } = AllStudentsContainer();
+  const { tableData, loading, flag } = AllStudentsContainer();
 
   if (loading) {
     return <ButtonLoader />;
   }
 
-  return <pre>{JSON.stringify(students, null, 2)}</pre>;
+  return (
+    <>
+      <StudentContainer flag={flag} />
+      <Table tableData={tableData} />
+    </>
+  );
 };
 
 export default AllStudents;

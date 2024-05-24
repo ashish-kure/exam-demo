@@ -19,6 +19,5 @@ export const emailValidation = (email) => {
 };
 
 export const confirmPasswordValidation = (value, compare) => {
-  console.log(value, compare);
   return value === compare;
 };

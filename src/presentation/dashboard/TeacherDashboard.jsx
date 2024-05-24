@@ -1,9 +1,14 @@
-import React from "react";
+import { Fragment } from "react";
 import Sidebar from "../../shared/Sidebar";
 import teacherSidebarFields from "../../description/teacherSidebar";
 
-const TeacherDashboard = () => {
-  return <Sidebar fields={teacherSidebarFields} />;
+const TeacherDashboard = ({ outlet }) => {
+  return (
+    <Fragment>
+      <Sidebar fields={teacherSidebarFields} />
+      {outlet}
+    </Fragment>
+  );
 };
 
 export default TeacherDashboard;

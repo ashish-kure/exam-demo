@@ -1,12 +1,13 @@
 // User
-export const signUp = "signUp";
-export const signIn = "signIn";
-export const forgotPassword = "forgotPassword";
-export const newPassword = "newPassword";
-export const resetPassword = "resetPassword";
+export const SIGN_UP = "signUp";
+export const SIGN_IN = "signIn";
+export const FORGOT_PASSWORD = "forgotPassword";
+export const NEW_PASSWORD = "newPassword";
+export const RESET_PASSWORD = "resetPassword";
 
 // Teacher
-export const allStudents = "allStudents";
+export const ALL_STUDENTS = "allStudents";
+export const VERIFIED_STUDENTS = "verifiedStudents";
 
 // Student
-export const allExams = "allExams";
+export const ALL_EXAMS = "allExams";

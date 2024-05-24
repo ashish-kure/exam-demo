@@ -20,7 +20,11 @@ const Sidebar = ({ fields }) => {
           {label}
         </Link>
       ))}
-      <CustomButton label="Sign Out" onClick={handleSignOut} />
+      <CustomButton
+        label="Sign Out"
+        onClick={handleSignOut}
+        style={signOutStyle}
+      />
     </nav>
   );
 };
@@ -28,10 +32,17 @@ const Sidebar = ({ fields }) => {
 export default Sidebar;
 
 const sidebarStyle = {
+  height: "100vh",
   padding: 20,
-  width: "fit-content",
-  border: "1px solid red",
+  width: 125,
+  border: "1px solid cadetblue",
   display: "flex",
   flexDirection: "column",
   gap: 20,
+  position: "fixed",
+  left: 0,
+};
+
+const signOutStyle = {
+  marginTop: "auto",
 };

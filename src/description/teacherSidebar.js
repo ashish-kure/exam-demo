@@ -1,3 +1,7 @@
-const teacherSidebarFields = [{ url: "view-all-students", label: "Students" }];
+const teacherSidebarFields = [
+  { url: "all-students", label: "Students" },
+  { url: "verified-students", label: "Verified Students" },
+  { url: "check", label: "Next" },
+];
 
 export default teacherSidebarFields;
