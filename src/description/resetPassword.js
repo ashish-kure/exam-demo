@@ -1,14 +1,22 @@
 import {
-  text,
-  submit,
-  password,
   confirmPassword,
+  password,
+  submit,
+  text,
 } from "../constants/formConstants";
 
-const newPasswordFields = [
+const resetPasswordFields = [
   {
     type: password,
-    label: "Password",
+    label: "Old Password",
+    name: "oldPassword",
+    isRequired: true,
+    message: "Password must have at least 6 characters",
+  },
+
+  {
+    type: password,
+    label: "New Password",
     name: "Password",
     isRequired: true,
     message: "Password must have at least 6 characters",
@@ -16,7 +24,7 @@ const newPasswordFields = [
 
   {
     type: text,
-    label: "Confirm Password",
+    label: "Confirm New Password",
     name: confirmPassword,
     isRequired: true,
     message: "Password is not matching!",
@@ -28,4 +36,4 @@ const newPasswordFields = [
   },
 ];
 
-export default newPasswordFields;
+export default resetPasswordFields;

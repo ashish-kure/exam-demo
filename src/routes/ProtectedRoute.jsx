@@ -3,11 +3,15 @@ import { Navigate, Outlet } from "react-router-dom";
 import { isLoggedIn } from "../utils/authentication";
 import { getLocalStorage } from "../utils/javascript";
 
-const ProtectedRoute = () => {
-  const role = getLocalStorage("role");
+const ProtectedRoute = ({ role }) => {
+  const currentRole = getLocalStorage("role");
 
   if (!isLoggedIn()) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/sign-in" />;
+  }
+
+  if (role && role !== currentRole) {
+    return <Navigate to={`/${currentRole}`} />;
   }
 
   return <Outlet />;

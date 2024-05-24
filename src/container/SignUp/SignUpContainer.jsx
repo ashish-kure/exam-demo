@@ -1,28 +1,23 @@
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import signUpFields from "../../description/singUp";
 import { checkExistingErrors, validateForm } from "../../utils/validation";
-import { useNavigate } from "react-router-dom";
 import { resetForm } from "../../redux/slices/formSlice";
 import { POST, SUCCESS_CODE } from "../../constants/apiConstants";
 import api from "../../redux/actions/apiAction";
 import { signUp } from "../../constants/nameConstants";
+import { useNavigate } from "react-router-dom";
 
 const SignUpContainer = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { formData } = useSelector((state) => state.form);
-  const { statusCode } = useSelector((state) => state.api.data?.signUp || "");
   const { loading } = useSelector((state) => state.api);
+  const { statusCode, message } = useSelector(
+    (state) => state.api.data.signUp || ""
+  );
 
-  useEffect(() => {
-    if (statusCode === SUCCESS_CODE) {
-      navigate("/sign-in");
-    }
-  }, [navigate, statusCode]);
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const config = {
@@ -32,12 +27,25 @@ const SignUpContainer = () => {
     };
 
     if (validateForm(signUpFields) && !checkExistingErrors()) {
-      dispatch(api({ name: signUp, config }));
+      const response = await dispatch(api({ name: signUp, config }));
+      const { statusCode } = response?.payload?.data;
+
+      if (statusCode === SUCCESS_CODE) {
+        alert("Please, Check you mail box for verification!");
+        navigate("/sign-in");
+      }
+
       dispatch(resetForm());
     }
   };
 
-  return { signUpFields, handleSubmit, loading: loading.signUp };
+  return {
+    message,
+    statusCode,
+    signUpFields,
+    handleSubmit,
+    loading: loading.signUp,
+  };
 };
 
 export default SignUpContainer;

@@ -9,6 +9,9 @@ const ForgotPasswordContainer = () => {
   const dispatch = useDispatch();
   const { formData } = useSelector((state) => state.form);
   const { loading } = useSelector((state) => state.api);
+  const { statusCode, message } = useSelector(
+    (state) => state.api.data.forgotPassword || ""
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -25,6 +28,8 @@ const ForgotPasswordContainer = () => {
   };
 
   return {
+    message,
+    statusCode,
     handleSubmit,
     forgotPasswordFields,
     loading: loading.forgotPassword,
