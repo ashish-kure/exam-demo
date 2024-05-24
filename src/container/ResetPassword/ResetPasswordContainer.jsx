@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { POST, SUCCESS_CODE } from "../../constants/apiConstants";
 import { checkExistingErrors, validateForm } from "../../utils/validation";
 import resetPasswordFields from "../../description/resetPassword";
-import { resetPassword } from "../../constants/nameConstants";
+import { RESET_PASSWORD } from "../../constants/nameConstants";
 import { resetForm } from "../../redux/slices/formSlice";
 import api from "../../redux/actions/apiAction";
 
@@ -11,7 +11,7 @@ const ResetPasswordContainer = () => {
   const { formData } = useSelector((state) => state.form);
   const { loading } = useSelector((state) => state.api);
   const { statusCode, message } = useSelector(
-    (state) => state.api.data.resetPassword || ""
+    (state) => state.api.data[RESET_PASSWORD] || ""
   );
 
   const handleSubmit = async (event) => {
@@ -24,7 +24,7 @@ const ResetPasswordContainer = () => {
     };
 
     if (validateForm(resetPasswordFields) && !checkExistingErrors()) {
-      const response = await dispatch(api({ name: resetPassword, config }));
+      const response = await dispatch(api({ name: RESET_PASSWORD, config }));
 
       if (response?.payload?.data?.statusCode === SUCCESS_CODE) {
         alert("Your Password Changed Successfully!");
@@ -39,7 +39,7 @@ const ResetPasswordContainer = () => {
     message,
     handleSubmit,
     resetPasswordFields,
-    loading: loading.resetPassword,
+    loading: loading[RESET_PASSWORD],
   };
 };
 

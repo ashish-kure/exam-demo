@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { isLoggedIn } from "../utils/authentication";
 import { getLocalStorage } from "../utils/javascript";
+import Dashboard from "../presentation/dashboard/Dashboard";
 
 const ProtectedRoute = ({ role }) => {
   const currentRole = getLocalStorage("role");
@@ -14,7 +15,11 @@ const ProtectedRoute = ({ role }) => {
     return <Navigate to={`/${currentRole}`} />;
   }
 
-  return <Outlet />;
+  return (
+    <Dashboard role={currentRole}>
+      <Outlet />
+    </Dashboard>
+  );
 };
 
 export default ProtectedRoute;

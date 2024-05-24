@@ -3,7 +3,7 @@ import signInFields from "../../description/signIn";
 import { resetForm } from "../../redux/slices/formSlice";
 import api from "../../redux/actions/apiAction";
 import { POST, SUCCESS_CODE } from "../../constants/apiConstants";
-import { signIn } from "../../constants/nameConstants";
+import { SIGN_IN } from "../../constants/nameConstants";
 import { checkExistingErrors, validateForm } from "../../utils/validation";
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +13,7 @@ const SignInContainer = () => {
   const { formData } = useSelector((state) => state.form);
   const { loading } = useSelector((state) => state.api);
   const { statusCode, message } = useSelector(
-    (state) => state.api.data.signIn || ""
+    (state) => state.api.data[SIGN_IN] || ""
   );
 
   const handleSubmit = async (event) => {
@@ -26,7 +26,7 @@ const SignInContainer = () => {
     };
 
     if (validateForm(signInFields) && !checkExistingErrors()) {
-      const response = await dispatch(api({ name: signIn, config }));
+      const response = await dispatch(api({ name: SIGN_IN, config }));
       const { data, statusCode } = response?.payload?.data;
 
       if (statusCode === SUCCESS_CODE) {
@@ -42,7 +42,7 @@ const SignInContainer = () => {
     statusCode,
     signInFields,
     handleSubmit,
-    loading: loading.signIn,
+    loading: loading[SIGN_IN],
   };
 };
 

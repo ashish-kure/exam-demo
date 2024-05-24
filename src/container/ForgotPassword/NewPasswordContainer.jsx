@@ -4,7 +4,7 @@ import newPasswordFields from "../../description/newPassword";
 import { checkExistingErrors, validateForm } from "../../utils/validation";
 import { POST, SUCCESS_CODE } from "../../constants/apiConstants";
 import api from "../../redux/actions/apiAction";
-import { newPassword } from "../../constants/nameConstants";
+import { NEW_PASSWORD } from "../../constants/nameConstants";
 import { resetForm } from "../../redux/slices/formSlice";
 
 const NewPasswordContainer = () => {
@@ -15,7 +15,7 @@ const NewPasswordContainer = () => {
   const { formData } = useSelector((state) => state.form);
   const { loading } = useSelector((state) => state.api);
   const { statusCode, message } = useSelector(
-    (state) => state.api.data.newPassword || ""
+    (state) => state.api.data[NEW_PASSWORD] || ""
   );
 
   const handleSubmit = async (event) => {
@@ -31,7 +31,7 @@ const NewPasswordContainer = () => {
     };
 
     if (validateForm(newPasswordFields) && !checkExistingErrors()) {
-      const response = await dispatch(api({ name: newPassword, config }));
+      const response = await dispatch(api({ name: NEW_PASSWORD, config }));
 
       if (response?.payload?.data?.statusCode === SUCCESS_CODE) {
         alert("Your Password Changed Successfully!");
@@ -47,7 +47,7 @@ const NewPasswordContainer = () => {
     statusCode,
     handleSubmit,
     newPasswordFields,
-    loading: loading.newPassword,
+    loading: loading[NEW_PASSWORD],
   };
 };
 

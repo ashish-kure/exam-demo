@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../api";
 import { addUserInfo } from "../slices/userSlice";
-import { signIn, signUp } from "../../constants/nameConstants";
+import { SIGN_IN, SIGN_UP } from "../../constants/nameConstants";
 import { SUCCESS_CODE } from "../../constants/apiConstants";
 
 const api = createAsyncThunk(
@@ -19,7 +19,7 @@ const api = createAsyncThunk(
       });
 
       // Storing User's Data!
-      if ([signIn, signUp].includes(name)) {
+      if ([SIGN_IN, SIGN_UP].includes(name)) {
         response?.data?.statusCode === SUCCESS_CODE &&
           dispatch(addUserInfo(response?.data?.data));
       }
