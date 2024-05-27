@@ -1,30 +1,48 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useSearchParams } from "react-router-dom";
-import { GET } from "../../constants/apiConstants";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import api from "../../redux/actions/apiAction";
+import { GET } from "../../constants/apiConstants";
+import { STUDENT } from "../../constants/nameConstants";
 
-const StudentContainer = ({ flag }) => {
+const StudentContainer = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
   const dispatch = useDispatch();
+  const { loading, data } = useSelector((state) => state.api);
 
-  //   useEffect(() => {
-  //     const fetchAPI = async () => {
-  //       const config = {
-  //         method: GET,
-  //         url: "dashboard/Teachers/viewStudentDetail",
-  //         params: {
-  //           id: searchParams.get("id"),
-  //         },
-  //       };
+  useEffect(() => {
+    const fetchAPI = async () => {
+      const config = {
+        method: GET,
+        url: "dashboard/Teachers/viewStudentDetail",
+        params: {
+          id: searchParams.get("id"),
+        },
+      };
 
-  //       const response = await dispatch(api({ name: "", config }));
-  //     };
+      await dispatch(api({ name: STUDENT, config }));
+    };
 
-  //     fetchAPI();
-  //   }, [dispatch, searchParams]);
+    fetchAPI();
+  }, [dispatch, searchParams]);
 
-  return flag && <h1>{searchParams.get("id")}</h1>;
+  const handleBack = () => navigate(-1);
+
+  // Result Array!
+  const result = data[STUDENT]?.data[0]?.Result.map((field) => ({
+    subject: field.subjectName,
+    rank: field.rank,
+    score: field.score,
+  }));
+
+  return {
+    result,
+    handleBack,
+    studentData: data[STUDENT]?.data[0],
+    loading: loading[STUDENT],
+  };
 };
 
 export default StudentContainer;

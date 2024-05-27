@@ -6,8 +6,11 @@ import SignIn from "../presentation/SignIn";
 import NewPassword from "../presentation/NewPassword";
 import Homepage from "../presentation/dashboard/Homepage";
 import ForgotPassword from "../presentation/ForgotPassword";
+import CreateExam from "../presentation/teacher/CreateExam";
 import AllStudents from "../presentation/teacher/AllStudents";
 import VerifiedStudents from "../presentation/teacher/VerifiedStudents";
+import Student from "../presentation/teacher/Student";
+import AllExams from "../presentation/student/AllExams";
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -27,6 +30,8 @@ const AppRoutes = () => {
             { path: "", element: <Homepage /> },
             { path: "all-students", element: <AllStudents /> },
             { path: "verified-students", element: <VerifiedStudents /> },
+            { path: "student", element: <Student /> },
+            { path: "create-exam", element: <CreateExam /> },
           ],
         },
 
@@ -35,7 +40,7 @@ const AppRoutes = () => {
           element: <ProtectedRoute role="student" />,
           children: [
             { path: "", element: <Homepage /> },
-            { path: "all-exams", element: <h1>View All Exams</h1> },
+            { path: "all-exams", element: <AllExams /> },
           ],
         },
       ],

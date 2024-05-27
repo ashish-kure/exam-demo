@@ -10,7 +10,15 @@ const VerifiedStudents = () => {
     return <ButtonLoader />;
   }
 
-  return <Table tableData={tableData} />;
+  return (
+    <section style={style}>
+      <Table tableData={tableData} />;
+    </section>
+  );
 };
 
 export default VerifiedStudents;
+
+const style = {
+  marginLeft: 150,
+};

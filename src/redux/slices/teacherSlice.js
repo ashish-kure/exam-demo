@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   allStudents: [],
   verifiedStudents: [],
+  exams: [],
 };
 
 const teacherSlice = createSlice({
@@ -16,6 +17,8 @@ const teacherSlice = createSlice({
     addVerifiedStudents: (state, action) => {
       state.verifiedStudents = action.payload;
     },
+
+    addExams: (state, action) => {},
   },
 });
 

@@ -43,7 +43,10 @@ const Table = ({ tableData }) => {
 export default Table;
 
 const sectionStyle = {
-  marginLeft: 150,
+  maxHeight: "600px",
+  width: "fit-content",
+  overflow: "auto",
+  border: "1px solid #aaa",
 };
 
 const tableStyle = {

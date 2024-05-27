@@ -1,20 +1,19 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { GET, SUCCESS_CODE } from "../../constants/apiConstants";
-import api from "../../redux/actions/apiAction";
-import { VERIFIED_STUDENTS } from "../../constants/nameConstants";
-import { addVerifiedStudents } from "../../redux/slices/teacherSlice";
 import CustomButton from "../../shared/CustomButton";
-import { useSearchParams } from "react-router-dom";
+import { addVerifiedStudents } from "../../redux/slices/teacherSlice";
+import api from "../../redux/actions/apiAction";
+import { GET, SUCCESS_CODE } from "../../constants/apiConstants";
+import { VERIFIED_STUDENTS } from "../../constants/nameConstants";
 
 const VerifiedStudentsContainer = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.api.loading);
   const verifiedStudents = useSelector(
     (state) => state.teacher.verifiedStudents
   );
-
-  const [, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const fetchAPI = async () => {
@@ -34,10 +33,12 @@ const VerifiedStudentsContainer = () => {
   }, [dispatch, verifiedStudents.length]);
 
   const handleViewButton = (id) => {
-    setSearchParams({ id });
+    navigate(`/teacher/student/?id=${id}`);
   };
 
-  const tableData = verifiedStudents.map((student) => ({
+  // Table Data
+  const tableData = verifiedStudents.map((student, ind) => ({
+    sr: ind + 1,
     ...student,
     action: (
       <CustomButton
@@ -49,7 +50,7 @@ const VerifiedStudentsContainer = () => {
   }));
 
   return {
-    tableData: tableData.slice(0, 10),
+    tableData,
     loading: loading[VERIFIED_STUDENTS],
   };
 };
