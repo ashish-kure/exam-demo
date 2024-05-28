@@ -18,14 +18,12 @@ const AllStudentsContainer = () => {
     const fetchAPI = async () => {
       const config = { method: GET, url: "dashboard/Teachers" };
 
-      if (allStudents.length) {
-        return;
+      if (!allStudents.length) {
+        const response = await dispatch(api({ name: ALL_STUDENTS, config }));
+        const { statusCode, data } = response?.payload?.data;
+
+        statusCode === SUCCESS_CODE && dispatch(addAllStudents(data));
       }
-
-      const response = await dispatch(api({ name: ALL_STUDENTS, config }));
-      const { statusCode, data } = response?.payload?.data;
-
-      statusCode === SUCCESS_CODE && dispatch(addAllStudents(data));
     };
 
     fetchAPI();

@@ -14,7 +14,6 @@ const SignIn = () => {
     <section style={signInStyle}>
       <Form fields={signInFields} onSubmit={handleSubmit} />
       {loading && <ButtonLoader />}
-
       <p>
         <Link to="/forgot-password">Forgot Password?</Link>
       </p>

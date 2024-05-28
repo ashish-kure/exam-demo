@@ -9,6 +9,8 @@ export const RESET_PASSWORD = "resetPassword";
 export const ALL_STUDENTS = "allStudents";
 export const VERIFIED_STUDENTS = "verifiedStudents";
 export const STUDENT = "student";
+export const EXAMS = "exams";
 
 // Student
 export const ALL_EXAMS = "allExams";
+export const CURRENT_EXAM = "currentExam";

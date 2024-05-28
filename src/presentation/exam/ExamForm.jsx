@@ -1,62 +1,50 @@
-import React, { Fragment } from "react";
-import FormField from "../FormField";
+import { Fragment } from "react";
+import { button } from "../../constants/formConstants";
 import ExamFormContainer from "../../container/Exam/ExamFormContainer";
-import CustomChoices from "../../shared/CustomChoices";
-import CustomInput from "../../shared/CustomInput";
-import { radio, text } from "../../constants/formConstants";
-import { current } from "@reduxjs/toolkit";
+import FormField from "../../presentation/FormField";
+import CustomButton from "../../shared/CustomButton";
 
 const ExamForm = () => {
   const {
-    fields,
-    options,
+    step,
     formData,
-    currentStep,
-    handleNext,
+    errors,
+    questionFields,
+    subjectFields,
     handleChange,
-    handleSubmit,
+    handleNext,
     handlePrevious,
   } = ExamFormContainer();
 
   return (
     <section style={examFormStyle}>
-      <form onSubmit={handleSubmit}>
-        <CustomInput
-          label="Subject"
-          name="subjectName"
-          value={formData.subjectName}
-          onChange={handleChange}
-        />
+      <form>
+        {subjectFields.map((attributes, ind) => (
+          <Fragment key={ind}>
+            <FormField
+              attributes={attributes}
+              formData={formData}
+              onChange={handleChange}
+            />
 
-        {fields.questions[currentStep].map((fields, ind) => {
-          return (
-            <Fragment key={ind}>
-              <CustomInput
-                {...fields}
-                value={formData?.questions?.[currentStep][fields.name]}
-                onChange={(event) => handleChange(event, currentStep)}
-              />
+            <span style={errorStyle}>{errors[attributes?.name]}</span>
+          </Fragment>
+        ))}
 
-              {options.map((element, ind) => (
-                <section key={ind}>
-                  {element.map((props, ind) =>
-                    props.type === radio ? (
-                      <CustomChoices {...props} />
-                    ) : (
-                      <CustomInput {...props} />
-                    )
-                  )}
-                </section>
-              ))}
+        {questionFields.map((attributes, ind) => (
+          <Fragment key={ind}>
+            <FormField
+              attributes={attributes}
+              formData={formData}
+              onChange={(event) => handleChange(event, step)}
+            />
 
-              <CustomInput
-                label="Answer"
-                type={text}
-                value={formData?.questions?.[currentStep].ans}
-              />
-            </Fragment>
-          );
-        })}
+            <span style={errorStyle}>{errors[attributes?.name]}</span>
+          </Fragment>
+        ))}
+
+        <CustomButton label="Prev" type={button} onClick={handlePrevious} />
+        <CustomButton label="Next" type={button} onClick={handleNext} />
       </form>
     </section>
   );
@@ -66,4 +54,9 @@ export default ExamForm;
 
 const examFormStyle = {
   marginLeft: 150,
+};
+
+const errorStyle = {
+  fontSize: 14,
+  color: "indianred",
 };

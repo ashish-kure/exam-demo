@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { removeUserInfo } from "../redux/slices/userSlice";
+import { resetForm } from "../redux/slices/formSlice";
 import CustomButton from "./CustomButton";
 
 const Sidebar = ({ fields }) => {
@@ -10,6 +11,7 @@ const Sidebar = ({ fields }) => {
 
   const handleSignOut = () => {
     dispatch(removeUserInfo());
+    dispatch(resetForm());
     navigate("/sign-in");
   };
 

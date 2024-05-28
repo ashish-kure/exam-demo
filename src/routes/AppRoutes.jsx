@@ -11,6 +11,8 @@ import AllStudents from "../presentation/teacher/AllStudents";
 import VerifiedStudents from "../presentation/teacher/VerifiedStudents";
 import Student from "../presentation/teacher/Student";
 import AllExams from "../presentation/student/AllExams";
+import Exams from "../presentation/teacher/Exams";
+import GiveExam from "../presentation/student/GiveExam";
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -32,6 +34,7 @@ const AppRoutes = () => {
             { path: "verified-students", element: <VerifiedStudents /> },
             { path: "student", element: <Student /> },
             { path: "create-exam", element: <CreateExam /> },
+            { path: "exams", element: <Exams /> },
           ],
         },
 
@@ -41,6 +44,7 @@ const AppRoutes = () => {
           children: [
             { path: "", element: <Homepage /> },
             { path: "all-exams", element: <AllExams /> },
+            { path: "give-exam", element: <GiveExam /> },
           ],
         },
       ],

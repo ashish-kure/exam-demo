@@ -1,81 +1,41 @@
-import { capitalize } from "../../utils/javascript";
-import { useDispatch, useSelector } from "react-redux";
-import { clearError, onChange, setError } from "../../redux/slices/formSlice";
-import { validate } from "../../utils/validation";
-import createExamFields from "../../description/createExam";
 import { useState } from "react";
-import { radio, text } from "../../constants/formConstants";
+import createExamFields from "../../description/createExam";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { onChange, resetForm } from "../../redux/slices/formSlice";
+import { addExam } from "../../redux/slices/teacherSlice";
 
 const ExamFormContainer = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [step, setStep] = useState(0);
   const dispatch = useDispatch();
-  const formData = useSelector((state) => state.form.formData);
+  const { formData, errors } = useSelector((state) => state.form);
+  const exam = useSelector((state) => state.teacher.exam);
 
-  const maxStep = createExamFields.questions.length - 1;
-  const options = [...Array(4)].map((_, ind) => [
-    {
-      type: radio,
-      name: "options",
-      isRequired: true,
-      value: formData?.questions?.[currentStep]?.options?.[ind],
-      options: [
-        {
-          label: "",
-          value: formData?.questions?.[currentStep]?.options?.[ind],
-        },
-      ],
-    },
+  const questionFields = createExamFields.questions;
+  const maxStep = 15;
 
-    {
-      type: text,
-      name: `answer${ind}`,
-      value: formData?.questions?.[currentStep]?.options?.[ind],
-      isRequired: true,
-    },
-  ]);
-
-  const handleChange = (event, message) => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    const errorMessage = message ?? `${capitalize(name)} is Invalid!`;
-
-    if (name === "question") {
-      dispatch(onChange({ name: "questions", value }));
-    } else {
-      dispatch(onChange({ name, value }));
-    }
-
-    // Validate Field
-    const isValid = validate(name, value);
-
-    // Dispatch Error or Not
-    value && !isValid
-      ? dispatch(setError({ name, error: errorMessage }))
-      : dispatch(clearError(name));
+    dispatch(onChange({ name, value }));
   };
 
   const handleNext = () => {
-    setCurrentStep((prevStep) =>
-      prevStep < maxStep ? prevStep + 1 : prevStep
-    );
+    setStep((prev) => (prev < maxStep ? prev + 1 : prev));
+    dispatch(addExam({ formData, step }));
+    dispatch(resetForm());
   };
 
-  const handlePrevious = () => {
-    setCurrentStep((prevStep) => (prevStep > 0 ? prevStep - 1 : prevStep));
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
+  const handlePrevious = () => setStep((prev) => (prev > 0 ? prev - 1 : prev));
 
   return {
-    options,
+    step,
     formData,
-    currentStep,
-    handleNext,
-    handleSubmit,
+    errors,
     handleChange,
+    handleNext,
     handlePrevious,
-    fields: createExamFields,
+    questionFields,
+    subjectFields: createExamFields.subject,
   };
 };
 

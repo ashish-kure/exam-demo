@@ -14,7 +14,7 @@ import CustomChoices from "../shared/CustomChoices";
 
 const FormField = ({ formData, attributes, onChange, onCheckbox }) => {
   const { type, name, ...otherAttributes } = attributes;
-  const value = formData[name] || "";
+  const value = formData?.[name] ?? "";
 
   switch (type) {
     case select:
