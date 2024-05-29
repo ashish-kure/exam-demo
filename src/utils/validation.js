@@ -29,7 +29,7 @@ export const validate = (name, value, compare) => {
 };
 
 // Form Validation
-export const validateForm = (formFields) => {
+export const validateForm = (formFields, commonMessage) => {
   const { formData } = store.getState().form;
   const dispatch = store.dispatch;
 
@@ -37,7 +37,14 @@ export const validateForm = (formFields) => {
 
   formFields.forEach(({ name, isRequired }) => {
     if (isRequired && !formData[name]) {
-      dispatch(setError({ name, error: `${capitalize(name)} is Required!` }));
+      dispatch(
+        setError({
+          name,
+          error: commonMessage
+            ? "This Field is Required"
+            : `${capitalize(name)} is Required!`,
+        })
+      );
       valid = false;
     }
   });

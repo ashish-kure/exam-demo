@@ -14,41 +14,27 @@ const GiveExamContainer = () => {
   const dispatch = useDispatch();
   const currentExam = useSelector((state) => state.student.currentExam);
 
-  useEffect(() => {
-    const fetchAPI = async () => {
-      const config = {
-        method: GET,
-        url: "student/examPaper",
-        params: {
-          id: searchParams.get("id"),
-        },
-      };
+  // useEffect(() => {
+  //   const fetchAPI = async () => {
+  //     const config = {
+  //       method: GET,
+  //       url: "student/examPaper",
+  //       params: {
+  //         id: searchParams.get("id"),
+  //       },
+  //     };
 
-      const response = await dispatch(api({ name: CURRENT_EXAM, config }));
-      const { statusCode, data } = response?.payload?.data;
+  //     const response = await dispatch(api({ name: CURRENT_EXAM, config }));
+  //     const { statusCode, data } = response?.payload?.data;
 
-      statusCode === SUCCESS_CODE &&
-        dispatch(addCurrentExam({ data, info: state }));
-    };
+  //     statusCode === SUCCESS_CODE &&
+  //       dispatch(addCurrentExam({ data, info: state }));
+  //   };
 
-    fetchAPI();
-  }, [dispatch, searchParams, state]);
+  //   fetchAPI();
+  // }, [dispatch, searchParams, state]);
 
-  // Proper Structure of Options
-  const questions = currentExam?.questions?.map((fields) => [
-    {
-      type: radio,
-      label: "Options",
-      name: "options",
-      options: fields.options.map((value) => ({
-        label: value,
-        value: value,
-      })),
-      isRequired: true,
-    },
-  ]);
-
-  return { questions };
+  return {};
 };
 
 export default GiveExamContainer;

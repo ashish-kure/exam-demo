@@ -1,27 +1,5 @@
 import { radio, text } from "../constants/formConstants";
 
-// Generating Options and Text Field
-const generateOptions = (i) => {
-  const optionFields = [];
-  const radioDescriptor = Array.from({ length: 4 }, (_, j) => [
-    {
-      type: radio,
-      name: `options`,
-      options: [{ label: "", value: `optionText${j}` }],
-      isRequired: true,
-    },
-
-    {
-      type: text,
-      name: `optionText${j}`,
-      isRequired: true,
-    },
-  ]);
-
-  radioDescriptor.forEach((array) => optionFields.push(...array));
-  return optionFields;
-};
-
 // Main Descriptor!
 const createExamFields = {
   subject: [
@@ -53,28 +31,24 @@ const createExamFields = {
       name: `answer`,
       label: "Answer",
       isRequired: true,
+      message: "Answer should be same as Options!",
     },
 
-    ...generateOptions(1),
+    ...Array.from({ length: 4 }, (_, j) => [
+      {
+        type: radio,
+        name: `option`,
+        options: [{ label: "", value: `optionText${j}` }],
+      },
+
+      {
+        type: text,
+        name: `optionText${j}`,
+        isRequired: true,
+        message: "Options should be unique!",
+      },
+    ]).flat(),
   ],
 };
 
 export default createExamFields;
-
-// ...Array.from({ length: 15 }, (_, ind) => [
-//   {
-//     type: text,
-//     name: `question${ind}`,
-//     label: "Question",
-//     isRequired: true,
-//   },
-
-//   {
-//     type: text,
-//     name: `answer${ind}`,
-//     label: "Answer",
-//     isRequired: true,
-//   },
-
-//   ...generateOptions(ind),
-// ]),

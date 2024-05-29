@@ -1,9 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  objectEntries,
-  objectKeys,
-  objectValues,
-} from "../../utils/javascript";
+import { objectKeys } from "../../utils/javascript";
 
 const initialState = {
   allStudents: [],
@@ -38,12 +34,17 @@ const teacherSlice = createSlice({
       const questionObject = { answer, options, question };
 
       state.exam.subjectName = subjectName;
-      state.exam.notes.push(notes);
       state.exam.questions[step] = questionObject;
+      notes &&
+        (state.exam.notes = Array.from(new Set([...state.exam.notes, notes])));
+    },
+
+    fetchExam: (state, action) => {
+      state.exam = action.payload;
     },
   },
 });
 
 export default teacherSlice.reducer;
-export const { addAllStudents, addVerifiedStudents, addExam } =
+export const { addAllStudents, addVerifiedStudents, addExam, fetchExam } =
   teacherSlice.actions;

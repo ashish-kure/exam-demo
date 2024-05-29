@@ -1,12 +1,13 @@
 import { Fragment } from "react";
-import { button } from "../../constants/formConstants";
+import { button, submit } from "../../constants/formConstants";
 import ExamFormContainer from "../../container/Exam/ExamFormContainer";
 import FormField from "../../presentation/FormField";
 import CustomButton from "../../shared/CustomButton";
 
-const ExamForm = () => {
+const ExamForm = ({ fields, totalQuestions }) => {
   const {
     step,
+    maxStep,
     formData,
     errors,
     questionFields,
@@ -14,11 +15,12 @@ const ExamForm = () => {
     handleChange,
     handleNext,
     handlePrevious,
-  } = ExamFormContainer();
+    handleSubmit,
+  } = ExamFormContainer({ fields, totalQuestions });
 
   return (
     <section style={examFormStyle}>
-      <form>
+      <form onSubmit={handleSubmit}>
         {subjectFields.map((attributes, ind) => (
           <Fragment key={ind}>
             <FormField
@@ -26,7 +28,6 @@ const ExamForm = () => {
               formData={formData}
               onChange={handleChange}
             />
-
             <span style={errorStyle}>{errors[attributes?.name]}</span>
           </Fragment>
         ))}
@@ -34,17 +35,39 @@ const ExamForm = () => {
         {questionFields.map((attributes, ind) => (
           <Fragment key={ind}>
             <FormField
-              attributes={attributes}
               formData={formData}
-              onChange={(event) => handleChange(event, step)}
+              onChange={handleChange}
+              attributes={{
+                ...attributes,
+                label:
+                  attributes.name === "question"
+                    ? `Question ${step + 1}`
+                    : attributes.label,
+              }}
             />
-
             <span style={errorStyle}>{errors[attributes?.name]}</span>
           </Fragment>
         ))}
 
-        <CustomButton label="Prev" type={button} onClick={handlePrevious} />
-        <CustomButton label="Next" type={button} onClick={handleNext} />
+        <section>
+          <CustomButton
+            label="Prev"
+            type={button}
+            onClick={handlePrevious}
+            disabled={step === 0}
+          />
+          <CustomButton
+            label="Next"
+            type={button}
+            onClick={handleNext}
+            disabled={maxStep === step}
+          />
+          <CustomButton
+            label="Submit"
+            type={submit}
+            disabled={maxStep !== step}
+          />
+        </section>
       </form>
     </section>
   );

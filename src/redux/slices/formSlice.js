@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   formData: {},
   errors: {},
+  isEdit: false,
 };
 
 const formSlice = createSlice({
@@ -19,15 +20,36 @@ const formSlice = createSlice({
       state.errors[name] = error;
     },
 
-    resetForm: (state, action) => {
-      return initialState;
-    },
-
     clearError: (state, action) => {
       delete state.errors[action.payload];
+    },
+
+    clearAllErrors: (state, action) => {
+      state.errors = {};
+    },
+
+    resetForm: (state, action) => {
+      state.formData = {};
+      state.errors = {};
+    },
+
+    populateForm: (state, action) => {
+      state.formData = action.payload;
+    },
+
+    setIsEdit: (state, action) => {
+      state.isEdit = action.payload;
     },
   },
 });
 
 export default formSlice.reducer;
-export const { onChange, setError, resetForm, clearError } = formSlice.actions;
+export const {
+  onChange,
+  setError,
+  resetForm,
+  clearError,
+  clearAllErrors,
+  populateForm,
+  setIsEdit,
+} = formSlice.actions;
