@@ -30,7 +30,7 @@ const signUpFields = [
     label: "Password",
     name: "password",
     isRequired: true,
-    message: "Password must have at least 6 characters",
+    message: "The password must contain at least six characters",
   },
 
   {

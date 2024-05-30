@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addAllExams } from "../../redux/slices/studentSlice";
-import { ALL_EXAMS } from "../../constants/nameConstants";
+import { addAllExams, addCurrentExam } from "../../redux/slices/studentSlice";
+import { ALL_EXAMS, CURRENT_EXAM } from "../../constants/nameConstants";
 import { GET, SUCCESS_CODE } from "../../constants/apiConstants";
 import api from "../../redux/actions/apiAction";
 import CustomButton from "../../shared/CustomButton";
@@ -29,16 +29,34 @@ const AllExamsContainer = () => {
     fetchAPI();
   }, [allExams.length, dispatch]);
 
-  const handleAttempt = ({ id, subject, notes }) => {
-    navigate(`../give-exam?id=${id}`, { state: { subject, notes } });
+  // Attempt Exam Handler!
+  const handleAttempt = async ({ id, subject, notes }) => {
+    const config = {
+      method: GET,
+      url: "student/examPaper",
+      params: { id },
+    };
+
+    const response = await dispatch(api({ name: CURRENT_EXAM, config }));
+    const { statusCode, data } = response?.payload?.data;
+
+    if (statusCode === SUCCESS_CODE) {
+      dispatch(addCurrentExam({ data, info: { subject, notes } }));
+      navigate(`../give-exam?id=${id}`);
+    }
   };
+
+  // Result Handler!
+  const handleResult = () => navigate("../results");
 
   // Table Data
   const tableData = allExams.map((fields, ind) => ({
     sr: ind + 1,
     subject: fields.subjectName,
     faculty: fields.email,
-    action: (
+    action: fields.Result.length ? (
+      <CustomButton type={button} label="Result" onClick={handleResult} />
+    ) : (
       <CustomButton
         type={button}
         label="Attempt"

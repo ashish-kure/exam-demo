@@ -46,15 +46,15 @@ const sectionStyle = {
   maxHeight: "600px",
   width: "fit-content",
   overflow: "auto",
-  border: "1px solid #aaa",
+  border: "1px solid #bdbdbd",
 };
 
 const tableStyle = {
-  border: "1px solid black",
+  border: "1px solid #bdbdbd",
   borderCollapse: "collapse",
 };
 
 const dataStyle = {
   padding: "6px 10px",
-  border: "1px solid black",
+  border: "1px solid #bdbdbd",
 };

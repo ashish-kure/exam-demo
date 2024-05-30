@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { useRoutes } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import ErrorPage from "../shared/ErrorPage";
@@ -13,6 +14,8 @@ import Student from "../presentation/teacher/Student";
 import AllExams from "../presentation/student/AllExams";
 import Exams from "../presentation/teacher/Exams";
 import GiveExam from "../presentation/student/GiveExam";
+import AllResults from "../presentation/student/AllResults";
+import Profile from "../presentation/student/Profile";
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -43,15 +46,17 @@ const AppRoutes = () => {
           element: <ProtectedRoute role="student" />,
           children: [
             { path: "", element: <Homepage /> },
-            { path: "all-exams", element: <AllExams /> },
+            { path: "exams", element: <AllExams /> },
             { path: "give-exam", element: <GiveExam /> },
+            { path: "results", element: <AllResults /> },
+            { path: "profile", element: <Profile /> },
           ],
         },
       ],
     },
   ]);
 
-  return <>{routes}</>;
+  return <Fragment>{routes}</Fragment>;
 };
 
 export default AppRoutes;

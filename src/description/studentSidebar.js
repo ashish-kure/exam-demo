@@ -1,5 +1,6 @@
 const studentSidebarFields = [
-  { url: "all-exams", label: "Exams" },
+  { url: "exams", label: "Exams" },
+  { url: "results", label: "Results" },
   { url: "profile", label: "Profile" },
 ];
 

@@ -11,7 +11,7 @@ const resetPasswordFields = [
     label: "Old Password",
     name: "oldPassword",
     isRequired: true,
-    message: "Password must have at least 6 characters",
+    message: "The password must contain at least six characters",
   },
 
   {
@@ -19,7 +19,7 @@ const resetPasswordFields = [
     label: "New Password",
     name: "Password",
     isRequired: true,
-    message: "Password must have at least 6 characters",
+    message: "The password must contain at least six characters",
   },
 
   {

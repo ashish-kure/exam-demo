@@ -1,40 +1,71 @@
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useSearchParams } from "react-router-dom";
-import api from "../../redux/actions/apiAction";
-import { addCurrentExam } from "../../redux/slices/studentSlice";
-import { GET, SUCCESS_CODE } from "../../constants/apiConstants";
-import { CURRENT_EXAM } from "../../constants/nameConstants";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { radio } from "../../constants/formConstants";
+import { fillExamQuestion } from "../../redux/slices/studentSlice";
+import { POST, SUCCESS_CODE } from "../../constants/apiConstants";
+import { objectValues } from "../../utils/javascript";
+import { GIVE_EXAM } from "../../constants/nameConstants";
+import { checkExistingErrors, validateForm } from "../../utils/validation";
+import api from "../../redux/actions/apiAction";
 
 const GiveExamContainer = () => {
-  const { state } = useLocation();
-  const [searchParams] = useSearchParams();
-
   const dispatch = useDispatch();
   const currentExam = useSelector((state) => state.student.currentExam);
+  const answerSheet = useSelector((state) => state.student.answerSheet);
 
-  // useEffect(() => {
-  //   const fetchAPI = async () => {
-  //     const config = {
-  //       method: GET,
-  //       url: "student/examPaper",
-  //       params: {
-  //         id: searchParams.get("id"),
-  //       },
-  //     };
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-  //     const response = await dispatch(api({ name: CURRENT_EXAM, config }));
-  //     const { statusCode, data } = response?.payload?.data;
+  const questionFields = currentExam?.questions?.map(
+    ({ question, options, _id }, ind) => [
+      {
+        type: radio,
+        name: `question ${ind + 1}`,
+        label: question,
+        id: _id,
+        isRequired: true,
+        options: options.map((option) => ({
+          label: option,
+          value: option,
+        })),
+      },
+    ]
+  );
 
-  //     statusCode === SUCCESS_CODE &&
-  //       dispatch(addCurrentExam({ data, info: state }));
-  //   };
+  const onInputChange = (event) => {
+    const { id, value, name } = event.target;
+    dispatch(
+      fillExamQuestion({ name, value: { question: id, answer: value } })
+    );
+  };
 
-  //   fetchAPI();
-  // }, [dispatch, searchParams, state]);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  return {};
+    const config = {
+      method: POST,
+      url: "student/giveExam",
+      params: { id: searchParams.get("id") },
+      data: objectValues(answerSheet).map((value) => value),
+    };
+
+    if (validateForm(questionFields.flat()) && !checkExistingErrors()) {
+      const response = await dispatch(api({ name: GIVE_EXAM, config }));
+      const { statusCode, message } = response?.payload?.data;
+
+      if (statusCode === SUCCESS_CODE) {
+        alert(message);
+        navigate("/student");
+      }
+    }
+  };
+
+  return {
+    currentExam,
+    questionFields,
+    onInputChange,
+    handleSubmit,
+  };
 };
 
 export default GiveExamContainer;

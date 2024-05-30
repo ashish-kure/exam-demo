@@ -1,19 +1,36 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearError, onChange, setError } from "../redux/slices/formSlice";
-import { validate } from "../utils/validation";
-import { capitalize } from "../utils/javascript";
 import FormField from "../presentation/FormField";
-import { confirmPassword } from "../constants/formConstants";
+import CustomButton from "./CustomButton";
+import {
+  clearAllErrors,
+  clearError,
+  onChange,
+  setError,
+} from "../redux/slices/formSlice";
+import {
+  checkExistingErrors,
+  validate,
+  validateForm,
+} from "../utils/validation";
+import { capitalize } from "../utils/javascript";
+import { button, confirmPassword, submit } from "../constants/formConstants";
 
-const Form = ({ fields, onSubmit }) => {
+const Form = ({ fields, onSubmit, onInputChange }) => {
+  const [currentStep, setCurrentStep] = useState(0);
   const dispatch = useDispatch();
   const { formData, errors } = useSelector((state) => state.form);
+
+  const isMultiStep = fields?.some((unit) => Array.isArray(unit));
+  const maxStep = isMultiStep ? fields.length - 1 : null;
+  const currentFields = isMultiStep ? fields[currentStep] : fields;
 
   const handleChange = (event, message) => {
     const { name, value } = event.target;
     const errorMessage = message ?? `${capitalize(name)} is Invalid!`;
 
     dispatch(onChange({ name, value }));
+    onInputChange && onInputChange(event);
 
     // Validate Field
     const isValid =
@@ -39,9 +56,20 @@ const Form = ({ fields, onSubmit }) => {
     dispatch(onChange({ name, value: updatedValues }));
   };
 
+  const handleNext = () => {
+    if (validateForm(currentFields) && !checkExistingErrors()) {
+      setCurrentStep((prev) => (prev < maxStep ? prev + 1 : prev));
+    }
+  };
+
+  const handlePrevious = () => {
+    setCurrentStep((prev) => prev - 1);
+    dispatch(clearAllErrors());
+  };
+
   return (
     <form onSubmit={onSubmit} style={formStyle}>
-      {fields.map((attributes, ind) => (
+      {currentFields?.map((attributes, ind) => (
         <section key={ind}>
           <FormField
             formData={formData}
@@ -53,6 +81,28 @@ const Form = ({ fields, onSubmit }) => {
           <span style={errorStyle}>{errors[attributes?.name]}</span>
         </section>
       ))}
+
+      {isMultiStep && (
+        <section>
+          <CustomButton
+            type={button}
+            label="Prev"
+            onClick={handlePrevious}
+            disabled={currentStep === 0}
+          />
+          <CustomButton
+            type={button}
+            label="Next"
+            onClick={handleNext}
+            disabled={maxStep === currentStep}
+          />
+          <CustomButton
+            type={submit}
+            label="Submit"
+            disabled={maxStep !== currentStep}
+          />
+        </section>
+      )}
     </form>
   );
 };

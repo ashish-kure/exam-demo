@@ -12,7 +12,7 @@ const VerifiedStudents = () => {
 
   return (
     <section style={style}>
-      <Table tableData={tableData} />;
+      <Table tableData={tableData} />
     </section>
   );
 };

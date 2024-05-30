@@ -16,4 +16,8 @@ export const DELETE_EXAM = "deleteExam";
 
 // Student
 export const ALL_EXAMS = "allExams";
+export const ALL_RESULTS = "allResults";
 export const CURRENT_EXAM = "currentExam";
+export const GIVE_EXAM = "giveExam";
+export const PROFILE = "profile";
+export const UPDATE_PROFILE = "updateProfile";
