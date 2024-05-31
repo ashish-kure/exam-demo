@@ -6,7 +6,7 @@ import CustomButton from "../../shared/CustomButton";
 
 const ExamForm = ({ fields, totalQuestions }) => {
   const {
-    step,
+    currentStep,
     maxStep,
     formData,
     errors,
@@ -41,7 +41,7 @@ const ExamForm = ({ fields, totalQuestions }) => {
                 ...attributes,
                 label:
                   attributes.name === "question"
-                    ? `Question ${step + 1}`
+                    ? `Question ${currentStep + 1}`
                     : attributes.label,
               }}
             />
@@ -54,18 +54,18 @@ const ExamForm = ({ fields, totalQuestions }) => {
             label="Prev"
             type={button}
             onClick={handlePrevious}
-            disabled={step === 0}
+            disabled={currentStep === 0}
           />
           <CustomButton
             label="Next"
             type={button}
             onClick={handleNext}
-            disabled={maxStep === step}
+            disabled={maxStep === currentStep}
           />
           <CustomButton
             label="Submit"
             type={submit}
-            disabled={maxStep !== step}
+            disabled={maxStep !== currentStep}
           />
         </section>
       </form>

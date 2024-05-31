@@ -26,24 +26,24 @@ const createExamFields = {
       isRequired: true,
     },
 
-    {
-      type: text,
-      name: `answer`,
-      label: "Answer",
-      isRequired: true,
-      message: "Answer should be same as Options!",
-    },
+    // {
+    //   type: text,
+    //   name: `answer`,
+    //   label: "Answer",
+    //   isRequired: true,
+    //   message: "Answer should be same as Options!",
+    // },
 
     ...Array.from({ length: 4 }, (_, j) => [
       {
         type: radio,
         name: `option`,
-        options: [{ label: "", value: `optionText${j}` }],
+        options: [{ label: "", value: `optionValue${j}` }],
       },
 
       {
         type: text,
-        name: `optionText${j}`,
+        name: `optionValue${j}`,
         isRequired: true,
         message: "Options should be unique!",
       },

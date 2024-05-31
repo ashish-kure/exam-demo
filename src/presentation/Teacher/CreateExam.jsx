@@ -3,9 +3,9 @@ import ExamForm from "../exam/ExamForm";
 import CreateExamContainer from "../../container/Teacher/CreateExamContainer";
 
 const CreateExam = () => {
-  const { fields, totalQuestions, handleSubmit } = CreateExamContainer();
+  const { fields, totalQuestions } = CreateExamContainer();
 
-  return <ExamForm {...{ fields, totalQuestions, handleSubmit }} />;
+  return <ExamForm {...{ fields, totalQuestions }} />;
 };
 
 export default CreateExam;
