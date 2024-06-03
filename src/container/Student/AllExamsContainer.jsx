@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addAllExams, addCurrentExam } from "../../redux/slices/studentSlice";
-import { ALL_EXAMS, CURRENT_EXAM } from "../../constants/nameConstants";
+import { addAllExams } from "../../redux/slices/studentSlice";
+import { ALL_EXAMS } from "../../constants/nameConstants";
 import { GET, SUCCESS_CODE } from "../../constants/apiConstants";
 import api from "../../redux/actions/apiAction";
 import CustomButton from "../../shared/CustomButton";
@@ -31,19 +31,7 @@ const AllExamsContainer = () => {
 
   // Attempt Exam Handler!
   const handleAttempt = async ({ id, subject, notes }) => {
-    const config = {
-      method: GET,
-      url: "student/examPaper",
-      params: { id },
-    };
-
-    const response = await dispatch(api({ name: CURRENT_EXAM, config }));
-    const { statusCode, data } = response?.payload?.data;
-
-    if (statusCode === SUCCESS_CODE) {
-      dispatch(addCurrentExam({ data, info: { subject, notes } }));
-      navigate(`../give-exam?id=${id}`);
-    }
+    navigate(`../give-exam?id=${id}`, { state: { subject, notes } });
   };
 
   // Result Handler!

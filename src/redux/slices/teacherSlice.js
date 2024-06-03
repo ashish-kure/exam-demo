@@ -1,14 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { objectKeys } from "../../utils/javascript";
+
+const initialExam = {
+  subjectName: "",
+  questions: [],
+  notes: [],
+};
 
 const initialState = {
   allStudents: [],
   verifiedStudents: [],
-  exam: {
-    subjectName: "",
-    questions: [],
-    notes: [],
-  },
+  exam: initialExam,
 };
 
 const teacherSlice = createSlice({
@@ -24,27 +25,102 @@ const teacherSlice = createSlice({
     },
 
     addExam: (state, action) => {
-      const { formData, step } = action.payload;
-      const { notes, subjectName, answer, question } = formData;
-
-      const options = objectKeys(formData)
-        .filter((key) => key.includes("optionText"))
-        .map((key) => formData[key]);
-
-      const questionObject = { answer, options, question };
-
-      state.exam.subjectName = subjectName;
-      state.exam.questions[step] = questionObject;
-      notes &&
-        (state.exam.notes = Array.from(new Set([...state.exam.notes, notes])));
+      state.exam = action.payload;
     },
 
-    fetchExam: (state, action) => {
-      state.exam = action.payload;
+    removeExam: (state, action) => {
+      state.exam = initialExam;
     },
   },
 });
 
 export default teacherSlice.reducer;
-export const { addAllStudents, addVerifiedStudents, addExam, fetchExam } =
-  teacherSlice.actions;
+export const {
+  addAllStudents,
+  addVerifiedStudents,
+  addExam,
+  addQuestion,
+  removeExam,
+} = teacherSlice.actions;
+
+// {
+//   subjectName: "Science",
+//   questions: [
+//     {
+//       question: "question1",
+//       answer: "ans1",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//     {
+//       question: "question2",
+//       answer: "ans2",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//     {
+//       question: "question3",
+//       answer: "ans3",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//     {
+//       question: "question4",
+//       answer: "ans4",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//     {
+//       question: "question5",
+//       answer: "ans1",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//     {
+//       question: "question6",
+//       answer: "ans2",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//     {
+//       question: "question7",
+//       answer: "ans3",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//     {
+//       question: "question8",
+//       answer: "ans4",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//     {
+//       question: "question9",
+//       answer: "ans1",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//     {
+//       question: "question10",
+//       answer: "ans2",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//     {
+//       question: "question11",
+//       answer: "ans3",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//     {
+//       question: "question12",
+//       answer: "ans4",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//     {
+//       question: "question13",
+//       answer: "ans1",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//     {
+//       question: "question14",
+//       answer: "ans2",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//     {
+//       question: "question15",
+//       answer: "ans3",
+//       options: ["ans1", "ans2", "ans3", "ans4"],
+//     },
+//   ],
+//   notes: ["10mins exam", "", "start time 10am", ""],
+// };

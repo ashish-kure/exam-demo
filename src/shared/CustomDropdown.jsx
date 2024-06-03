@@ -1,3 +1,4 @@
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React from "react";
 
 const CustomDropdown = (props) => {
@@ -17,6 +18,21 @@ const CustomDropdown = (props) => {
           </option>
         ))}
       </select>
+      {/* <FormControl size="small">
+        <InputLabel id={`select-${label}`}>{label}</InputLabel>
+        <Select
+          label={label}
+          labelId={`select-${label}`}
+          autoWidth
+          {...otherProps}
+        >
+          {options.map(({ label, ...restOptions }, ind) => (
+            <MenuItem key={ind} {...restOptions}>
+              {label}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl> */}
     </div>
   );
 };

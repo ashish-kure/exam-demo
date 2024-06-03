@@ -1,41 +1,89 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
+import { objectKeys, objectValues } from "../../utils/javascript";
+import { addExam } from "../../redux/slices/teacherSlice";
 import {
   clearAllErrors,
   clearError,
   onChange,
   populateForm,
+  resetForm,
   setError,
 } from "../../redux/slices/formSlice";
-import { objectKeys, objectValues } from "../../utils/javascript";
 import {
   checkExistingErrors,
   validate,
   validateForm,
 } from "../../utils/validation";
 
-const ExamFormContainer = ({ fields, totalQuestions }) => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [multiFormData, setMultiFormData] = useState({
-    subject: {},
-    questions: {},
-  });
+const ExamFormContainer = ({ fields, totalQuestions, onSubmit }) => {
+  const [step, setStep] = useState(0);
+  const [isUnsaved, setIsUnsaved] = useState(false);
 
-  const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
-  const { formData, errors, isEdit } = useSelector((state) => state.form);
+  const exam = useSelector((state) => state.teacher.exam);
+  const { formData, errors } = useSelector((state) => state.form);
 
+  // const maxStep = 2;
   const maxStep = totalQuestions ? totalQuestions - 1 : 14;
-  // const maxStep = 3;
+  const questionFields = fields.questions;
+  const subjectFields = fields.subject;
 
-  // useEffect(() => {
-  // dispatch(populateForm(multiFormData[currentStep ?? {}]));
-  // console.log(multiFormData);
-  // console.log(formData);
-  // }, [multiFormData]);
+  // Structures current Exam Data!
+  const configureFormData = useCallback(
+    (data, step) => {
+      const { subjectName, notes, questions } = data;
+      const { options, answer, ...otherFields } = questions[step] ?? [];
 
-  // Unique Option Validation!
+      const optionValues =
+        options?.reduce((acc, option, ind) => {
+          acc[`optionValue${ind}`] = option;
+          return acc;
+        }, {}) ?? {};
+
+      const option = objectKeys(optionValues)?.find(
+        (key) => optionValues[key] === answer
+      );
+
+      const formDataObject = {
+        subjectName,
+        option,
+        notes: notes[step],
+        ...optionValues,
+        ...otherFields,
+      };
+
+      dispatch(populateForm(formDataObject));
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    if (exam.questions.length) {
+      configureFormData(exam, step);
+    }
+  }, [exam, step, configureFormData]);
+
+  // Structures current FormData!
+  const configureExam = () => {
+    const { notes, subjectName, option, question } = formData;
+    const copyOfExam = structuredClone(exam);
+
+    const options = objectKeys(formData)
+      .filter((key) => key.includes("optionValue"))
+      .map((key) => formData[key]);
+
+    const answer = formData[option];
+    const questionObject = { answer, options, question };
+
+    copyOfExam.subjectName = subjectName;
+    copyOfExam.questions[step] = questionObject;
+    copyOfExam.notes[step] = notes ?? "";
+
+    return copyOfExam;
+  };
+
+  // Validation of Options!
   const validateOptions = (currentValue) => {
     const optionValues = objectKeys(formData)
       .filter((option) => option.includes("optionValue"))
@@ -44,72 +92,69 @@ const ExamFormContainer = ({ fields, totalQuestions }) => {
     return !optionValues.includes(currentValue);
   };
 
-  // Checking Option in Selected or Not!
+  // Check, if option is selected?
   const isOptionChecked = () => {
-    const isChecked = objectKeys(formData).find((key) => key === "option");
+    const isChecked = objectKeys(formData).some(
+      (key) => key === "option" && formData[key]
+    );
+
     !isChecked && alert("Please select an Answer!");
     return isChecked;
   };
 
-  // Combine Form Data!
-  const combineFormData = (step) => ({
-    ...multiFormData.subject,
-    ...multiFormData.questions[step],
-  });
-
   // On Change Handler!
-  const handleChange = (event, message) => {
+  const handleChange = (event, error) => {
     const { name, value } = event.target;
-    const error = message || "This Fields is Invalid!";
+    const errorMessage = error || "This Field is Invalid";
 
     dispatch(onChange({ name, value }));
+    setIsUnsaved(true);
 
-    if (fields.subject.some((fields) => fields.name === name)) {
-      setMultiFormData((prev) => ({
-        ...prev,
-        subject: { ...prev.subject, [`${name}`]: value },
-      }));
-    }
-
+    // Validation
     const isValid = name.includes("optionValue")
       ? validateOptions(value)
       : validate(name, value);
 
     value && !isValid
-      ? dispatch(setError({ name, error }))
+      ? dispatch(setError({ name, error: errorMessage }))
       : dispatch(clearError(name));
   };
 
-  // On Next Handler!
-  const handleNext = () => {
-    const questionFields = fields.questions;
-    const nextStep = currentStep < maxStep ? currentStep + 1 : currentStep;
-
+  const saveCurrentStep = (fields) => {
     if (
-      validateForm(questionFields, true) &&
+      validateForm(fields, true) &&
       !checkExistingErrors() &&
       isOptionChecked()
     ) {
-      setCurrentStep(nextStep);
-      dispatch(populateForm(combineFormData(nextStep) ?? {}));
-      setMultiFormData((prev) => ({
-        ...prev,
-        questions: { ...prev.questions, [`${currentStep}`]: formData },
-      }));
+      const structuredExam = configureExam();
+      dispatch(addExam(structuredExam));
+      dispatch(resetForm());
+      setIsUnsaved(false);
+      return structuredExam;
     }
   };
 
-  // On Previous Handler!
-  const handlePrevious = () => {
-    const prevStep = currentStep > 0 ? currentStep - 1 : currentStep;
+  // Handle Next!
+  const handleNext = () => {
+    const nextStep = step < maxStep ? step + 1 : step;
 
-    setCurrentStep(prevStep);
-    dispatch(populateForm(combineFormData(prevStep)));
+    if (saveCurrentStep(questionFields)) {
+      setStep(nextStep);
+      configureFormData(exam, nextStep);
+    }
+  };
+
+  // Handle Previous
+  const handlePrevious = () => {
+    const prevStep = step > 0 ? step - 1 : step;
+
+    setStep(prevStep);
+    configureFormData(exam, prevStep);
     dispatch(clearAllErrors());
   };
 
-  // On Submit Handler!
-  const handleSubmit = (event) => {
+  // Handle Submit
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const allFields = objectValues(fields).reduce((acc, unit) => {
@@ -117,32 +162,21 @@ const ExamFormContainer = ({ fields, totalQuestions }) => {
       return acc;
     }, []);
 
-    if (
-      validateForm(objectValues(allFields), true) &&
-      !checkExistingErrors() &&
-      isOptionChecked()
-    ) {
-      const finalData = {
-        ...multiFormData,
-        questions: { ...multiFormData.questions, [`${currentStep}`]: formData },
-      };
-
-      setMultiFormData(finalData);
-      console.log(finalData);
-    }
+    const resultantExam = saveCurrentStep(allFields);
+    resultantExam && onSubmit(resultantExam) && setStep(0);
   };
 
   return {
-    currentStep,
+    step,
     maxStep,
     formData,
     errors,
-    handleNext,
     handleChange,
+    handleNext,
     handlePrevious,
     handleSubmit,
-    questionFields: fields.questions,
-    subjectFields: fields.subject,
+    subjectFields,
+    questionFields,
   };
 };
 

@@ -1,194 +1,148 @@
-import { useCallback, useEffect, useState } from "react";
-import createExamFields from "../../description/createExam";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 import {
   clearAllErrors,
   clearError,
   onChange,
   populateForm,
-  resetForm,
   setError,
-  setIsEdit,
 } from "../../redux/slices/formSlice";
-import { addExam } from "../../redux/slices/teacherSlice";
 import { objectKeys, objectValues } from "../../utils/javascript";
-import { radio } from "../../constants/formConstants";
 import {
   checkExistingErrors,
   validate,
   validateForm,
 } from "../../utils/validation";
-import api from "../../redux/actions/apiAction";
-import { CREATE_EXAM } from "../../constants/nameConstants";
-import { POST, PUT } from "../../constants/apiConstants";
-import { useSearchParams } from "react-router-dom";
 
 const ExamFormContainer = ({ fields, totalQuestions }) => {
-  const [step, setStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [multiFormData, setMultiFormData] = useState({
+    subject: {},
+    questions: {},
+  });
+
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
   const { formData, errors, isEdit } = useSelector((state) => state.form);
 
   const maxStep = totalQuestions ? totalQuestions - 1 : 14;
-  const exam = useSelector((state) => state.teacher.exam);
+  // const maxStep = 3;
 
-  const validateOptions = (value, isAnswer) => {
-    let valid = true;
+  // useEffect(() => {
+  // dispatch(populateForm(multiFormData[currentStep ?? {}]));
+  // console.log(multiFormData);
+  // console.log(formData);
+  // }, [multiFormData]);
 
-    const optionTextsArray = objectKeys(formData)
-      .filter((field) => field.includes("optionText"))
-      .map((field) => formData[field]);
+  // Unique Option Validation!
+  const validateOptions = (currentValue) => {
+    const optionValues = objectKeys(formData)
+      .filter((option) => option.includes("optionValue"))
+      .map((option) => formData[option]);
 
-    switch (isAnswer) {
-      case true: {
-        if (!optionTextsArray.includes(value)) {
-          valid = false;
-        }
-        return valid;
-      }
-      case !isAnswer: {
-        if (optionTextsArray.includes(value)) {
-          valid = false;
-        }
-        return valid;
-      }
-
-      default:
-        return valid;
-    }
+    return !optionValues.includes(currentValue);
   };
 
-  // Next & Previous Helper!
-  const populateFormData = useCallback(
-    (data, step) => {
-      const { subjectName, notes, questions } = data;
-      const { options, answer, ...otherFields } = questions[step] ?? [];
-      const optionTexts = options?.reduce((acc, option, ind) => {
-        acc[`optionText${ind}`] = option;
-        return acc;
-      }, {});
+  // Checking Option in Selected or Not!
+  const isOptionChecked = () => {
+    const isChecked = objectKeys(formData).find((key) => key === "option");
+    !isChecked && alert("Please select an Answer!");
+    return isChecked;
+  };
 
-      const option =
-        optionTexts &&
-        objectKeys(optionTexts)?.find((key) => optionTexts[key] === answer);
-
-      const formDataObject = {
-        subjectName,
-        answer,
-        option,
-        notes: notes[step],
-        ...optionTexts,
-        ...otherFields,
-      };
-
-      dispatch(populateForm(formDataObject));
-    },
-    [dispatch]
-  );
-
-  useEffect(() => {
-    populateFormData(exam, step);
-  }, [exam, populateFormData, step]);
+  // Combine Form Data!
+  const combineFormData = (step) => ({
+    ...multiFormData.subject,
+    ...multiFormData.questions[step],
+  });
 
   // On Change Handler!
-  const handleChange = (event, error) => {
-    const { name, value, type, checked } = event.target;
-    const errorMessage = error || "This Field is Invalid";
+  const handleChange = (event, message) => {
+    const { name, value } = event.target;
+    const error = message || "This Fields is Invalid!";
 
     dispatch(onChange({ name, value }));
 
-    // Change Answer based on Radio!
-    if (type === radio && checked) {
-      dispatch(onChange({ name: "answer", value: formData[value] }));
+    if (fields.subject.some((fields) => fields.name === name)) {
+      setMultiFormData((prev) => ({
+        ...prev,
+        subject: { ...prev.subject, [`${name}`]: value },
+      }));
     }
 
-    // Change Radio based on Answer!
-    if (name === "answer") {
-      dispatch(
-        onChange({
-          name: "option",
-          value: objectKeys(formData).find((key) => formData[key] === value),
-        })
-      );
-    }
-
-    // Validation
-    const isValid = name.includes("optionText")
-      ? validateOptions(value, false)
-      : name.includes("answer")
-      ? validateOptions(value, true)
+    const isValid = name.includes("optionValue")
+      ? validateOptions(value)
       : validate(name, value);
 
     value && !isValid
-      ? dispatch(setError({ name, error: errorMessage }))
+      ? dispatch(setError({ name, error }))
       : dispatch(clearError(name));
   };
 
-  // Handle Next!
+  // On Next Handler!
   const handleNext = () => {
-    const nextStep = step < maxStep ? step + 1 : step;
+    const questionFields = fields.questions;
+    const nextStep = currentStep < maxStep ? currentStep + 1 : currentStep;
 
     if (
-      validateForm(createExamFields.questions, true) &&
-      !checkExistingErrors()
+      validateForm(questionFields, true) &&
+      !checkExistingErrors() &&
+      isOptionChecked()
     ) {
-      setStep(nextStep);
-      populateFormData(exam, nextStep);
-      dispatch(addExam({ formData, step }));
-      dispatch(resetForm());
+      setCurrentStep(nextStep);
+      dispatch(populateForm(combineFormData(nextStep) ?? {}));
+      setMultiFormData((prev) => ({
+        ...prev,
+        questions: { ...prev.questions, [`${currentStep}`]: formData },
+      }));
     }
   };
 
-  // Handle Previous
+  // On Previous Handler!
   const handlePrevious = () => {
-    const prevStep = step > 0 ? step - 1 : step;
+    const prevStep = currentStep > 0 ? currentStep - 1 : currentStep;
 
-    setStep(prevStep);
-    populateFormData(exam, prevStep);
+    setCurrentStep(prevStep);
+    dispatch(populateForm(combineFormData(prevStep)));
     dispatch(clearAllErrors());
   };
 
-  const handleSubmit = async (event) => {
+  // On Submit Handler!
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    const allFields = objectValues(createExamFields).reduce((acc, array) => {
-      acc.push(...array);
+    const allFields = objectValues(fields).reduce((acc, unit) => {
+      acc.push(...unit);
       return acc;
     }, []);
 
-    if (validateForm(allFields) && !checkExistingErrors()) {
-      dispatch(addExam({ formData, step }));
-
-      const config = {
-        method: isEdit ? PUT : POST,
-        url: isEdit ? "dashboard/Teachers/editExam" : "dashboard/Teachers/Exam",
-        params: isEdit ? { id: searchParams.get("id") } : {},
-        data: exam,
+    if (
+      validateForm(objectValues(allFields), true) &&
+      !checkExistingErrors() &&
+      isOptionChecked()
+    ) {
+      const finalData = {
+        ...multiFormData,
+        questions: { ...multiFormData.questions, [`${currentStep}`]: formData },
       };
 
-      const response = await dispatch(api({ name: CREATE_EXAM, config }));
-      const { statusCode, message } = response?.payload?.data;
-
-      if (statusCode === 200) {
-        alert(message);
-        dispatch(resetForm());
-        dispatch(setIsEdit(false));
-      }
+      setMultiFormData(finalData);
+      console.log(finalData);
     }
   };
 
   return {
-    step,
+    currentStep,
     maxStep,
     formData,
     errors,
-    handleChange,
     handleNext,
+    handleChange,
     handlePrevious,
     handleSubmit,
-    subjectFields: fields.subject,
     questionFields: fields.questions,
+    subjectFields: fields.subject,
   };
 };
 
