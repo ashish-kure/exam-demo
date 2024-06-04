@@ -24,6 +24,7 @@ const Profile = () => {
 
   return (
     <section style={style}>
+      <h2>Profile</h2>
       Name:
       {!edit ? (
         <h3>{profile?.name}</h3>

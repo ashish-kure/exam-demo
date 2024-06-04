@@ -16,7 +16,39 @@ const ExamForm = ({ fields, totalQuestions, onSubmit }) => {
     handleNext,
     handlePrevious,
     handleSubmit,
+    handleCancel,
   } = ExamFormContainer({ fields, totalQuestions, onSubmit });
+
+  const navigationButtons = [
+    {
+      type: button,
+      label: "< Prev",
+      onClick: handlePrevious,
+      disabled: step === 0,
+    },
+
+    {
+      type: button,
+      label: "Next >",
+      onClick: handleNext,
+      disabled: maxStep === step,
+    },
+  ];
+
+  const actionButtons = [
+    {
+      type: submit,
+      label: "Submit",
+      onClick: handleSubmit,
+      disabled: maxStep !== step,
+    },
+
+    {
+      type: button,
+      label: "Cancel",
+      onClick: handleCancel,
+    },
+  ];
 
   return (
     <form onSubmit={handleSubmit}>
@@ -49,23 +81,16 @@ const ExamForm = ({ fields, totalQuestions, onSubmit }) => {
       ))}
 
       <section>
-        <CustomButton
-          label="Prev"
-          type={button}
-          onClick={handlePrevious}
-          disabled={step === 0}
-        />
-        <CustomButton
-          label="Next"
-          type={button}
-          onClick={handleNext}
-          disabled={maxStep === step}
-        />
-        <CustomButton
-          label="Submit"
-          type={submit}
-          disabled={maxStep !== step}
-        />
+        <div>
+          {navigationButtons.map((button, ind) => (
+            <CustomButton key={ind} {...button} />
+          ))}
+        </div>
+        <div>
+          {actionButtons.map((button, ind) => (
+            <CustomButton key={ind} {...button} />
+          ))}
+        </div>
       </section>
     </form>
   );

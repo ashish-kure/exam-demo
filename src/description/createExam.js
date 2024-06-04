@@ -1,6 +1,5 @@
 import { radio, text } from "../constants/formConstants";
 
-// Main Descriptor!
 const createExamFields = {
   subject: [
     {
@@ -36,8 +35,8 @@ const createExamFields = {
       {
         type: text,
         name: `optionValue${j}`,
-        isRequired: true,
         message: "Options should be unique!",
+        isRequired: true,
       },
     ]).flat(),
   ],

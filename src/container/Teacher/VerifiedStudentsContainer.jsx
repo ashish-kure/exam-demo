@@ -1,11 +1,15 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import CustomButton from "../../shared/CustomButton";
 import { addVerifiedStudents } from "../../redux/slices/teacherSlice";
 import api from "../../redux/actions/apiAction";
-import { GET, SUCCESS_CODE } from "../../constants/apiConstants";
+import CustomButton from "../../shared/CustomButton";
 import { VERIFIED_STUDENTS } from "../../constants/nameConstants";
+import {
+  GET,
+  SUCCESS_CODE,
+  ALL_VERIFIED_STUDENTS_EP,
+} from "../../constants/apiConstants";
 
 const VerifiedStudentsContainer = () => {
   const navigate = useNavigate();
@@ -17,16 +21,16 @@ const VerifiedStudentsContainer = () => {
 
   useEffect(() => {
     const fetchAPI = async () => {
-      const config = { method: GET, url: "dashboard/Teachers/StudentForExam" };
+      const config = { method: GET, url: ALL_VERIFIED_STUDENTS_EP };
 
-      if (verifiedStudents.length !== 0) {
-        return;
+      if (!verifiedStudents.length) {
+        const response = await dispatch(
+          api({ name: VERIFIED_STUDENTS, config })
+        );
+        const { statusCode, data } = response?.payload?.data ?? {};
+
+        statusCode === SUCCESS_CODE && dispatch(addVerifiedStudents(data));
       }
-
-      const response = await dispatch(api({ name: VERIFIED_STUDENTS, config }));
-      const { statusCode, data } = response?.payload?.data;
-
-      statusCode === SUCCESS_CODE && dispatch(addVerifiedStudents(data));
     };
 
     fetchAPI();

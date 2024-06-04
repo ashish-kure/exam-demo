@@ -8,7 +8,7 @@ const CustomButton = (props) => {
     // <button style={buttonStyle} {...otherProps}>
     //   {label}
     // </button>
-    <Button variant="contained" size="small" {...otherProps}>
+    <Button variant="contained" size="small" disableRipple {...otherProps}>
       {label}
     </Button>
   );
@@ -16,6 +16,6 @@ const CustomButton = (props) => {
 
 export default CustomButton;
 
-const buttonStyle = {
-  padding: "4px 6px",
-};
+// const buttonStyle = {
+//   padding: "4px 6px",
+// };

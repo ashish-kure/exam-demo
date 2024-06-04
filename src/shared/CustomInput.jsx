@@ -6,8 +6,6 @@ const CustomInput = (props) => {
 
   return (
     <div style={inputStyle}>
-      {/* <label>{label}</label>
-      <input onChange={(event) => onChange(event, message)} {...otherProps} /> */}
       <TextField
         size="small"
         variant="outlined"

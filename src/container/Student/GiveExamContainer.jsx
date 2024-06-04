@@ -1,22 +1,28 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import api from "../../redux/actions/apiAction";
+import { objectValues } from "../../utils/javascript";
+import { checkExistingErrors, validateForm } from "../../utils/validation";
 import { radio } from "../../constants/formConstants";
+import { CURRENT_EXAM, GIVE_EXAM } from "../../constants/nameConstants";
 import {
   addCurrentExam,
   fillExamQuestion,
 } from "../../redux/slices/studentSlice";
-import { GET, POST, SUCCESS_CODE } from "../../constants/apiConstants";
-import { objectValues } from "../../utils/javascript";
-import { CURRENT_EXAM, GIVE_EXAM } from "../../constants/nameConstants";
-import { checkExistingErrors, validateForm } from "../../utils/validation";
-import api from "../../redux/actions/apiAction";
-import { useEffect } from "react";
+import {
+  GET,
+  POST,
+  SUCCESS_CODE,
+  GIVE_EXAM_EP,
+  EXAM_PAPER_EP,
+} from "../../constants/apiConstants";
 
 const GiveExamContainer = () => {
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.api.loading);
   const currentExam = useSelector((state) => state.student.currentExam);
   const answerSheet = useSelector((state) => state.student.answerSheet);
-  const loading = useSelector((state) => state.api.loading);
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -28,12 +34,12 @@ const GiveExamContainer = () => {
     const fetchAPI = async () => {
       const config = {
         method: GET,
-        url: "student/examPaper",
+        url: EXAM_PAPER_EP,
         params: { id: searchParams.get("id") },
       };
 
       const response = await dispatch(api({ name: CURRENT_EXAM, config }));
-      const { statusCode, data } = response?.payload?.data;
+      const { statusCode, data } = response?.payload?.data ?? {};
 
       if (statusCode === SUCCESS_CODE) {
         dispatch(addCurrentExam({ data, info: { subject, notes } }));
@@ -71,14 +77,14 @@ const GiveExamContainer = () => {
 
     const config = {
       method: POST,
-      url: "student/giveExam",
+      url: GIVE_EXAM_EP,
       params: { id: searchParams.get("id") },
       data: objectValues(answerSheet),
     };
 
     if (validateForm(questionFields.flat()) && !checkExistingErrors()) {
       const response = await dispatch(api({ name: GIVE_EXAM, config }));
-      const { statusCode, message } = response?.payload?.data;
+      const { statusCode, message } = response?.payload?.data ?? {};
 
       if (statusCode === SUCCESS_CODE) {
         alert(message);

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { objectKeys, objectValues } from "../../utils/javascript";
-import { addExam } from "../../redux/slices/teacherSlice";
+import { addExam, removeExam } from "../../redux/slices/teacherSlice";
 import {
   clearAllErrors,
   clearError,
@@ -9,20 +9,23 @@ import {
   populateForm,
   resetForm,
   setError,
+  setIsEdit,
 } from "../../redux/slices/formSlice";
 import {
   checkExistingErrors,
   validate,
   validateForm,
 } from "../../utils/validation";
+import { useSearchParams } from "react-router-dom";
 
 const ExamFormContainer = ({ fields, totalQuestions, onSubmit }) => {
   const [step, setStep] = useState(0);
-  const [isUnsaved, setIsUnsaved] = useState(false);
+  const [searchParams] = useSearchParams();
 
   const dispatch = useDispatch();
   const exam = useSelector((state) => state.teacher.exam);
-  const { formData, errors } = useSelector((state) => state.form);
+  const formData = useSelector((state) => state.form.formData);
+  const errors = useSelector((state) => state.form.errors);
 
   // const maxStep = 2;
   const maxStep = totalQuestions ? totalQuestions - 1 : 14;
@@ -62,7 +65,7 @@ const ExamFormContainer = ({ fields, totalQuestions, onSubmit }) => {
     if (exam.questions.length) {
       configureFormData(exam, step);
     }
-  }, [exam, step, configureFormData]);
+  }, [exam, step, configureFormData, searchParams]);
 
   // Structures current FormData!
   const configureExam = () => {
@@ -108,7 +111,6 @@ const ExamFormContainer = ({ fields, totalQuestions, onSubmit }) => {
     const errorMessage = error || "This Field is Invalid";
 
     dispatch(onChange({ name, value }));
-    setIsUnsaved(true);
 
     // Validation
     const isValid = name.includes("optionValue")
@@ -129,7 +131,6 @@ const ExamFormContainer = ({ fields, totalQuestions, onSubmit }) => {
       const structuredExam = configureExam();
       dispatch(addExam(structuredExam));
       dispatch(resetForm());
-      setIsUnsaved(false);
       return structuredExam;
     }
   };
@@ -157,13 +158,27 @@ const ExamFormContainer = ({ fields, totalQuestions, onSubmit }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const allFields = objectValues(fields).reduce((acc, unit) => {
-      acc.push(...unit);
-      return acc;
-    }, []);
+    const structuredExam = saveCurrentStep(objectValues(fields).flat());
+    const resultantExam = {
+      ...structuredExam,
+      notes: structuredExam.notes.filter(Boolean),
+    };
 
-    const resultantExam = saveCurrentStep(allFields);
-    resultantExam && onSubmit(resultantExam) && setStep(0);
+    const result = await onSubmit(resultantExam);
+
+    // Reset States!
+    if (result) {
+      setStep(0);
+      dispatch(removeExam());
+      dispatch(setIsEdit(false));
+    }
+  };
+
+  const handleCancel = () => {
+    setStep(0);
+    dispatch(resetForm());
+    dispatch(removeExam());
+    dispatch(setIsEdit(false));
   };
 
   return {
@@ -175,6 +190,7 @@ const ExamFormContainer = ({ fields, totalQuestions, onSubmit }) => {
     handleNext,
     handlePrevious,
     handleSubmit,
+    handleCancel,
     subjectFields,
     questionFields,
   };

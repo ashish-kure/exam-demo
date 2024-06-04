@@ -4,9 +4,15 @@ import { useNavigate } from "react-router-dom";
 import api from "../../redux/actions/apiAction";
 import CustomButton from "../../shared/CustomButton";
 import { button } from "../../constants/formConstants";
-import { GET, DELETE } from "../../constants/apiConstants";
+import {
+  GET,
+  DELETE,
+  DELETE_EXAM_EP,
+  VIEW_EXAM_EP,
+} from "../../constants/apiConstants";
 import { EXAMS, DELETE_EXAM } from "../../constants/nameConstants";
 import { SUCCESS_CODE } from "../../constants/apiConstants";
+import { setIsEdit } from "../../redux/slices/formSlice";
 
 const ExamContainer = () => {
   const navigate = useNavigate();
@@ -15,7 +21,7 @@ const ExamContainer = () => {
   const data = useSelector((state) => state.api.data[EXAMS]);
 
   const fetchAPI = useCallback(async () => {
-    const config = { method: GET, url: "dashboard/Teachers/viewExam" };
+    const config = { method: GET, url: VIEW_EXAM_EP };
     dispatch(api({ name: EXAMS, config }));
   }, [dispatch]);
 
@@ -27,7 +33,8 @@ const ExamContainer = () => {
   const handleCreateExam = () => navigate("../create-exam");
 
   // Edit Exam Handler!
-  const handleEditExam = async (id, subjectName, notes) => {
+  const handleEditExam = (id, subjectName, notes) => {
+    dispatch(setIsEdit(true));
     navigate(`../create-exam?id=${id}`, { state: { subjectName, notes } });
   };
 
@@ -36,12 +43,12 @@ const ExamContainer = () => {
     if (window.confirm("Are you sure to delete this Exam?")) {
       const config = {
         method: DELETE,
-        url: "dashboard/Teachers/deleteExam",
+        url: DELETE_EXAM_EP,
         params: { id },
       };
 
       const response = await dispatch(api({ name: DELETE_EXAM, config }));
-      const { statusCode, message } = response?.payload?.data;
+      const { statusCode, message } = response?.payload?.data ?? {};
 
       if (statusCode === SUCCESS_CODE) {
         alert(message);
