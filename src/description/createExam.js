@@ -1,6 +1,5 @@
 import { radio, text } from "../constants/formConstants";
 
-// Main Descriptor!
 const createExamFields = {
   subject: [
     {
@@ -21,31 +20,23 @@ const createExamFields = {
 
     {
       type: text,
-      name: `question`,
+      name: "question",
       label: "Question",
       isRequired: true,
     },
 
-    // {
-    //   type: text,
-    //   name: `answer`,
-    //   label: "Answer",
-    //   isRequired: true,
-    //   message: "Answer should be same as Options!",
-    // },
-
     ...Array.from({ length: 4 }, (_, j) => [
       {
         type: radio,
-        name: `option`,
+        name: "option",
         options: [{ label: "", value: `optionValue${j}` }],
       },
 
       {
         type: text,
         name: `optionValue${j}`,
-        isRequired: true,
         message: "Options should be unique!",
+        isRequired: true,
       },
     ]).flat(),
   ],

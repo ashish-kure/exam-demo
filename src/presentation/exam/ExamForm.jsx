@@ -4,9 +4,9 @@ import ExamFormContainer from "../../container/Exam/ExamFormContainer";
 import FormField from "../../presentation/FormField";
 import CustomButton from "../../shared/CustomButton";
 
-const ExamForm = ({ fields, totalQuestions }) => {
+const ExamForm = ({ fields, totalQuestions, onSubmit }) => {
   const {
-    currentStep,
+    step,
     maxStep,
     formData,
     errors,
@@ -16,68 +16,87 @@ const ExamForm = ({ fields, totalQuestions }) => {
     handleNext,
     handlePrevious,
     handleSubmit,
-  } = ExamFormContainer({ fields, totalQuestions });
+    handleCancel,
+  } = ExamFormContainer({ fields, totalQuestions, onSubmit });
+
+  const navigationButtons = [
+    {
+      type: button,
+      label: "< Prev",
+      onClick: handlePrevious,
+      disabled: step === 0,
+    },
+
+    {
+      type: button,
+      label: "Next >",
+      onClick: handleNext,
+      disabled: maxStep === step,
+    },
+  ];
+
+  const actionButtons = [
+    {
+      type: submit,
+      label: "Submit",
+      onClick: handleSubmit,
+      disabled: maxStep !== step,
+    },
+
+    {
+      type: button,
+      label: "Cancel",
+      onClick: handleCancel,
+    },
+  ];
 
   return (
-    <section style={examFormStyle}>
-      <form onSubmit={handleSubmit}>
-        {subjectFields.map((attributes, ind) => (
-          <Fragment key={ind}>
-            <FormField
-              attributes={attributes}
-              formData={formData}
-              onChange={handleChange}
-            />
-            <span style={errorStyle}>{errors[attributes?.name]}</span>
-          </Fragment>
-        ))}
+    <form onSubmit={handleSubmit}>
+      {subjectFields.map((attributes, ind) => (
+        <Fragment key={ind}>
+          <FormField
+            attributes={attributes}
+            formData={formData}
+            onChange={handleChange}
+          />
+          <span style={errorStyle}>{errors[attributes?.name]}</span>
+        </Fragment>
+      ))}
 
-        {questionFields.map((attributes, ind) => (
-          <Fragment key={ind}>
-            <FormField
-              formData={formData}
-              onChange={handleChange}
-              attributes={{
-                ...attributes,
-                label:
-                  attributes.name === "question"
-                    ? `Question ${currentStep + 1}`
-                    : attributes.label,
-              }}
-            />
-            <span style={errorStyle}>{errors[attributes?.name]}</span>
-          </Fragment>
-        ))}
+      {questionFields.map((attributes, ind) => (
+        <Fragment key={ind}>
+          <FormField
+            formData={formData}
+            onChange={handleChange}
+            attributes={{
+              ...attributes,
+              label:
+                attributes.name === "question"
+                  ? `Question ${step + 1}`
+                  : attributes.label,
+            }}
+          />
+          <span style={errorStyle}>{errors[attributes?.name]}</span>
+        </Fragment>
+      ))}
 
-        <section>
-          <CustomButton
-            label="Prev"
-            type={button}
-            onClick={handlePrevious}
-            disabled={currentStep === 0}
-          />
-          <CustomButton
-            label="Next"
-            type={button}
-            onClick={handleNext}
-            disabled={maxStep === currentStep}
-          />
-          <CustomButton
-            label="Submit"
-            type={submit}
-            disabled={maxStep !== currentStep}
-          />
-        </section>
-      </form>
-    </section>
+      <section>
+        <div>
+          {navigationButtons.map((button, ind) => (
+            <CustomButton key={ind} {...button} />
+          ))}
+        </div>
+        <div>
+          {actionButtons.map((button, ind) => (
+            <CustomButton key={ind} {...button} />
+          ))}
+        </div>
+      </section>
+    </form>
   );
 };
 
 export default ExamForm;
-
-const examFormStyle = {
-  marginLeft: 150,
-};
 
 const errorStyle = {
   fontSize: 14,

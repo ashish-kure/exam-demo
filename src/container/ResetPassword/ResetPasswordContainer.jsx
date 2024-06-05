@@ -5,14 +5,19 @@ import resetPasswordFields from "../../description/resetPassword";
 import { RESET_PASSWORD } from "../../constants/nameConstants";
 import { resetForm } from "../../redux/slices/formSlice";
 import api from "../../redux/actions/apiAction";
+import { useEffect } from "react";
 
 const ResetPasswordContainer = () => {
   const dispatch = useDispatch();
-  const { formData } = useSelector((state) => state.form);
-  const { loading } = useSelector((state) => state.api);
+  const formData = useSelector((state) => state.form.formData);
+  const loading = useSelector((state) => state.api.loading);
   const { statusCode, message } = useSelector(
     (state) => state.api.data[RESET_PASSWORD] || ""
   );
+
+  useEffect(() => {
+    return () => dispatch(resetForm());
+  }, [dispatch]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

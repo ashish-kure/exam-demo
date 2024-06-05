@@ -10,9 +10,11 @@ const Sidebar = ({ fields }) => {
   const dispatch = useDispatch();
 
   const handleSignOut = () => {
-    dispatch(removeUserInfo());
-    dispatch(resetForm());
-    navigate("/sign-in");
+    if (window.confirm("Do you really want to sign out?")) {
+      dispatch(resetForm());
+      dispatch(removeUserInfo());
+      navigate("/sign-in");
+    }
   };
 
   return (

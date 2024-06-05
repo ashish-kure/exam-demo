@@ -1,22 +1,23 @@
-import React from "react";
+import { MenuItem, TextField } from "@mui/material";
 
 const CustomDropdown = (props) => {
   const { label, isRequired, options, ...otherProps } = props;
 
   return (
     <div>
-      <label>{label}</label>
-      <select {...otherProps}>
-        <option value="select" hidden>
-          Select
-        </option>
-
-        {options.map(({ label, ...restOptions }, ind) => (
-          <option key={ind} {...restOptions}>
+      <TextField
+        select
+        label={label}
+        size="small"
+        sx={{ width: 200 }}
+        {...otherProps}
+      >
+        {options.map(({ label, ...rest }, ind) => (
+          <MenuItem key={ind} disableRipple {...rest}>
             {label}
-          </option>
+          </MenuItem>
         ))}
-      </select>
+      </TextField>
     </div>
   );
 };

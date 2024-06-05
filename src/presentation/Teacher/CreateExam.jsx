@@ -1,11 +1,26 @@
 import React from "react";
 import ExamForm from "../exam/ExamForm";
 import CreateExamContainer from "../../container/Teacher/CreateExamContainer";
+import ButtonLoader from "../../shared/ButtonLoader";
 
 const CreateExam = () => {
-  const { fields, totalQuestions } = CreateExamContainer();
+  const { loading, editLoading, fields, totalQuestions, onSubmit } =
+    CreateExamContainer();
 
-  return <ExamForm {...{ fields, totalQuestions }} />;
+  if (editLoading) {
+    return <ButtonLoader />;
+  }
+
+  return (
+    <section style={style}>
+      <ExamForm {...{ fields, totalQuestions, onSubmit }} />
+      {loading && <ButtonLoader />}
+    </section>
+  );
 };
 
 export default CreateExam;
+
+const style = {
+  marginLeft: 150,
+};
