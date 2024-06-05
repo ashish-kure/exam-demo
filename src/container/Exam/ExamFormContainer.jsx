@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 import { objectKeys, objectValues } from "../../utils/javascript";
 import { addExam, removeExam } from "../../redux/slices/teacherSlice";
 import {
@@ -16,7 +17,6 @@ import {
   validate,
   validateForm,
 } from "../../utils/validation";
-import { useSearchParams } from "react-router-dom";
 
 const ExamFormContainer = ({ fields, totalQuestions, onSubmit }) => {
   const [step, setStep] = useState(0);
@@ -24,8 +24,7 @@ const ExamFormContainer = ({ fields, totalQuestions, onSubmit }) => {
 
   const dispatch = useDispatch();
   const exam = useSelector((state) => state.teacher.exam);
-  const formData = useSelector((state) => state.form.formData);
-  const errors = useSelector((state) => state.form.errors);
+  const { formData, errors, isEdit } = useSelector((state) => state.form);
 
   // const maxStep = 2;
   const maxStep = totalQuestions ? totalQuestions - 1 : 14;
@@ -65,7 +64,8 @@ const ExamFormContainer = ({ fields, totalQuestions, onSubmit }) => {
     if (exam.questions.length) {
       configureFormData(exam, step);
     }
-  }, [exam, step, configureFormData, searchParams]);
+    return () => dispatch(resetForm());
+  }, [exam, step, searchParams, configureFormData, dispatch]);
 
   // Structures current FormData!
   const configureExam = () => {
@@ -183,6 +183,7 @@ const ExamFormContainer = ({ fields, totalQuestions, onSubmit }) => {
 
   return {
     step,
+    isEdit,
     maxStep,
     formData,
     errors,

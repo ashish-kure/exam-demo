@@ -63,7 +63,7 @@ const AllStudentsContainer = () => {
       ...student,
       action: (
         <CustomButton
-          label="view"
+          label="View"
           type={button}
           onClick={() => handleViewButton(student._id)}
         />

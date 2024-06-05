@@ -40,4 +40,7 @@ export default GiveExam;
 
 const style = {
   marginLeft: 150,
+  display: "flex",
+  flexDirection: "column",
+  gap: 16,
 };

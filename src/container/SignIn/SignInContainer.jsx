@@ -7,6 +7,8 @@ import api from "../../redux/actions/apiAction";
 import { POST, SIGN_IN_EP, SUCCESS_CODE } from "../../constants/apiConstants";
 import { SIGN_IN } from "../../constants/nameConstants";
 import { checkExistingErrors, validateForm } from "../../utils/validation";
+import { getLocalStorage } from "../../utils/javascript";
+import { isLoggedIn } from "../../utils/authentication";
 
 const SignInContainer = () => {
   const navigate = useNavigate();
@@ -18,8 +20,12 @@ const SignInContainer = () => {
   );
 
   useEffect(() => {
+    if (isLoggedIn()) {
+      navigate(`/${getLocalStorage("role")}`);
+    }
+
     return () => dispatch(resetForm());
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

@@ -35,7 +35,7 @@ const ExamContainer = () => {
   // Edit Exam Handler!
   const handleEditExam = (id, subjectName, notes) => {
     dispatch(setIsEdit(true));
-    navigate(`../create-exam?id=${id}`, { state: { subjectName, notes } });
+    navigate(`../edit-exam?id=${id}`, { state: { subjectName, notes } });
   };
 
   // Delete Exam Handler!

@@ -63,11 +63,11 @@ const ProfileContainer = () => {
     input,
     handleEdit,
     handleCancel,
-    handleNameChange,
     handleUpdate,
+    handleNameChange,
+    profile: data,
     loading: loading[PROFILE],
     updateLoading: loading[UPDATE_PROFILE],
-    profile: data,
   };
 };
 

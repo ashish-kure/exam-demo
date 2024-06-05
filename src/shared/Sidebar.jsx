@@ -2,8 +2,15 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { removeUserInfo } from "../redux/slices/userSlice";
-import { resetForm } from "../redux/slices/formSlice";
+import { resetForm, setIsEdit } from "../redux/slices/formSlice";
 import CustomButton from "./CustomButton";
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
 
 const Sidebar = ({ fields }) => {
   const navigate = useNavigate();
@@ -12,41 +19,35 @@ const Sidebar = ({ fields }) => {
   const handleSignOut = () => {
     if (window.confirm("Do you really want to sign out?")) {
       dispatch(resetForm());
+      dispatch(setIsEdit(false));
       dispatch(removeUserInfo());
       navigate("/sign-in");
     }
   };
 
   return (
-    <nav style={sidebarStyle}>
-      {fields.map(({ url, label }) => (
-        <Link key={label} to={url}>
-          {label}
-        </Link>
-      ))}
-      <CustomButton
-        label="Sign Out"
-        onClick={handleSignOut}
-        style={signOutStyle}
-      />
-    </nav>
+    <Drawer variant="permanent" sx={sidebarStyle}>
+      <List>
+        {fields.map(({ url, label }) => (
+          <ListItem alignItems="center" key={label}>
+            <ListItemText>
+              <Link to={url}>{label}</Link>
+            </ListItemText>
+          </ListItem>
+        ))}
+
+        <ListItem>
+          <ListItemButton>
+            <CustomButton label="Sign Out" onClick={handleSignOut} />
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </Drawer>
   );
 };
 
 export default Sidebar;
 
 const sidebarStyle = {
-  height: "100vh",
-  padding: 20,
-  width: 125,
-  border: "1px solid cadetblue",
-  display: "flex",
-  flexDirection: "column",
-  gap: 20,
-  position: "fixed",
-  left: 0,
-};
-
-const signOutStyle = {
-  marginTop: "auto",
+  // width: "drawerWidth",
 };

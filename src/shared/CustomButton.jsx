@@ -2,20 +2,20 @@ import { Button } from "@mui/material";
 import React from "react";
 
 const CustomButton = (props) => {
-  const { label, ...otherProps } = props;
+  const { label, sx, ...otherProps } = props;
 
   return (
-    // <button style={buttonStyle} {...otherProps}>
-    //   {label}
-    // </button>
-    <Button variant="contained" size="small" disableRipple {...otherProps}>
+    <Button
+      variant="contained"
+      size="small"
+      disableRipple
+      disableElevation
+      sx={{ textTransform: "none", fontSize: 16, ...sx }}
+      {...otherProps}
+    >
       {label}
     </Button>
   );
 };
 
 export default CustomButton;
-
-// const buttonStyle = {
-//   padding: "4px 6px",
-// };

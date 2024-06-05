@@ -17,6 +17,7 @@ import GiveExam from "../presentation/student/GiveExam";
 import AllResults from "../presentation/student/AllResults";
 import Profile from "../presentation/student/Profile";
 import Result from "../presentation/student/Result";
+import EditExam from "../presentation/teacher/EditExam";
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -37,8 +38,9 @@ const AppRoutes = () => {
             { path: "all-students", element: <AllStudents /> },
             { path: "verified-students", element: <VerifiedStudents /> },
             { path: "student", element: <Student /> },
-            { path: "create-exam", element: <CreateExam /> },
             { path: "exams", element: <Exams /> },
+            { path: "create-exam", element: <CreateExam /> },
+            { path: "edit-exam", element: <EditExam /> },
           ],
         },
 

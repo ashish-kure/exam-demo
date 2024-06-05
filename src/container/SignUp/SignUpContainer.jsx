@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import signUpFields from "../../description/singUp";
 import { checkExistingErrors, validateForm } from "../../utils/validation";
@@ -7,6 +7,8 @@ import { resetForm } from "../../redux/slices/formSlice";
 import { POST, SIGN_UP_EP, SUCCESS_CODE } from "../../constants/apiConstants";
 import api from "../../redux/actions/apiAction";
 import { SIGN_UP } from "../../constants/nameConstants";
+import { isLoggedIn } from "../../utils/authentication";
+import { getLocalStorage } from "../../utils/javascript";
 
 const SignUpContainer = () => {
   const navigate = useNavigate();
@@ -19,8 +21,12 @@ const SignUpContainer = () => {
   );
 
   useEffect(() => {
+    if (isLoggedIn()) {
+      navigate(`/${getLocalStorage("role")}`);
+    }
+
     return () => dispatch(resetForm());
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

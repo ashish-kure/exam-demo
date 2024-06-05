@@ -6,6 +6,7 @@ import { objectValues } from "../../utils/javascript";
 import { checkExistingErrors, validateForm } from "../../utils/validation";
 import { radio } from "../../constants/formConstants";
 import { CURRENT_EXAM, GIVE_EXAM } from "../../constants/nameConstants";
+import { resetForm } from "../../redux/slices/formSlice";
 import {
   addCurrentExam,
   fillExamQuestion,
@@ -47,6 +48,7 @@ const GiveExamContainer = () => {
     };
 
     fetchAPI();
+    return () => dispatch(resetForm());
   }, [dispatch, notes, searchParams, subject]);
 
   const questionFields = currentExam?.questions?.map(

@@ -42,7 +42,7 @@ export const validateForm = (formFields, commonMessage) => {
           name,
           error: commonMessage
             ? "This Field is Required"
-            : `${capitalize(name)} is Required!`,
+            : `${capitalize(name)} is Required`,
         })
       );
       valid = false;
