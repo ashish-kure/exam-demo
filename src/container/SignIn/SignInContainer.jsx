@@ -56,8 +56,6 @@ const SignInContainer = () => {
     }
   };
 
-  console.log(errors?.[SIGN_IN]);
-
   return {
     message,
     statusCode,
