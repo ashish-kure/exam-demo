@@ -17,11 +17,16 @@ const api = createAsyncThunk(
         data,
         ...rest,
       });
+      const { statusCode, message } = response?.data ?? {};
 
       // Storing User's Data!
       if ([SIGN_IN, SIGN_UP].includes(name)) {
-        response?.data?.statusCode === SUCCESS_CODE &&
+        statusCode === SUCCESS_CODE &&
           dispatch(addUserInfo(response?.data?.data));
+      }
+
+      if (statusCode !== SUCCESS_CODE) {
+        throw new Error(message);
       }
 
       return { name, data: response?.data };

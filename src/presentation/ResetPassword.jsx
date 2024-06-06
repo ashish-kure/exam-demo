@@ -3,32 +3,30 @@ import Form from "../shared/Form";
 import ButtonLoader from "../shared/ButtonLoader";
 import ResetPasswordContainer from "../container/ResetPassword/ResetPasswordContainer";
 import Message from "../shared/Message";
+import { Box, Stack } from "@mui/material";
 
 const ResetPassword = () => {
   const { handleSubmit, resetPasswordFields, loading, statusCode, message } =
     ResetPasswordContainer();
 
   return (
-    <section style={resetPassStyle}>
+    <Stack sx={resetPassStyle}>
+      <Box margin="auto" sx={{ fontSize: 18 }}>
+        Change Password
+      </Box>
+      <br /> <br />
       <Form fields={resetPasswordFields} onSubmit={handleSubmit} />
       {loading && <ButtonLoader />}
-      {statusCode && <Message message={message} />}
-    </section>
+      {statusCode === 500 && <Message severity="warning" message={message} />}
+    </Stack>
   );
 };
 
 export default ResetPassword;
 
 const resetPassStyle = {
-  padding: 16,
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  padding: 4,
   width: "fit-content",
-  display: "flex",
-  flexDirection: "column",
-  gap: 25,
   border: "1px solid #cdcdcd",
-  borderRadius: 8,
+  borderRadius: 2,
 };

@@ -30,8 +30,9 @@ const ResetPasswordContainer = () => {
 
     if (validateForm(resetPasswordFields) && !checkExistingErrors()) {
       const response = await dispatch(api({ name: RESET_PASSWORD, config }));
+      const { statusCode } = response?.payload?.data ?? {};
 
-      if (response?.payload?.data?.statusCode === SUCCESS_CODE) {
+      if (statusCode === SUCCESS_CODE) {
         alert("Your Password Changed Successfully!");
       }
 

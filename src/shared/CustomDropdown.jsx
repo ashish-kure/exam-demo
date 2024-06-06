@@ -9,7 +9,7 @@ const CustomDropdown = (props) => {
         select
         label={label}
         size="small"
-        sx={{ width: 200 }}
+        sx={{ width: 150 }}
         {...otherProps}
       >
         {options.map(({ label, ...rest }, ind) => (

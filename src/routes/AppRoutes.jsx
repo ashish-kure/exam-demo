@@ -9,7 +9,6 @@ import Homepage from "../presentation/dashboard/Homepage";
 import ForgotPassword from "../presentation/ForgotPassword";
 import CreateExam from "../presentation/teacher/CreateExam";
 import AllStudents from "../presentation/teacher/AllStudents";
-import VerifiedStudents from "../presentation/teacher/VerifiedStudents";
 import Student from "../presentation/teacher/Student";
 import AllExams from "../presentation/student/AllExams";
 import Exams from "../presentation/teacher/Exams";
@@ -18,6 +17,7 @@ import AllResults from "../presentation/student/AllResults";
 import Profile from "../presentation/student/Profile";
 import Result from "../presentation/student/Result";
 import EditExam from "../presentation/teacher/EditExam";
+import Account from "../shared/Account";
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -36,11 +36,11 @@ const AppRoutes = () => {
           children: [
             { path: "", element: <Homepage /> },
             { path: "all-students", element: <AllStudents /> },
-            { path: "verified-students", element: <VerifiedStudents /> },
             { path: "student", element: <Student /> },
             { path: "exams", element: <Exams /> },
             { path: "create-exam", element: <CreateExam /> },
             { path: "edit-exam", element: <EditExam /> },
+            { path: "account", element: <Account /> },
           ],
         },
 
@@ -54,6 +54,7 @@ const AppRoutes = () => {
             { path: "results", element: <AllResults /> },
             { path: "result", element: <Result /> },
             { path: "profile", element: <Profile /> },
+            { path: "account", element: <Account /> },
           ],
         },
       ],

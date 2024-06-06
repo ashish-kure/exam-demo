@@ -1,4 +1,3 @@
-import React from "react";
 import Form from "../shared/Form";
 import SignInContainer from "../container/SignIn/SignInContainer";
 import Message from "../shared/Message";
@@ -24,10 +23,6 @@ const SignIn = () => {
           <Link to="/forgot-password">Forgot Password?</Link>
         </Typography>
       </Stack>
-
-      {statusCode === SERVER_ERROR_CODE && (
-        <Message severity="warning" message={message} />
-      )}
     </Stack>
   );
 };
