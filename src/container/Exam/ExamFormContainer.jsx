@@ -133,7 +133,12 @@ const ExamFormContainer = ({ fields, totalQuestions, onSubmit }) => {
 
   // Handle Next!
   const handleNext = () => {
-    if (saveCurrentStep(questionFields)) {
+    const questions = questionFields.reduce((acc, unit) => {
+      acc.push(...(Array.isArray(unit) ? unit : [unit]));
+      return acc;
+    }, []);
+
+    if (saveCurrentStep(questions)) {
       setStep((prev) => (prev < maxStep ? prev + 1 : prev));
     }
   };

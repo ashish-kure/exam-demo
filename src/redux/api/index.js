@@ -12,7 +12,6 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const token = getLocalStorage("token");
     token && (config.headers["access-token"] = token);
-
     return config;
   },
   (error) => {

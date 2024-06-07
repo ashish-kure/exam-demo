@@ -7,6 +7,7 @@ import { ALL_EXAM_EP, GET, SUCCESS_CODE } from "../../constants/apiConstants";
 import api from "../../redux/actions/apiAction";
 import CustomButton from "../../shared/CustomButton";
 import { button } from "../../constants/formConstants";
+import { closeToast } from "../../redux/slices/toastSlice";
 
 const AllExamsContainer = () => {
   const [inputValue, setInputValue] = useState("");
@@ -28,7 +29,9 @@ const AllExamsContainer = () => {
       const config = { method: GET, url: ALL_EXAM_EP };
 
       if (!allExams.length) {
-        const response = await dispatch(api({ name: ALL_EXAMS, config }));
+        const response = await dispatch(
+          api({ name: ALL_EXAMS, config, toast: false })
+        );
         const { statusCode, data } = response?.payload?.data ?? {};
         statusCode === SUCCESS_CODE && dispatch(addAllExams(data));
       }

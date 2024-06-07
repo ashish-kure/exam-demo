@@ -34,7 +34,9 @@ const AllStudentsContainer = () => {
         url: status === "all" ? ALL_STUDENTS_EP : ALL_VERIFIED_STUDENTS_EP,
       };
 
-      const response = await dispatch(api({ name: ALL_STUDENTS, config }));
+      const response = await dispatch(
+        api({ name: ALL_STUDENTS, config, toast: false })
+      );
       const { statusCode, data } = response?.payload?.data ?? {};
       statusCode === SUCCESS_CODE && dispatch(addAllStudents(data));
     };

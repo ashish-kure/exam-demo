@@ -6,6 +6,7 @@ import {
   emailValidation,
   nameValidation,
   passwordValidation,
+  questionValidation,
 } from "./regex";
 
 export const validate = (name, value, compare) => {
@@ -13,15 +14,18 @@ export const validate = (name, value, compare) => {
     case "name":
       return nameValidation(value);
 
+    case "email":
+      return emailValidation(value);
+
     case "password":
     case "oldpassword":
       return passwordValidation(value);
 
-    case "email":
-      return emailValidation(value);
-
     case "confirmpassword":
       return confirmPasswordValidation(value, compare);
+
+    case "question":
+      return questionValidation(value);
 
     default:
       return true;
@@ -48,7 +52,6 @@ export const validateForm = (formFields, commonMessage) => {
       valid = false;
     }
   });
-
   return valid;
 };
 

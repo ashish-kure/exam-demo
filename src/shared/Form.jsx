@@ -15,7 +15,8 @@ import {
 } from "../utils/validation";
 import { capitalize } from "../utils/javascript";
 import { button, confirmPassword, submit } from "../constants/formConstants";
-import { Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
+import ErrorMessage from "./ErrorMessage";
 
 const Form = ({ fields, onSubmit, onInputChange }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -71,7 +72,7 @@ const Form = ({ fields, onSubmit, onInputChange }) => {
   return (
     <Stack spacing={2}>
       <form onSubmit={onSubmit}>
-        <Stack spacing={2} sx={{ width: "fit-content" }}>
+        <Stack spacing={2} sx={{ width: 300 }}>
           {currentFields?.map((attributes, ind) => (
             <Fragment key={ind}>
               <FormField
@@ -80,10 +81,7 @@ const Form = ({ fields, onSubmit, onInputChange }) => {
                 onChange={handleChange}
                 onCheckbox={handleCheckbox}
               />
-
-              <Typography variant="subtitle" component="h4" color="error.light">
-                {errors[attributes?.name]}
-              </Typography>
+              <ErrorMessage>{errors[attributes?.name]}</ErrorMessage>
             </Fragment>
           ))}
         </Stack>

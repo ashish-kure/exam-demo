@@ -20,7 +20,9 @@ const AllResultsContainer = () => {
     const fetchAPI = async () => {
       const config = { method: GET, url: ALL_EXAM_EP };
 
-      const response = await dispatch(api({ name: ALL_RESULTS, config }));
+      const response = await dispatch(
+        api({ name: ALL_RESULTS, config, toast: false })
+      );
       const { statusCode, data } = response?.payload?.data ?? {};
 
       if (statusCode === SUCCESS_CODE) {

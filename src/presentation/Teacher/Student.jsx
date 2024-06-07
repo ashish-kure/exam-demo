@@ -5,6 +5,8 @@ import ButtonLoader from "../../shared/ButtonLoader";
 import CustomButton from "../../shared/CustomButton";
 import { button } from "../../constants/formConstants";
 import { Box, Stack, Typography } from "@mui/material";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import SentimentSatisfiedAltOutlinedIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
 
 const Student = () => {
   const { handleBack, studentData, loading, result } = StudentContainer();
@@ -17,11 +19,16 @@ const Student = () => {
     <Stack spacing={2}>
       <Box>
         <Typography variant="subtitle1">Name</Typography>
-        <Typography sx={typographyStyle}>{studentData?.name}</Typography>
+        <Typography sx={typographyStyle}>
+          <SentimentSatisfiedAltOutlinedIcon color="action" />
+          {studentData?.name}
+        </Typography>
       </Box>
       <Box>
         <Typography variant="subtitle1">Email</Typography>
-        <Typography sx={typographyStyle}>{studentData?.email}</Typography>
+        <Typography sx={typographyStyle}>
+          <EmailOutlinedIcon color="action" /> {studentData?.email}
+        </Typography>
       </Box>
       <Box>
         <Typography variant="subtitle1">Result</Typography>
@@ -46,4 +53,7 @@ const typographyStyle = {
   borderRadius: 1.2,
   fontWeight: "bolder",
   fontSize: 16,
+  display: "flex",
+  alignItems: "center",
+  gap: 2,
 };

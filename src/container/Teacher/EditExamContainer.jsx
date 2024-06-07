@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { CREATE_EXAM, EXAM_DETAIL } from "../../constants/nameConstants";
-import { addExam } from "../../redux/slices/teacherSlice";
+import { addExam, removeExam } from "../../redux/slices/teacherSlice";
 import { setIsEdit } from "../../redux/slices/formSlice";
 import api from "../../redux/actions/apiAction";
 import createExamFields from "../../description/createExam";
@@ -31,7 +31,9 @@ const EditExamContainer = () => {
         params: { id },
       };
 
-      const response = await dispatch(api({ name: EXAM_DETAIL, config }));
+      const response = await dispatch(
+        api({ name: EXAM_DETAIL, config, toast: false })
+      );
       const { statusCode, data } = response?.payload?.data ?? {};
 
       if (statusCode === SUCCESS_CODE) {
@@ -42,6 +44,10 @@ const EditExamContainer = () => {
     };
 
     fetchAPI();
+    return () => {
+      dispatch(removeExam());
+      dispatch(setIsEdit(false));
+    };
   }, [dispatch, searchParams, state]);
 
   const onSubmit = async (exam) => {

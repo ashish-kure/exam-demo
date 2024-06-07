@@ -1,3 +1,5 @@
+import store from "../redux/store";
+
 export const nameValidation = (name) => {
   const regex = /^[a-zA-Z]+$/;
   return regex.test(name);
@@ -20,4 +22,9 @@ export const emailValidation = (email) => {
 
 export const confirmPasswordValidation = (value, compare) => {
   return value === compare;
+};
+
+export const questionValidation = (value) => {
+  const exam = store.getState().teacher.exam;
+  return !exam?.questions?.some(({ question }) => question === value);
 };

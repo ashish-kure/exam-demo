@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Profiler } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { removeUserInfo } from "../redux/slices/userSlice";
@@ -12,8 +12,13 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material";
-import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import EastOutlinedIcon from "@mui/icons-material/EastOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+
+import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
+import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
+import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
+import SentimentSatisfiedAltOutlinedIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
 
 const Sidebar = ({ fields }) => {
   const navigate = useNavigate();
@@ -28,15 +33,23 @@ const Sidebar = ({ fields }) => {
     }
   };
 
+  const iconsMapping = {
+    exams: <EditNoteOutlinedIcon />,
+    results: <ArticleOutlinedIcon />,
+    profile: <SentimentSatisfiedAltOutlinedIcon />,
+    account: <AccountBoxOutlinedIcon />,
+  };
+
   return (
     <Drawer variant="permanent" sx={sidebarStyle}>
       <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <List>
           {fields.map(({ url, label }) => (
             <ListItem key={label} component={Link} to={url} divider>
+              {iconsMapping[url]} 
               <ListItemButton disableRipple>
                 <ListItemText primary={label} sx={{ color: "black" }} />
-                <EastOutlinedIcon sx={{ color: "grey" }} />
+                <EastOutlinedIcon color="action" />
               </ListItemButton>
             </ListItem>
           ))}
@@ -46,7 +59,7 @@ const Sidebar = ({ fields }) => {
           <CustomButton
             label="Sign Out"
             onClick={handleSignOut}
-            startIcon={<ExitToAppOutlinedIcon />}
+            startIcon={<LogoutOutlinedIcon />}
           />
         </Box>
       </Box>

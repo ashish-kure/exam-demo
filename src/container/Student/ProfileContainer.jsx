@@ -22,7 +22,9 @@ const ProfileContainer = () => {
     const fetchAPI = async () => {
       const config = { method: GET, url: GET_PROFILE_EP };
 
-      const response = await dispatch(api({ name: PROFILE, config }));
+      const response = await dispatch(
+        api({ name: PROFILE, config, toast: false })
+      );
       const { data } = response?.payload?.data ?? {};
 
       setData(data);

@@ -6,7 +6,6 @@ const createExamFields = {
       type: text,
       name: "subjectName",
       label: "Subject",
-      placeholder: "Mathematics",
       isRequired: true,
     },
   ],
@@ -15,7 +14,7 @@ const createExamFields = {
     {
       type: text,
       name: "notes",
-      label: "Notes",
+      label: "Note",
     },
 
     {
@@ -23,6 +22,7 @@ const createExamFields = {
       name: "question",
       label: "Question",
       isRequired: true,
+      message: "Question should not be same",
     },
 
     ...Array.from({ length: 4 }, (_, j) => [
@@ -35,10 +35,11 @@ const createExamFields = {
       {
         type: text,
         name: `optionValue${j}`,
+        label: `${String.fromCharCode(65 + j)}.`,
         message: "Options should be unique!",
         isRequired: true,
       },
-    ]).flat(),
+    ]),
   ],
 };
 

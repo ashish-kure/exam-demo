@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "@mui/material";
 
 const CustomButton = (props) => {
@@ -17,4 +18,4 @@ const CustomButton = (props) => {
   );
 };
 
-export default CustomButton;
+export default React.memo(CustomButton);

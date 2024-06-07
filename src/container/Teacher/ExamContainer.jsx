@@ -22,7 +22,7 @@ const ExamContainer = () => {
 
   const fetchAPI = useCallback(async () => {
     const config = { method: GET, url: VIEW_EXAM_EP };
-    dispatch(api({ name: EXAMS, config }));
+    dispatch(api({ name: EXAMS, config, toast: false }));
   }, [dispatch]);
 
   useEffect(() => {

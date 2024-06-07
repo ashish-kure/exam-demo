@@ -2,20 +2,30 @@ import React from "react";
 import ExamForm from "../exam/ExamForm";
 import CreateExamContainer from "../../container/Teacher/CreateExamContainer";
 import ButtonLoader from "../../shared/ButtonLoader";
+import { Stack, Typography } from "@mui/material";
 
 const CreateExam = () => {
   const { loading, fields, totalQuestions, onSubmit } = CreateExamContainer();
 
   return (
-    <section style={style}>
+    <Stack spacing={4} alignItems="center">
+      <Typography variant="h6" sx={typographyStyle}>
+        Examination
+      </Typography>
       <ExamForm {...{ fields, totalQuestions, onSubmit }} />
       {loading && <ButtonLoader />}
-    </section>
+    </Stack>
   );
 };
 
 export default CreateExam;
 
-const style = {
-  marginLeft: 150,
+const typographyStyle = {
+  p: 2,
+  m: "auto",
+  width: "fit-content",
+  color: "#444",
+  border: "1px solid",
+  borderColor: "divider",
+  borderRadius: 1.2,
 };

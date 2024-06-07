@@ -4,10 +4,14 @@ import { addUserInfo } from "../slices/userSlice";
 import { SIGN_IN, SIGN_UP } from "../../constants/nameConstants";
 import { SUCCESS_CODE } from "../../constants/apiConstants";
 import { showToast } from "../slices/toastSlice";
+import { capitalize } from "../../utils/javascript";
 
 const api = createAsyncThunk(
   "api",
-  async ({ name, config }, { rejectWithValue, dispatch }) => {
+  async (
+    { name, config, toast = true },
+    { rejectWithValue, dispatch, signal }
+  ) => {
     try {
       const { method, url, params = {}, data = {}, ...rest } = config;
 
@@ -16,6 +20,7 @@ const api = createAsyncThunk(
         url,
         params,
         data,
+        signal,
         ...rest,
       });
       const { statusCode, message } = response?.data ?? {};
@@ -30,7 +35,8 @@ const api = createAsyncThunk(
           dispatch(addUserInfo(response?.data?.data));
       }
 
-      dispatch(showToast({ type: "success", message }));
+      toast &&
+        dispatch(showToast({ type: "success", message: capitalize(message) }));
       return { name, data: response?.data };
     } catch (error) {
       let errorMessage = "Unknown Error Occurred!";
@@ -43,7 +49,7 @@ const api = createAsyncThunk(
         errorMessage = error.message;
       }
 
-      dispatch(showToast({ type: "error", message: errorMessage }));
+      dispatch(showToast({ type: "error", message: capitalize(errorMessage) }));
       return rejectWithValue({ name, message: errorMessage });
     }
   }

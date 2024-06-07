@@ -39,7 +39,9 @@ const GiveExamContainer = () => {
         params: { id: searchParams.get("id") },
       };
 
-      const response = await dispatch(api({ name: CURRENT_EXAM, config }));
+      const response = await dispatch(
+        api({ name: CURRENT_EXAM, config, toast: false })
+      );
       const { statusCode, data } = response?.payload?.data ?? {};
 
       if (statusCode === SUCCESS_CODE) {

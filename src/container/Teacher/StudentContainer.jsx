@@ -21,7 +21,7 @@ const StudentContainer = () => {
         params: { id: searchParams.get("id") },
       };
 
-      await dispatch(api({ name: STUDENT, config }));
+      await dispatch(api({ name: STUDENT, config, toast: false }));
     };
 
     fetchAPI();
