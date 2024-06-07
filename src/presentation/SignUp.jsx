@@ -3,13 +3,10 @@ import { Link } from "react-router-dom";
 import SignUpContainer from "../container/SignUp/SignUpContainer";
 import Form from "../shared/Form";
 import ButtonLoader from "../shared/ButtonLoader";
-import { SERVER_ERROR_CODE } from "../constants/apiConstants";
-import Message from "../shared/Message";
 import { Stack, Typography } from "@mui/material";
 
 const SignUp = () => {
-  const { signUpFields, handleSubmit, loading, statusCode, message } =
-    SignUpContainer();
+  const { signUpFields, handleSubmit, loading } = SignUpContainer();
 
   return (
     <Stack spacing={2} sx={stackStyle}>
@@ -19,10 +16,6 @@ const SignUp = () => {
       <Typography color="info" component="h6" sx={{ textAlign: "center" }}>
         Already have an Account? <Link to="/sign-in">Sign in</Link>
       </Typography>
-
-      {statusCode === SERVER_ERROR_CODE && (
-        <Message severity="warning" message={message} />
-      )}
     </Stack>
   );
 };

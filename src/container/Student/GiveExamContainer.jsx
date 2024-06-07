@@ -86,12 +86,8 @@ const GiveExamContainer = () => {
 
     if (validateForm(questionFields.flat()) && !checkExistingErrors()) {
       const response = await dispatch(api({ name: GIVE_EXAM, config }));
-      const { statusCode, message } = response?.payload?.data ?? {};
-
-      if (statusCode === SUCCESS_CODE) {
-        alert(message);
-        navigate("../results");
-      }
+      const { statusCode } = response?.payload?.data ?? {};
+      statusCode === SUCCESS_CODE && navigate("../results");
     }
   };
 

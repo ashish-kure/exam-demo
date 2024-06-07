@@ -15,19 +15,15 @@ const ForgotPasswordContainer = () => {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.form.formData);
   const loading = useSelector((state) => state.api.loading);
-  const { statusCode, message } = useSelector(
-    (state) => state.api.data[FORGOT_PASSWORD] || ""
-  );
 
   useEffect(() => {
     if (isLoggedIn()) {
       navigate(`/${getLocalStorage("role")}`);
     }
-
     return () => dispatch(resetForm());
   }, [dispatch, navigate]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const config = {
@@ -37,13 +33,12 @@ const ForgotPasswordContainer = () => {
     };
 
     if (validateForm(forgotPasswordFields) && !checkExistingErrors()) {
-      dispatch(api({ name: FORGOT_PASSWORD, config }));
+      await dispatch(api({ name: FORGOT_PASSWORD, config }));
+      dispatch(resetForm());
     }
   };
 
   return {
-    message,
-    statusCode,
     handleSubmit,
     forgotPasswordFields,
     loading: loading[FORGOT_PASSWORD],

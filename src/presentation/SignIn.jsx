@@ -1,14 +1,11 @@
 import Form from "../shared/Form";
 import SignInContainer from "../container/SignIn/SignInContainer";
-import Message from "../shared/Message";
 import { Link } from "react-router-dom";
 import ButtonLoader from "../shared/ButtonLoader";
-import { SERVER_ERROR_CODE } from "../constants/apiConstants";
 import { Stack, Typography } from "@mui/material";
 
 const SignIn = () => {
-  const { handleSubmit, signInFields, statusCode, message, loading } =
-    SignInContainer();
+  const { handleSubmit, signInFields, loading } = SignInContainer();
 
   return (
     <Stack spacing={2} sx={stackStyle}>

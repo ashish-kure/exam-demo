@@ -48,12 +48,8 @@ const ExamContainer = () => {
       };
 
       const response = await dispatch(api({ name: DELETE_EXAM, config }));
-      const { statusCode, message } = response?.payload?.data ?? {};
-
-      if (statusCode === SUCCESS_CODE) {
-        alert(message);
-        fetchAPI();
-      }
+      const { statusCode } = response?.payload?.data ?? {};
+      statusCode === SUCCESS_CODE && fetchAPI();
     }
   };
 
@@ -76,6 +72,7 @@ const ExamContainer = () => {
       <CustomButton
         type={button}
         label="Delete"
+        color="error"
         onClick={() => handleDeleteExam(fields._id)}
       />
     ),

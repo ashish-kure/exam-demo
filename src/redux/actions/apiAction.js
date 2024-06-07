@@ -3,6 +3,7 @@ import axiosInstance from "../api";
 import { addUserInfo } from "../slices/userSlice";
 import { SIGN_IN, SIGN_UP } from "../../constants/nameConstants";
 import { SUCCESS_CODE } from "../../constants/apiConstants";
+import { showToast } from "../slices/toastSlice";
 
 const api = createAsyncThunk(
   "api",
@@ -19,16 +20,17 @@ const api = createAsyncThunk(
       });
       const { statusCode, message } = response?.data ?? {};
 
+      if (statusCode !== SUCCESS_CODE) {
+        throw new Error(message);
+      }
+
       // Storing User's Data!
       if ([SIGN_IN, SIGN_UP].includes(name)) {
         statusCode === SUCCESS_CODE &&
           dispatch(addUserInfo(response?.data?.data));
       }
 
-      if (statusCode !== SUCCESS_CODE) {
-        throw new Error(message);
-      }
-
+      dispatch(showToast({ type: "success", message }));
       return { name, data: response?.data };
     } catch (error) {
       let errorMessage = "Unknown Error Occurred!";
@@ -41,6 +43,7 @@ const api = createAsyncThunk(
         errorMessage = error.message;
       }
 
+      dispatch(showToast({ type: "error", message: errorMessage }));
       return rejectWithValue({ name, message: errorMessage });
     }
   }

@@ -54,7 +54,7 @@ const AllResultsContainer = () => {
     )
     ?.map((fields) => ({
       ...fields,
-      view: (
+      View: (
         <CustomButton
           type={button}
           label="View"

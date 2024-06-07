@@ -25,7 +25,6 @@ const GiveExam = () => {
           <p key={ind}>{note}</p>
         ))}
       </h4>
-
       <Form
         fields={questionFields}
         onInputChange={onInputChange}

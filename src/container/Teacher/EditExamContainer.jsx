@@ -53,10 +53,9 @@ const EditExamContainer = () => {
     };
 
     const response = await dispatch(api({ name: CREATE_EXAM, config }));
-    const { statusCode, message } = response?.payload?.data ?? {};
+    const { statusCode } = response?.payload?.data ?? {};
 
     if (statusCode === SUCCESS_CODE) {
-      alert(message);
       navigate("../exams");
       return true;
     }

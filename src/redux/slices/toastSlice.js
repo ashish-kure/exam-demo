@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { SUCCESS_CODE } from "../../constants/apiConstants";
 
 const initialState = {
   open: false,
@@ -12,15 +11,10 @@ const toastSlice = createSlice({
   initialState,
   reducers: {
     showToast: (state, action) => {
-      const { type, message, statusCode } = action.payload;
-
+      const { type, message } = action.payload;
       state.open = true;
+      state.severity = type;
       state.message = message ?? "Something Went Wrong!";
-      state.severity = type
-        ? type
-        : statusCode === SUCCESS_CODE
-        ? "success"
-        : "error";
     },
 
     closeToast: () => {

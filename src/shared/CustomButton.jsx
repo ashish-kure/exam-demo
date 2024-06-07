@@ -1,5 +1,4 @@
 import { Button } from "@mui/material";
-import React from "react";
 
 const CustomButton = (props) => {
   const { label, sx, ...otherProps } = props;

@@ -1,6 +1,7 @@
 import React from "react";
 import { capitalize, objectKeys } from "../utils/javascript";
 import {
+  Box,
   Table as MuiTable,
   Paper,
   TableBody,
@@ -9,6 +10,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Typography,
 } from "@mui/material";
 import { useState } from "react";
 
@@ -29,13 +31,30 @@ const Table = ({ tableData }) => {
   };
 
   const headers = [];
-  tableData.forEach((object) =>
+  tableData?.forEach((object) =>
     objectKeys(object).forEach((key) => {
       if (key !== "_id" && !headers.includes(key)) {
         headers.push(key);
       }
     })
   );
+
+  if (!tableData?.length) {
+    return (
+      <Box>
+        <Typography
+          sx={{
+            p: 2,
+            border: "1px solid",
+            borderColor: "divider",
+            fontWeight: "bold",
+          }}
+        >
+          No Data Available
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Paper elevation={0} sx={paperStyle}>
@@ -65,18 +84,20 @@ const Table = ({ tableData }) => {
         </MuiTable>
       </TableContainer>
 
-      <TablePagination
-        rowsPerPageOptions={[10, 20, 30]}
-        component="section"
-        count={tableData.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        showFirstButton
-        showLastButton
-        sx={paginationStyle}
-      />
+      {tableData.length > 10 && (
+        <TablePagination
+          rowsPerPageOptions={[10, 20, 30]}
+          component="section"
+          count={tableData.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          showFirstButton
+          showLastButton
+          sx={paginationStyle}
+        />
+      )}
     </Paper>
   );
 };

@@ -13,19 +13,14 @@ import { getLocalStorage } from "../../utils/javascript";
 const NewPasswordContainer = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.form.formData);
   const loading = useSelector((state) => state.api.loading);
-  const { statusCode, message } = useSelector(
-    (state) => state.api.data[NEW_PASSWORD] || ""
-  );
 
   useEffect(() => {
     if (isLoggedIn()) {
       navigate(`/${getLocalStorage("role")}`);
     }
-
     return () => dispatch(resetForm());
   }, [dispatch, navigate]);
 
@@ -43,18 +38,12 @@ const NewPasswordContainer = () => {
       const response = await dispatch(api({ name: NEW_PASSWORD, config }));
       const { statusCode } = response?.payload?.data ?? {};
 
-      if (statusCode === SUCCESS_CODE) {
-        alert("Your Password Changed Successfully!");
-        navigate("/sign-in");
-      }
-
+      statusCode === SUCCESS_CODE && navigate("/sign-in");
       dispatch(resetForm());
     }
   };
 
   return {
-    message,
-    statusCode,
     handleSubmit,
     newPasswordFields,
     loading: loading[NEW_PASSWORD],

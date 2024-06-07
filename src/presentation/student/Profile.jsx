@@ -4,7 +4,7 @@ import ProfileContainer from "../../container/Student/ProfileContainer";
 import ButtonLoader from "../../shared/ButtonLoader";
 import CustomButton from "../../shared/CustomButton";
 import CustomInput from "../../shared/CustomInput";
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 
 const Profile = () => {
   const {
@@ -25,7 +25,8 @@ const Profile = () => {
 
   return (
     <Stack spacing={2}>
-      <Box component="section" textAlign="center">
+      <Box component="section">
+        <Typography variant="subtitle1">Name</Typography>
         {!edit ? (
           <Typography variant="h6" sx={textStyle}>
             {profile?.name}
@@ -39,7 +40,8 @@ const Profile = () => {
         )}
       </Box>
 
-      <Box component="section" textAlign="center">
+      <Box component="section">
+        <Typography variant="subtitle1">Email</Typography>
         <Typography variant="h6" sx={textStyle}>
           {profile?.email}
         </Typography>
