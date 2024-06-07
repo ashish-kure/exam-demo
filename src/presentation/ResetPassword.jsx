@@ -2,33 +2,30 @@ import React from "react";
 import Form from "../shared/Form";
 import ButtonLoader from "../shared/ButtonLoader";
 import ResetPasswordContainer from "../container/ResetPassword/ResetPasswordContainer";
-import Message from "../shared/Message";
+import { Typography, Stack } from "@mui/material";
 
 const ResetPassword = () => {
-  const { handleSubmit, resetPasswordFields, loading, statusCode, message } =
+  const { handleSubmit, resetPasswordFields, loading } =
     ResetPasswordContainer();
 
   return (
-    <section style={resetPassStyle}>
+    <Stack sx={stackStyle}>
+      <Typography margin="auto" sx={{ fontSize: 18 }}>
+        Change Password
+      </Typography>
+
       <Form fields={resetPasswordFields} onSubmit={handleSubmit} />
       {loading && <ButtonLoader />}
-      {statusCode && <Message message={message} />}
-    </section>
+    </Stack>
   );
 };
 
 export default ResetPassword;
 
-const resetPassStyle = {
-  padding: 16,
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+const stackStyle = {
+  gap: 4,
+  padding: 4,
   width: "fit-content",
-  display: "flex",
-  flexDirection: "column",
-  gap: 25,
   border: "1px solid #cdcdcd",
-  borderRadius: 8,
+  borderRadius: 2,
 };

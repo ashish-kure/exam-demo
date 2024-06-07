@@ -25,7 +25,6 @@ const GiveExam = () => {
           <p key={ind}>{note}</p>
         ))}
       </h4>
-
       <Form
         fields={questionFields}
         onInputChange={onInputChange}
@@ -40,4 +39,7 @@ export default GiveExam;
 
 const style = {
   marginLeft: 150,
+  display: "flex",
+  flexDirection: "column",
+  gap: 16,
 };

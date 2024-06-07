@@ -4,12 +4,7 @@ import CreateExamContainer from "../../container/Teacher/CreateExamContainer";
 import ButtonLoader from "../../shared/ButtonLoader";
 
 const CreateExam = () => {
-  const { loading, editLoading, fields, totalQuestions, onSubmit } =
-    CreateExamContainer();
-
-  if (editLoading) {
-    return <ButtonLoader />;
-  }
+  const { loading, fields, totalQuestions, onSubmit } = CreateExamContainer();
 
   return (
     <section style={style}>

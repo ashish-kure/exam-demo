@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getLocalStorage } from "../../utils/javascript";
 import {
   addUserLocalStorage,
   getStateFromLocalStorage,
@@ -6,7 +7,6 @@ import {
   setLoggedIn,
   setLoggedOut,
 } from "../../utils/authentication";
-import { getLocalStorage } from "../../utils/javascript";
 
 const initialState = getStateFromLocalStorage();
 

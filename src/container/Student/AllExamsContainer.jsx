@@ -30,7 +30,6 @@ const AllExamsContainer = () => {
       if (!allExams.length) {
         const response = await dispatch(api({ name: ALL_EXAMS, config }));
         const { statusCode, data } = response?.payload?.data ?? {};
-
         statusCode === SUCCESS_CODE && dispatch(addAllExams(data));
       }
     };

@@ -3,10 +3,12 @@ import { button, submit } from "../../constants/formConstants";
 import ExamFormContainer from "../../container/Exam/ExamFormContainer";
 import FormField from "../../presentation/FormField";
 import CustomButton from "../../shared/CustomButton";
+import { Typography } from "@mui/material";
 
 const ExamForm = ({ fields, totalQuestions, onSubmit }) => {
   const {
     step,
+    isEdit,
     maxStep,
     formData,
     errors,
@@ -38,7 +40,7 @@ const ExamForm = ({ fields, totalQuestions, onSubmit }) => {
   const actionButtons = [
     {
       type: submit,
-      label: "Submit",
+      label: !isEdit ? "Submit" : "Update",
       onClick: handleSubmit,
       disabled: maxStep !== step,
     },
@@ -47,6 +49,7 @@ const ExamForm = ({ fields, totalQuestions, onSubmit }) => {
       type: button,
       label: "Cancel",
       onClick: handleCancel,
+      style: { display: isEdit ? "none" : "initial" },
     },
   ];
 
@@ -59,7 +62,10 @@ const ExamForm = ({ fields, totalQuestions, onSubmit }) => {
             formData={formData}
             onChange={handleChange}
           />
-          <span style={errorStyle}>{errors[attributes?.name]}</span>
+
+          <Typography variant="subtitle" component="h4" color="error.light">
+            {errors[attributes?.name]}
+          </Typography>
         </Fragment>
       ))}
 
@@ -76,7 +82,10 @@ const ExamForm = ({ fields, totalQuestions, onSubmit }) => {
                   : attributes.label,
             }}
           />
-          <span style={errorStyle}>{errors[attributes?.name]}</span>
+
+          <Typography variant="subtitle" component="h4" color="error.light">
+            {errors[attributes?.name]}
+          </Typography>
         </Fragment>
       ))}
 

@@ -36,7 +36,6 @@ const AllStudentsContainer = () => {
 
       const response = await dispatch(api({ name: ALL_STUDENTS, config }));
       const { statusCode, data } = response?.payload?.data ?? {};
-
       statusCode === SUCCESS_CODE && dispatch(addAllStudents(data));
     };
 
@@ -63,7 +62,7 @@ const AllStudentsContainer = () => {
       ...student,
       action: (
         <CustomButton
-          label="view"
+          label="View"
           type={button}
           onClick={() => handleViewButton(student._id)}
         />

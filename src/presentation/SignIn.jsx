@@ -1,43 +1,38 @@
-import React from "react";
 import Form from "../shared/Form";
 import SignInContainer from "../container/SignIn/SignInContainer";
-import Message from "../shared/Message";
 import { Link } from "react-router-dom";
 import ButtonLoader from "../shared/ButtonLoader";
-import { SERVER_ERROR_CODE } from "../constants/apiConstants";
+import { Stack, Typography } from "@mui/material";
 
 const SignIn = () => {
-  const { handleSubmit, signInFields, statusCode, message, loading } =
-    SignInContainer();
+  const { handleSubmit, signInFields, loading } = SignInContainer();
 
   return (
-    <section style={signInStyle}>
+    <Stack spacing={2} sx={stackStyle}>
       <Form fields={signInFields} onSubmit={handleSubmit} />
       {loading && <ButtonLoader />}
-      <p>
-        <Link to="/forgot-password">Forgot Password?</Link>
-      </p>
-      <p>
-        New User? <Link to="/sign-up">Sign Up</Link>
-      </p>
 
-      {statusCode === SERVER_ERROR_CODE && <Message message={message} />}
-    </section>
+      <Stack direction="row" justifyContent="space-between">
+        <Typography>
+          <Link to="/sign-up">New User?</Link>
+        </Typography>
+        <Typography>
+          <Link to="/forgot-password">Forgot Password?</Link>
+        </Typography>
+      </Stack>
+    </Stack>
   );
 };
 
 export default SignIn;
 
-const signInStyle = {
-  padding: 16,
+const stackStyle = {
+  padding: 4,
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "fit-content",
-  display: "flex",
-  flexDirection: "column",
-  gap: 25,
   border: "1px solid #cdcdcd",
-  borderRadius: 8,
+  borderRadius: 2,
 };

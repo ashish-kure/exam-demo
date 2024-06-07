@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FormField from "../presentation/FormField";
 import CustomButton from "./CustomButton";
@@ -15,6 +15,7 @@ import {
 } from "../utils/validation";
 import { capitalize } from "../utils/javascript";
 import { button, confirmPassword, submit } from "../constants/formConstants";
+import { Stack, Typography } from "@mui/material";
 
 const Form = ({ fields, onSubmit, onInputChange }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -68,54 +69,49 @@ const Form = ({ fields, onSubmit, onInputChange }) => {
   };
 
   return (
-    <form onSubmit={onSubmit} style={formStyle}>
-      {currentFields?.map((attributes, ind) => (
-        <section key={ind}>
-          <FormField
-            formData={formData}
-            attributes={attributes}
-            onChange={handleChange}
-            onCheckbox={handleCheckbox}
-          />
+    <Stack spacing={2}>
+      <form onSubmit={onSubmit}>
+        <Stack spacing={2} sx={{ width: "fit-content" }}>
+          {currentFields?.map((attributes, ind) => (
+            <Fragment key={ind}>
+              <FormField
+                formData={formData}
+                attributes={attributes}
+                onChange={handleChange}
+                onCheckbox={handleCheckbox}
+              />
 
-          <span style={errorStyle}>{errors[attributes?.name]}</span>
-        </section>
-      ))}
+              <Typography variant="subtitle" component="h4" color="error.light">
+                {errors[attributes?.name]}
+              </Typography>
+            </Fragment>
+          ))}
+        </Stack>
 
-      {isMultiStep && (
-        <section>
-          <CustomButton
-            type={button}
-            label="Prev"
-            onClick={handlePrevious}
-            disabled={currentStep === 0}
-          />
-          <CustomButton
-            type={button}
-            label="Next"
-            onClick={handleNext}
-            disabled={maxStep === currentStep}
-          />
-          <CustomButton
-            type={submit}
-            label="Submit"
-            disabled={maxStep !== currentStep}
-          />
-        </section>
-      )}
-    </form>
+        {isMultiStep && (
+          <section>
+            <CustomButton
+              type={button}
+              label="Prev"
+              onClick={handlePrevious}
+              disabled={currentStep === 0}
+            />
+            <CustomButton
+              type={button}
+              label="Next"
+              onClick={handleNext}
+              disabled={maxStep === currentStep}
+            />
+            <CustomButton
+              type={submit}
+              label="Submit"
+              disabled={maxStep !== currentStep}
+            />
+          </section>
+        )}
+      </form>
+    </Stack>
   );
 };
 
 export default Form;
-
-const errorStyle = {
-  fontSize: 14,
-  color: "indianred",
-};
-
-const formStyle = {
-  display: "flex",
-  flexDirection: "column",
-  gap: 10,
-};

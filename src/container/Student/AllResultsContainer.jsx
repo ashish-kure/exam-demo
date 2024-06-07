@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ALL_EXAM_EP, GET, SUCCESS_CODE } from "../../constants/apiConstants";
@@ -9,6 +9,8 @@ import { ALL_RESULTS } from "../../constants/nameConstants";
 import { button } from "../../constants/formConstants";
 
 const AllResultsContainer = () => {
+  const [inputValue, setInputValue] = useState("");
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.api.loading);
@@ -38,23 +40,32 @@ const AllResultsContainer = () => {
     fetchAPI();
   }, [dispatch]);
 
+  const handleChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
   const handleClick = (result) => {
     navigate(`../result?id=${result._id}`, { state: { result } });
   };
 
-  const tableData = allResults?.map((fields) => ({
-    ...fields,
-    view: (
-      <CustomButton
-        type={button}
-        label="View"
-        onClick={() => handleClick(fields)}
-      />
-    ),
-  }));
+  const tableData = allResults
+    ?.filter(({ subject }) =>
+      subject.toLowerCase().includes(inputValue.toLowerCase())
+    )
+    ?.map((fields) => ({
+      ...fields,
+      View: (
+        <CustomButton
+          type={button}
+          label="View"
+          onClick={() => handleClick(fields)}
+        />
+      ),
+    }));
 
   return {
     tableData,
+    handleChange,
     loading: loading[ALL_RESULTS],
   };
 };

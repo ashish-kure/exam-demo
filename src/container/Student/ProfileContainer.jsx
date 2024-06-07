@@ -49,10 +49,9 @@ const ProfileContainer = () => {
     };
 
     const response = await dispatch(api({ name: UPDATE_PROFILE, config }));
-    const { statusCode, message, data } = response?.payload?.data ?? {};
+    const { statusCode, data } = response?.payload?.data ?? {};
 
     if (statusCode === SUCCESS_CODE) {
-      alert(message);
       setData(data);
       setEdit(false);
     }
@@ -63,11 +62,11 @@ const ProfileContainer = () => {
     input,
     handleEdit,
     handleCancel,
-    handleNameChange,
     handleUpdate,
+    handleNameChange,
+    profile: data,
     loading: loading[PROFILE],
     updateLoading: loading[UPDATE_PROFILE],
-    profile: data,
   };
 };
 

@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import signUpFields from "../../description/singUp";
 import { checkExistingErrors, validateForm } from "../../utils/validation";
@@ -7,20 +7,22 @@ import { resetForm } from "../../redux/slices/formSlice";
 import { POST, SIGN_UP_EP, SUCCESS_CODE } from "../../constants/apiConstants";
 import api from "../../redux/actions/apiAction";
 import { SIGN_UP } from "../../constants/nameConstants";
+import { isLoggedIn } from "../../utils/authentication";
+import { getLocalStorage } from "../../utils/javascript";
+import { showToast } from "../../redux/slices/toastSlice";
 
 const SignUpContainer = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const formData = useSelector((state) => state.form.formData);
   const loading = useSelector((state) => state.api.loading);
-  const { statusCode, message } = useSelector(
-    (state) => state.api.data[SIGN_UP] || ""
-  );
 
   useEffect(() => {
+    if (isLoggedIn()) {
+      navigate(`/${getLocalStorage("role")}`);
+    }
     return () => dispatch(resetForm());
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -36,8 +38,13 @@ const SignUpContainer = () => {
       const { statusCode } = response?.payload?.data ?? {};
 
       if (statusCode === SUCCESS_CODE) {
-        alert("Please, Check you mail box for verification!");
         navigate("/sign-in");
+        dispatch(
+          showToast({
+            type: "info",
+            message: "Please, Check you mail box for verification!",
+          })
+        );
       }
 
       dispatch(resetForm());
@@ -45,8 +52,6 @@ const SignUpContainer = () => {
   };
 
   return {
-    message,
-    statusCode,
     signUpFields,
     handleSubmit,
     loading: loading[SIGN_UP],

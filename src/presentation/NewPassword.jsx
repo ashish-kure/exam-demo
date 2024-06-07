@@ -2,33 +2,28 @@ import React from "react";
 import Form from "../shared/Form";
 import ButtonLoader from "../shared/ButtonLoader";
 import NewPasswordContainer from "../container/ForgotPassword/NewPasswordContainer";
-import Message from "../shared/Message";
+import { Stack } from "@mui/material";
 
 const NewPassword = () => {
-  const { handleSubmit, newPasswordFields, loading, statusCode, message } =
-    NewPasswordContainer();
+  const { handleSubmit, newPasswordFields, loading } = NewPasswordContainer();
 
   return (
-    <section style={newPassStyle}>
+    <Stack sx={stackStyle}>
       <Form fields={newPasswordFields} onSubmit={handleSubmit} />
       {loading && <ButtonLoader />}
-      {statusCode && <Message message={message} />}
-    </section>
+    </Stack>
   );
 };
 
 export default NewPassword;
 
-const newPassStyle = {
-  padding: 16,
+const stackStyle = {
+  padding: 4,
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "fit-content",
-  display: "flex",
-  flexDirection: "column",
-  gap: 25,
   border: "1px solid #cdcdcd",
-  borderRadius: 8,
+  borderRadius: 2,
 };
