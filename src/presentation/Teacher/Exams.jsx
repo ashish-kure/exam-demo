@@ -4,6 +4,7 @@ import Table from "../../shared/Table";
 import ButtonLoader from "../../shared/ButtonLoader";
 import CustomButton from "../../shared/CustomButton";
 import { button } from "../../constants/formConstants";
+import { Box, Stack } from "@mui/material";
 
 const Exams = () => {
   const { loading, tableData, handleCreateExam } = ExamContainer();
@@ -13,19 +14,17 @@ const Exams = () => {
   }
 
   return (
-    <section style={style}>
-      <Table tableData={tableData} /> <br />
-      <CustomButton
-        type={button}
-        label="Create New Exam"
-        onClick={handleCreateExam}
-      />
-    </section>
+    <Stack alignItems="center" spacing={2}>
+      <Table tableData={tableData} />
+      <Box>
+        <CustomButton
+          type={button}
+          label="Create New Exam"
+          onClick={handleCreateExam}
+        />
+      </Box>
+    </Stack>
   );
 };
 
 export default Exams;
-
-const style = {
-  marginLeft: 150,
-};

@@ -1,26 +1,27 @@
-import { Fragment } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../../shared/Sidebar";
 import Toolbar from "../../shared/Toolbar";
 import teacherSidebarFields from "../../description/teacherSidebar";
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 
 const TeacherDashboard = () => {
   return (
-    <Fragment>
-      <Box
-        component="main"
-        display="flex"
+    <Box component="main" sx={{ overflow: "auto" }}>
+      <Toolbar />
+      <Sidebar fields={teacherSidebarFields} />
+      <Grid
+        py={3}
+        mt={10}
+        ml={30}
+        display="grid"
         justifyContent="center"
         alignItems="center"
-        minHeight="100vh"
-        sx={{ overflow: "auto" }}
+        height="calc(100vh - 80px)"
+        overflow="auto"
       >
-        <Toolbar />
-        <Sidebar fields={teacherSidebarFields} />
         <Outlet />
-      </Box>
-    </Fragment>
+      </Grid>
+    </Box>
   );
 };
 

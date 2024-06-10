@@ -30,11 +30,12 @@ const GiveExam = () => {
           <Typography
             key={ind}
             display="flex"
+            justifyContent="space-between"
             gap={1}
             sx={{ ...style, p: 1.5 }}
           >
-            <PushPinOutlinedIcon color="action" />
             {note}
+            <PushPinOutlinedIcon color="action" />
           </Typography>
         ))}
       </Box>

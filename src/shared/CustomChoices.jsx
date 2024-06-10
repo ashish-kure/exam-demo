@@ -19,7 +19,14 @@ const CustomChoices = (props) => {
 
   return (
     <FormControl>
-      <FormLabel>{label}</FormLabel>
+      <FormLabel
+        sx={{
+          fontSize: "20px",
+          color: "black",
+        }}
+      >
+        {label}
+      </FormLabel>
       <Box>
         {options.map((optionProps, ind) => (
           <Box key={ind}>
@@ -45,6 +52,7 @@ const CustomChoices = (props) => {
                 )
               }
               label={optionProps.label}
+              sx={{ p: 0.5 }}
             />
           </Box>
         ))}

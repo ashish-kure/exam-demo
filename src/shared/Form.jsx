@@ -15,8 +15,10 @@ import {
 } from "../utils/validation";
 import { capitalize } from "../utils/javascript";
 import { button, confirmPassword, submit } from "../constants/formConstants";
-import { Box, Stack, Typography } from "@mui/material";
 import ErrorMessage from "./ErrorMessage";
+import { Box, ButtonGroup, Stack } from "@mui/material";
+import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
+import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 
 const Form = ({ fields, onSubmit, onInputChange }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -70,7 +72,7 @@ const Form = ({ fields, onSubmit, onInputChange }) => {
   };
 
   return (
-    <Stack spacing={2}>
+    <Box>
       <form onSubmit={onSubmit}>
         <Stack spacing={2} sx={{ width: 300 }}>
           {currentFields?.map((attributes, ind) => (
@@ -87,28 +89,33 @@ const Form = ({ fields, onSubmit, onInputChange }) => {
         </Stack>
 
         {isMultiStep && (
-          <section>
-            <CustomButton
-              type={button}
-              label="Prev"
-              onClick={handlePrevious}
-              disabled={currentStep === 0}
-            />
-            <CustomButton
-              type={button}
-              label="Next"
-              onClick={handleNext}
-              disabled={maxStep === currentStep}
-            />
+          <Stack spacing={1} alignItems="center">
+            <ButtonGroup component="section">
+              <CustomButton
+                type={button}
+                label={<ArrowBackIosNewOutlinedIcon />}
+                onClick={handlePrevious}
+                disabled={currentStep === 0}
+                variant="text"
+              />
+              <CustomButton
+                type={button}
+                label={<ArrowForwardIosOutlinedIcon />}
+                onClick={handleNext}
+                disabled={maxStep === currentStep}
+                variant="text"
+              />
+            </ButtonGroup>
             <CustomButton
               type={submit}
               label="Submit"
               disabled={maxStep !== currentStep}
+              variant="outlined"
             />
-          </section>
+          </Stack>
         )}
       </form>
-    </Stack>
+    </Box>
   );
 };
 

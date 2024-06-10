@@ -1,15 +1,15 @@
 import React from "react";
 import HomepageContainer from "../../container/Homepage/HomepageContainer";
+import { Stack, Typography } from "@mui/material";
 
 const Homepage = () => {
   const { name } = HomepageContainer();
 
-  return <h1 style={homeStyle}>Welcome, {name}</h1>;
+  return (
+    <Stack alignSelf="flex-start">
+      <Typography variant="h4">Welcome, {name}</Typography>
+    </Stack>
+  );
 };
 
 export default Homepage;
-
-const homeStyle = {
-  marginLeft: 135,
-  padding: 25,
-};
