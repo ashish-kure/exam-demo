@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Live
 
-This project is live on GitHub Pages: [Live](https://ashish-kure.github.io/exam-demo/#)
+This project is live on GitHub Pages: [Checkout](https://ashish-kure.github.io/exam-demo/#)
 
 ## Available Scripts
 
