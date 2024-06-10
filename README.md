@@ -1,10 +1,10 @@
 # Getting Started with Create React App
 
-# Live
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Live
 
 This project is live on GitHub Pages: [Live](https://ashish-kure.github.io/exam-demo/#)
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
