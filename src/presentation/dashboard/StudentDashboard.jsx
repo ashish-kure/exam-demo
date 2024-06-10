@@ -1,8 +1,9 @@
 import { Fragment } from "react";
+import { Outlet } from "react-router-dom";
 import Sidebar from "../../shared/Sidebar";
+import Toolbar from "../../shared/Toolbar";
 import studentSidebarFields from "../../description/studentSidebar";
 import { Box } from "@mui/material";
-import { Outlet } from "react-router-dom";
 
 const StudentDashboard = () => {
   return (
@@ -15,6 +16,7 @@ const StudentDashboard = () => {
         minHeight="100vh"
         sx={{ overflow: "auto" }}
       >
+        <Toolbar />
         <Sidebar fields={studentSidebarFields} />
         <Outlet />
       </Box>

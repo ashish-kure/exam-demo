@@ -2,6 +2,8 @@ import React from "react";
 import GiveExamContainer from "../../container/Student/GiveExamContainer";
 import Form from "../../shared/Form";
 import ButtonLoader from "../../shared/ButtonLoader";
+import { Box, Stack, Typography } from "@mui/material";
+import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 
 const GiveExam = () => {
   const {
@@ -18,28 +20,42 @@ const GiveExam = () => {
   }
 
   return (
-    <section style={style}>
-      <h3>{currentExam?.info?.subject}</h3>
-      <h4>
+    <Stack spacing={2}>
+      <Typography variant="h5" textAlign="center" sx={style}>
+        {currentExam?.info?.subject}
+      </Typography>
+
+      <Box display="flex" flexDirection="column" gap={1}>
         {currentExam?.info?.notes.map((note, ind) => (
-          <p key={ind}>{note}</p>
+          <Typography
+            key={ind}
+            display="flex"
+            gap={1}
+            sx={{ ...style, p: 1.5 }}
+          >
+            <PushPinOutlinedIcon color="action" />
+            {note}
+          </Typography>
         ))}
-      </h4>
-      <Form
-        fields={questionFields}
-        onInputChange={onInputChange}
-        onSubmit={handleSubmit}
-      />
+      </Box>
+
+      <Box sx={style}>
+        <Form
+          fields={questionFields}
+          onInputChange={onInputChange}
+          onSubmit={handleSubmit}
+        />
+      </Box>
       {submitLoading && <ButtonLoader />}
-    </section>
+    </Stack>
   );
 };
 
 export default GiveExam;
 
 const style = {
-  marginLeft: 150,
-  display: "flex",
-  flexDirection: "column",
-  gap: 16,
+  p: 2,
+  border: "1px solid",
+  borderColor: "divider",
+  borderRadius: 1.2,
 };

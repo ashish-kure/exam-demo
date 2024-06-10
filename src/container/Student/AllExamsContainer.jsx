@@ -7,7 +7,6 @@ import { ALL_EXAM_EP, GET, SUCCESS_CODE } from "../../constants/apiConstants";
 import api from "../../redux/actions/apiAction";
 import CustomButton from "../../shared/CustomButton";
 import { button } from "../../constants/formConstants";
-import { closeToast } from "../../redux/slices/toastSlice";
 
 const AllExamsContainer = () => {
   const [inputValue, setInputValue] = useState("");

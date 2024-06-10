@@ -1,4 +1,4 @@
-import React, { Profiler } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { removeUserInfo } from "../redux/slices/userSlice";
@@ -14,11 +14,21 @@ import {
 } from "@mui/material";
 import EastOutlinedIcon from "@mui/icons-material/EastOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import SentimentSatisfiedAltOutlinedIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
+import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined";
+import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
+
+const sidebarIcons = {
+  exams: <EditNoteOutlinedIcon color="action" />,
+  results: <ArticleOutlinedIcon color="action" />,
+  profile: <SentimentSatisfiedAltOutlinedIcon color="action" />,
+  account: <AccountBoxOutlinedIcon color="action" />,
+  "create-exam": <PlaylistAddOutlinedIcon color="action" />,
+  "all-students": <SchoolOutlinedIcon color="action" />,
+};
 
 const Sidebar = ({ fields }) => {
   const navigate = useNavigate();
@@ -33,20 +43,16 @@ const Sidebar = ({ fields }) => {
     }
   };
 
-  const iconsMapping = {
-    exams: <EditNoteOutlinedIcon />,
-    results: <ArticleOutlinedIcon />,
-    profile: <SentimentSatisfiedAltOutlinedIcon />,
-    account: <AccountBoxOutlinedIcon />,
-  };
-
   return (
     <Drawer variant="permanent" sx={sidebarStyle}>
       <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+        <ListItem divider sx={{ py: 2, textAlign: "center" }}>
+          <ListItemText>EXAM DEMO</ListItemText>
+        </ListItem>
         <List>
           {fields.map(({ url, label }) => (
             <ListItem key={label} component={Link} to={url} divider>
-              {iconsMapping[url]} 
+              {sidebarIcons[url]}
               <ListItemButton disableRipple>
                 <ListItemText primary={label} sx={{ color: "black" }} />
                 <EastOutlinedIcon color="action" />
@@ -70,5 +76,5 @@ const Sidebar = ({ fields }) => {
 export default Sidebar;
 
 const sidebarStyle = {
-  [`& .MuiDrawer-paper`]: { width: 200, boxSizing: "border-box" },
+  [`& .MuiDrawer-paper`]: { width: 225, boxSizing: "border-box" },
 };
