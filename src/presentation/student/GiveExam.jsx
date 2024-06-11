@@ -45,9 +45,9 @@ const GiveExam = () => {
           fields={questionFields}
           onInputChange={onInputChange}
           onSubmit={handleSubmit}
+          loading={submitLoading}
         />
       </Box>
-      {submitLoading && <ButtonLoader />}
     </Stack>
   );
 };

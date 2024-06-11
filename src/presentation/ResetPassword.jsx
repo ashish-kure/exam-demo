@@ -1,6 +1,5 @@
 import React from "react";
 import Form from "../shared/Form";
-import ButtonLoader from "../shared/ButtonLoader";
 import ResetPasswordContainer from "../container/ResetPassword/ResetPasswordContainer";
 import { Typography, Stack } from "@mui/material";
 
@@ -13,9 +12,11 @@ const ResetPassword = () => {
       <Typography margin="auto" sx={{ fontSize: 18 }}>
         Change Password
       </Typography>
-
-      <Form fields={resetPasswordFields} onSubmit={handleSubmit} />
-      {loading && <ButtonLoader />}
+      <Form
+        fields={resetPasswordFields}
+        onSubmit={handleSubmit}
+        loading={loading}
+      />
     </Stack>
   );
 };

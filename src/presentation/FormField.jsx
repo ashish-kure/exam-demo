@@ -12,7 +12,7 @@ import CustomDropdown from "../shared/CustomDropdown";
 import CustomButton from "../shared/CustomButton";
 import CustomChoices from "../shared/CustomChoices";
 
-const FormField = ({ formData, attributes, onChange, onCheckbox }) => {
+const FormField = ({ formData, attributes, onChange, onCheckbox, loading }) => {
   const { type, name, ...otherAttributes } = attributes;
   const value = formData?.[name] ?? "";
 
@@ -35,9 +35,15 @@ const FormField = ({ formData, attributes, onChange, onCheckbox }) => {
       );
 
     case reset:
-    case submit:
     case button:
       return <CustomButton {...{ type, ...otherAttributes }} />;
+
+    case submit:
+      return (
+        <CustomButton
+          {...{ type, loading, loaderColor: "white", ...otherAttributes }}
+        />
+      );
 
     default:
       return (

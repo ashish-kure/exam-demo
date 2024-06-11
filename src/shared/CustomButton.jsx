@@ -1,8 +1,9 @@
 import React from "react";
+import ButtonLoader from "../shared/ButtonLoader";
 import { Button } from "@mui/material";
 
 const CustomButton = (props) => {
-  const { label, sx, ...otherProps } = props;
+  const { label, sx, loading, loaderColor, ...otherProps } = props;
 
   return (
     <Button
@@ -10,10 +11,10 @@ const CustomButton = (props) => {
       size="small"
       disableRipple
       disableElevation
-      sx={{ textTransform: "none", fontSize: 16, ...sx }}
+      sx={{ p: 1, textTransform: "none", fontSize: 16, ...sx }}
       {...otherProps}
     >
-      {label}
+      {loading ? <ButtonLoader {...{ loaderColor }} /> : label}
     </Button>
   );
 };

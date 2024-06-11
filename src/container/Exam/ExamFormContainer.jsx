@@ -26,7 +26,6 @@ const ExamFormContainer = ({ fields, totalQuestions, onSubmit }) => {
   const exam = useSelector((state) => state.teacher.exam);
   const { formData, errors, isEdit } = useSelector((state) => state.form);
 
-  // const maxStep = 2;
   const maxStep = totalQuestions ? totalQuestions - 1 : 14;
   const questionFields = fields.questions;
   const subjectFields = fields.subject;

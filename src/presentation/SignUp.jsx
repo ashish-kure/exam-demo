@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import SignUpContainer from "../container/SignUp/SignUpContainer";
 import Form from "../shared/Form";
-import ButtonLoader from "../shared/ButtonLoader";
 import { Stack, Typography } from "@mui/material";
 
 const SignUp = () => {
@@ -10,9 +9,7 @@ const SignUp = () => {
 
   return (
     <Stack spacing={2} sx={stackStyle}>
-      <Form fields={signUpFields} onSubmit={handleSubmit} />
-      {loading && <ButtonLoader />}
-
+      <Form fields={signUpFields} onSubmit={handleSubmit} loading={loading} />
       <Typography color="info" component="h6" sx={{ textAlign: "center" }}>
         Already have an Account? <Link to="/sign-in">Sign in</Link>
       </Typography>

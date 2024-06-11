@@ -1,6 +1,5 @@
 import React from "react";
 import Form from "../shared/Form";
-import ButtonLoader from "../shared/ButtonLoader";
 import NewPasswordContainer from "../container/ForgotPassword/NewPasswordContainer";
 import { Stack } from "@mui/material";
 
@@ -9,8 +8,11 @@ const NewPassword = () => {
 
   return (
     <Stack sx={stackStyle}>
-      <Form fields={newPasswordFields} onSubmit={handleSubmit} />
-      {loading && <ButtonLoader />}
+      <Form
+        fields={newPasswordFields}
+        onSubmit={handleSubmit}
+        loading={loading}
+      />
     </Stack>
   );
 };

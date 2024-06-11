@@ -1,7 +1,6 @@
 import React from "react";
 import ForgotPasswordContainer from "../container/ForgotPassword/ForgotPasswordContainer";
 import Form from "../shared/Form";
-import ButtonLoader from "../shared/ButtonLoader";
 import { Stack } from "@mui/material";
 
 const ForgotPassword = () => {
@@ -10,8 +9,11 @@ const ForgotPassword = () => {
 
   return (
     <Stack spacing={2} sx={stackStyle}>
-      <Form fields={forgotPasswordFields} onSubmit={handleSubmit} />
-      {loading && <ButtonLoader />}
+      <Form
+        fields={forgotPasswordFields}
+        onSubmit={handleSubmit}
+        loading={loading}
+      />
     </Stack>
   );
 };

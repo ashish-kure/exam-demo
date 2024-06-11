@@ -8,10 +8,7 @@ import { capitalize } from "../../utils/javascript";
 
 const api = createAsyncThunk(
   "api",
-  async (
-    { name, config, toast = true },
-    { rejectWithValue, dispatch, signal }
-  ) => {
+  async ({ name, config, toast = true }, { rejectWithValue, dispatch }) => {
     try {
       const { method, url, params = {}, data = {}, ...rest } = config;
 
@@ -20,7 +17,6 @@ const api = createAsyncThunk(
         url,
         params,
         data,
-        signal,
         ...rest,
       });
       const { statusCode, message } = response?.data ?? {};

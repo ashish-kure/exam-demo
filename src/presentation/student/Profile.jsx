@@ -56,9 +56,14 @@ const Profile = () => {
           <CustomButton type={button} label="Edit" onClick={handleEdit} />
         ) : (
           <Fragment>
-            <CustomButton type={button} label="Save" onClick={handleUpdate} />
+            <CustomButton
+              type={button}
+              label="Save"
+              onClick={handleUpdate}
+              loading={updateLoading}
+              loaderColor="white"
+            />
             <CustomButton type={button} label="Cancel" onClick={handleCancel} />
-            {updateLoading && <ButtonLoader />}
           </Fragment>
         )}
       </Stack>

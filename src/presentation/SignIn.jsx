@@ -1,7 +1,6 @@
 import Form from "../shared/Form";
 import SignInContainer from "../container/SignIn/SignInContainer";
 import { Link } from "react-router-dom";
-import ButtonLoader from "../shared/ButtonLoader";
 import { Stack, Typography } from "@mui/material";
 
 const SignIn = () => {
@@ -9,9 +8,7 @@ const SignIn = () => {
 
   return (
     <Stack spacing={2} sx={stackStyle}>
-      <Form fields={signInFields} onSubmit={handleSubmit} />
-      {loading && <ButtonLoader />}
-
+      <Form fields={signInFields} onSubmit={handleSubmit} loading={loading} />
       <Stack direction="row" justifyContent="space-between">
         <Typography>
           <Link to="/sign-up">New User?</Link>

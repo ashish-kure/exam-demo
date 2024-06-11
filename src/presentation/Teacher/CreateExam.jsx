@@ -1,7 +1,6 @@
 import React from "react";
 import ExamForm from "../exam/ExamForm";
 import CreateExamContainer from "../../container/Teacher/CreateExamContainer";
-import ButtonLoader from "../../shared/ButtonLoader";
 import { Stack, Typography } from "@mui/material";
 
 const CreateExam = () => {
@@ -12,8 +11,7 @@ const CreateExam = () => {
       <Typography variant="h6" sx={typographyStyle}>
         Examination
       </Typography>
-      <ExamForm {...{ fields, totalQuestions, onSubmit }} />
-      {loading && <ButtonLoader />}
+      <ExamForm {...{ fields, totalQuestions, onSubmit, loading }} />
     </Stack>
   );
 };

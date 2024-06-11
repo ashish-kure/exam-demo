@@ -16,8 +16,7 @@ const EditExam = () => {
       <Typography variant="h6" sx={typographyStyle}>
         Examination
       </Typography>
-      <ExamForm {...{ fields, onSubmit }} />
-      {updateLoading && <ButtonLoader />}
+      <ExamForm {...{ fields, onSubmit, loading: updateLoading }} />
     </Stack>
   );
 };

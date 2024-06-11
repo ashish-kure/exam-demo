@@ -20,7 +20,7 @@ import { Box, ButtonGroup, Stack } from "@mui/material";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 
-const Form = ({ fields, onSubmit, onInputChange }) => {
+const Form = ({ fields, onSubmit, onInputChange, loading }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const dispatch = useDispatch();
   const { formData, errors } = useSelector((state) => state.form);
@@ -78,10 +78,13 @@ const Form = ({ fields, onSubmit, onInputChange }) => {
           {currentFields?.map((attributes, ind) => (
             <Fragment key={ind}>
               <FormField
-                formData={formData}
-                attributes={attributes}
-                onChange={handleChange}
-                onCheckbox={handleCheckbox}
+                {...{
+                  loading,
+                  formData,
+                  attributes,
+                  onChange: handleChange,
+                  onCheckbox: handleCheckbox,
+                }}
               />
               <ErrorMessage>{errors[attributes?.name]}</ErrorMessage>
             </Fragment>
@@ -111,6 +114,8 @@ const Form = ({ fields, onSubmit, onInputChange }) => {
               label="Submit"
               disabled={maxStep !== currentStep}
               variant="outlined"
+              loading={loading}
+              loaderColor="dodgerblue"
             />
           </Stack>
         )}

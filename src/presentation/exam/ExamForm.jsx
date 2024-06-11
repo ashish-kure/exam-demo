@@ -7,7 +7,7 @@ import ErrorMessage from "../../shared/ErrorMessage";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 
-const ExamForm = ({ fields, totalQuestions, onSubmit }) => {
+const ExamForm = ({ fields, totalQuestions, onSubmit, loading }) => {
   const {
     step,
     isEdit,
@@ -48,6 +48,8 @@ const ExamForm = ({ fields, totalQuestions, onSubmit }) => {
       onClick: handleSubmit,
       disabled: maxStep !== step,
       variant: "outlined",
+      loading,
+      loaderColor: "dodgerblue",
     },
 
     {
@@ -85,9 +87,7 @@ const ExamForm = ({ fields, totalQuestions, onSubmit }) => {
             {subjectFields.map((attributes, ind) => (
               <Stack spacing={1} key={ind}>
                 <FormField
-                  attributes={attributes}
-                  formData={formData}
-                  onChange={handleChange}
+                  {...{ attributes, formData, onChange: handleChange }}
                 />
                 <ErrorMessage>{errors[attributes?.name]}</ErrorMessage>
               </Stack>
@@ -111,11 +111,12 @@ const ExamForm = ({ fields, totalQuestions, onSubmit }) => {
               <CustomButton key={ind} {...button} />
             ))}
           </ButtonGroup>
-          <ButtonGroup component="section">
+
+          <Stack direction="row" spacing={2}>
             {actionButtons.map((button, ind) => (
               <CustomButton key={ind} {...button} />
             ))}
-          </ButtonGroup>
+          </Stack>
         </Stack>
       </form>
     </Box>

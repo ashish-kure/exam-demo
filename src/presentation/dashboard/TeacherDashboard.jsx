@@ -10,7 +10,7 @@ const TeacherDashboard = () => {
       <Toolbar />
       <Sidebar fields={teacherSidebarFields} />
       <Grid
-        py={3}
+        py={1}
         mt={10}
         ml={30}
         display="grid"
