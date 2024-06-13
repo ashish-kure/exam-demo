@@ -46,7 +46,7 @@ const ExamForm = ({ fields, totalQuestions, onSubmit, loading }) => {
       type: submit,
       label: !isEdit ? "Submit" : "Update",
       onClick: handleSubmit,
-      disabled: maxStep !== step,
+      disabled: loading || maxStep !== step,
       variant: "outlined",
       loading,
       loaderColor: "dodgerblue",
