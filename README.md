@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Live
+
+This project is live on GitHub Pages: [Checkout](https://ashish-kure.github.io/exam-demo/#)
+
 ## Available Scripts
 
 In the project directory, you can run:
