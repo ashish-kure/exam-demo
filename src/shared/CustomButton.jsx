@@ -11,6 +11,7 @@ const CustomButton = (props) => {
       size="small"
       disableRipple
       disableElevation
+      disabled={loading}
       sx={{ p: 1, textTransform: "none", fontSize: 16, ...sx }}
       {...otherProps}
     >
