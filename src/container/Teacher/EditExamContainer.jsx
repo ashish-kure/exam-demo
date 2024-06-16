@@ -13,6 +13,7 @@ import {
   EDIT_EXAM_EP,
   VIEW_EXAM_DETAIL_EP,
 } from "../../constants/apiConstants";
+import { equal } from "../../utils/javascript";
 
 const EditExamContainer = () => {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const EditExamContainer = () => {
       );
       const { statusCode, data } = response?.payload?.data ?? {};
 
-      if (statusCode === SUCCESS_CODE) {
+      if (equal(statusCode, SUCCESS_CODE)) {
         const examObject = { notes, subjectName, ...data };
         dispatch(addExam(examObject));
         dispatch(setIsEdit(true));
@@ -61,7 +62,7 @@ const EditExamContainer = () => {
     const response = await dispatch(api({ name: CREATE_EXAM, config }));
     const { statusCode } = response?.payload?.data ?? {};
 
-    if (statusCode === SUCCESS_CODE) {
+    if (equal(statusCode, SUCCESS_CODE)) {
       navigate("../exams");
       return true;
     }

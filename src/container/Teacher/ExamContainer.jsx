@@ -13,6 +13,7 @@ import {
 import { EXAMS, DELETE_EXAM } from "../../constants/nameConstants";
 import { SUCCESS_CODE } from "../../constants/apiConstants";
 import { setIsEdit } from "../../redux/slices/formSlice";
+import { equal } from "../../utils/javascript";
 
 const ExamContainer = () => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const ExamContainer = () => {
 
       const response = await dispatch(api({ name: DELETE_EXAM, config }));
       const { statusCode } = response?.payload?.data ?? {};
-      statusCode === SUCCESS_CODE && fetchAPI();
+      equal(statusCode, SUCCESS_CODE) && fetchAPI();
     }
   };
 

@@ -13,7 +13,7 @@ import {
   validate,
   validateForm,
 } from "../utils/validation";
-import { capitalize } from "../utils/javascript";
+import { capitalize, equal } from "../utils/javascript";
 import { button, confirmPassword, submit } from "../constants/formConstants";
 import ErrorMessage from "./ErrorMessage";
 import { Box, ButtonGroup, Stack } from "@mui/material";
@@ -37,10 +37,9 @@ const Form = ({ fields, onSubmit, onInputChange, loading }) => {
     onInputChange && onInputChange(event);
 
     // Validate Field
-    const isValid =
-      name === confirmPassword
-        ? validate(name, value, formData["Password"])
-        : validate(name, value);
+    const isValid = equal(name, confirmPassword)
+      ? validate(name, value, formData["Password"])
+      : validate(name, value);
 
     // Dispatch Error or Not
     value && !isValid
@@ -55,7 +54,7 @@ const Form = ({ fields, onSubmit, onInputChange, loading }) => {
     // Updating Values based on check and uncheck
     const updatedValues = checked
       ? [...currentValues, value]
-      : currentValues.filter((item) => item !== value);
+      : currentValues.filter((item) => !equal(item, value));
 
     dispatch(onChange({ name, value: updatedValues }));
   };
@@ -98,21 +97,21 @@ const Form = ({ fields, onSubmit, onInputChange, loading }) => {
                 type={button}
                 label={<ArrowBackIosNewOutlinedIcon />}
                 onClick={handlePrevious}
-                disabled={currentStep === 0}
+                disabled={equal(currentStep, 0)}
                 variant="text"
               />
               <CustomButton
                 type={button}
                 label={<ArrowForwardIosOutlinedIcon />}
                 onClick={handleNext}
-                disabled={maxStep === currentStep}
+                disabled={equal(maxStep, currentStep)}
                 variant="text"
               />
             </ButtonGroup>
             <CustomButton
               type={submit}
               label="Submit"
-              disabled={maxStep !== currentStep}
+              disabled={!equal(maxStep, currentStep)}
               variant="outlined"
               loading={loading}
               loaderColor="dodgerblue"

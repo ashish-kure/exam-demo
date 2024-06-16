@@ -9,9 +9,10 @@ import {
   GET_PROFILE_EP,
   UPDATE_PROFILE_EP,
 } from "../../constants/apiConstants";
+import { equal } from "../../utils/javascript";
 
 const ProfileContainer = () => {
-  const [data, setData] = useState();
+  const [profile, setProfile] = useState({});
   const [input, setInput] = useState("");
   const [edit, setEdit] = useState(false);
 
@@ -27,7 +28,7 @@ const ProfileContainer = () => {
       );
       const { data } = response?.payload?.data ?? {};
 
-      setData(data);
+      setProfile(data);
       setInput(data?.name);
     };
 
@@ -40,10 +41,15 @@ const ProfileContainer = () => {
 
   const handleCancel = () => {
     setEdit(false);
-    setInput(data?.name);
+    setInput(profile?.name);
   };
 
   const handleUpdate = async () => {
+    if (equal(profile?.name, input)) {
+      setEdit(false);
+      return null;
+    }
+
     const config = {
       method: PUT,
       url: UPDATE_PROFILE_EP,
@@ -53,8 +59,8 @@ const ProfileContainer = () => {
     const response = await dispatch(api({ name: UPDATE_PROFILE, config }));
     const { statusCode, data } = response?.payload?.data ?? {};
 
-    if (statusCode === SUCCESS_CODE) {
-      setData(data);
+    if (equal(statusCode, SUCCESS_CODE)) {
+      setProfile(data);
       setEdit(false);
     }
   };
@@ -62,11 +68,11 @@ const ProfileContainer = () => {
   return {
     edit,
     input,
+    profile,
     handleEdit,
     handleCancel,
     handleUpdate,
     handleNameChange,
-    profile: data,
     loading: loading[PROFILE],
     updateLoading: loading[UPDATE_PROFILE],
   };

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import api from "../../redux/actions/apiAction";
-import { objectValues } from "../../utils/javascript";
+import { equal, objectValues } from "../../utils/javascript";
 import { checkExistingErrors, validateForm } from "../../utils/validation";
 import { radio } from "../../constants/formConstants";
 import { CURRENT_EXAM, GIVE_EXAM } from "../../constants/nameConstants";
@@ -44,7 +44,7 @@ const GiveExamContainer = () => {
       );
       const { statusCode, data } = response?.payload?.data ?? {};
 
-      if (statusCode === SUCCESS_CODE) {
+      if (equal(statusCode, SUCCESS_CODE)) {
         dispatch(addCurrentExam({ data, info: { subject, notes } }));
       }
     };
@@ -89,7 +89,7 @@ const GiveExamContainer = () => {
     if (validateForm(questionFields.flat()) && !checkExistingErrors()) {
       const response = await dispatch(api({ name: GIVE_EXAM, config }));
       const { statusCode } = response?.payload?.data ?? {};
-      statusCode === SUCCESS_CODE && navigate("../results");
+      equal(statusCode, SUCCESS_CODE) && navigate("../results");
     }
   };
 

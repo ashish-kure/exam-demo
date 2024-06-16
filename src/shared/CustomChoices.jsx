@@ -8,14 +8,15 @@ import {
   Checkbox,
   Radio,
 } from "@mui/material";
+import { equal } from "../utils/javascript";
 
 const CustomChoices = (props) => {
   const { label, options, isRequired, ...otherProps } = props;
 
   const shouldChecked = (optionValue) =>
-    props.type === checkbox
+    equal(props.type, checkbox)
       ? props.value.includes(optionValue)
-      : props.value === optionValue;
+      : equal(props.value, optionValue);
 
   return (
     <FormControl>

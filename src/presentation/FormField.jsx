@@ -11,6 +11,7 @@ import CustomInput from "../shared/CustomInput";
 import CustomDropdown from "../shared/CustomDropdown";
 import CustomButton from "../shared/CustomButton";
 import CustomChoices from "../shared/CustomChoices";
+import { equal } from "../utils/javascript";
 
 const FormField = ({ formData, attributes, onChange, onCheckbox, loading }) => {
   const { type, name, ...otherAttributes } = attributes;
@@ -29,7 +30,7 @@ const FormField = ({ formData, attributes, onChange, onCheckbox, loading }) => {
     case checkbox:
       return (
         <CustomChoices
-          onChange={type === checkbox ? onCheckbox : onChange}
+          onChange={equal(type, checkbox) ? onCheckbox : onChange}
           {...{ value, name, type, ...otherAttributes }}
         />
       );

@@ -11,6 +11,7 @@ import { CREATE_EXAM } from "../../constants/nameConstants";
 import { setIsEdit } from "../../redux/slices/formSlice";
 import { removeExam } from "../../redux/slices/teacherSlice";
 import api from "../../redux/actions/apiAction";
+import { equal } from "../../utils/javascript";
 
 const CreateExamContainer = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const CreateExamContainer = () => {
     const response = await dispatch(api({ name: CREATE_EXAM, config }));
     const { statusCode } = response?.payload?.data ?? {};
 
-    if (statusCode === SUCCESS_CODE) {
+    if (equal(statusCode, SUCCESS_CODE)) {
       navigate("../exams");
       return true;
     }

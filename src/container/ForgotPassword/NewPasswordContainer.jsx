@@ -8,7 +8,7 @@ import api from "../../redux/actions/apiAction";
 import { NEW_PASSWORD } from "../../constants/nameConstants";
 import { resetForm } from "../../redux/slices/formSlice";
 import { isLoggedIn } from "../../utils/authentication";
-import { getLocalStorage } from "../../utils/javascript";
+import { equal, getLocalStorage } from "../../utils/javascript";
 
 const NewPasswordContainer = () => {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const NewPasswordContainer = () => {
       const response = await dispatch(api({ name: NEW_PASSWORD, config }));
       const { statusCode } = response?.payload?.data ?? {};
 
-      statusCode === SUCCESS_CODE && navigate("/sign-in");
+      equal(statusCode, SUCCESS_CODE) && navigate("/sign-in");
       dispatch(resetForm());
     }
   };

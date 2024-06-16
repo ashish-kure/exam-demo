@@ -7,6 +7,7 @@ import { addAllResults } from "../../redux/slices/studentSlice";
 import CustomButton from "../../shared/CustomButton";
 import { ALL_RESULTS } from "../../constants/nameConstants";
 import { button } from "../../constants/formConstants";
+import { equal } from "../../utils/javascript";
 
 const AllResultsContainer = () => {
   const [inputValue, setInputValue] = useState("");
@@ -25,7 +26,7 @@ const AllResultsContainer = () => {
       );
       const { statusCode, data } = response?.payload?.data ?? {};
 
-      if (statusCode === SUCCESS_CODE) {
+      if (equal(statusCode, SUCCESS_CODE)) {
         const results = data
           .filter(({ Result }) => Result.length)
           .map(({ email, subjectName, Result }) => ({

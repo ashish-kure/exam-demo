@@ -7,6 +7,7 @@ import { ALL_EXAM_EP, GET, SUCCESS_CODE } from "../../constants/apiConstants";
 import api from "../../redux/actions/apiAction";
 import CustomButton from "../../shared/CustomButton";
 import { button } from "../../constants/formConstants";
+import { equal } from "../../utils/javascript";
 
 const AllExamsContainer = () => {
   const [inputValue, setInputValue] = useState("");
@@ -32,7 +33,7 @@ const AllExamsContainer = () => {
           api({ name: ALL_EXAMS, config, toast: false })
         );
         const { statusCode, data } = response?.payload?.data ?? {};
-        statusCode === SUCCESS_CODE && dispatch(addAllExams(data));
+        equal(statusCode, SUCCESS_CODE) && dispatch(addAllExams(data));
       }
     };
 

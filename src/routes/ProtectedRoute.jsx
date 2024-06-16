@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { isLoggedIn } from "../utils/authentication";
-import { getLocalStorage } from "../utils/javascript";
+import { equal, getLocalStorage } from "../utils/javascript";
 import Dashboard from "../presentation/dashboard/Dashboard";
 
 const ProtectedRoute = ({ role }) => {
@@ -11,7 +11,7 @@ const ProtectedRoute = ({ role }) => {
     return <Navigate to="/sign-in" />;
   }
 
-  if (role && role !== currentRole) {
+  if (role && !equal(role, currentRole)) {
     return <Navigate to={`/${currentRole}`} />;
   }
 

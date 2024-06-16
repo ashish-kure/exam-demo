@@ -12,6 +12,7 @@ import {
   SUCCESS_CODE,
 } from "../../constants/apiConstants";
 import { button } from "../../constants/formConstants";
+import { equal } from "../../utils/javascript";
 
 const AllStudentsContainer = () => {
   const [inputValue, setInputValue] = useState("");
@@ -38,7 +39,7 @@ const AllStudentsContainer = () => {
         api({ name: ALL_STUDENTS, config, toast: false })
       );
       const { statusCode, data } = response?.payload?.data ?? {};
-      statusCode === SUCCESS_CODE && dispatch(addAllStudents(data));
+      equal(statusCode, SUCCESS_CODE) && dispatch(addAllStudents(data));
     };
 
     fetchAPI();

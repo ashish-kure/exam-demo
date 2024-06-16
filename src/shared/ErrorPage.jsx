@@ -2,6 +2,8 @@ import { Box, Icon, Typography } from "@mui/material";
 import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
 import CustomButton from "./CustomButton";
 import { button } from "../constants/formConstants";
+import { Link } from "react-router-dom";
+import { getLocalStorage } from "../utils/javascript";
 
 const ErrorPage = () => {
   return (
@@ -32,6 +34,9 @@ const ErrorPage = () => {
           <BlockOutlinedIcon />
         </Icon>
       </Typography>
+      <Link to={`/${getLocalStorage("role")}`}>
+        <CustomButton type={button} label="Go to Dashboard" />
+      </Link>
     </Box>
   );
 };

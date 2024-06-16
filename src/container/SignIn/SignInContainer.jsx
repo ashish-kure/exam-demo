@@ -7,7 +7,7 @@ import api from "../../redux/actions/apiAction";
 import { POST, SIGN_IN_EP, SUCCESS_CODE } from "../../constants/apiConstants";
 import { SIGN_IN } from "../../constants/nameConstants";
 import { checkExistingErrors, validateForm } from "../../utils/validation";
-import { getLocalStorage } from "../../utils/javascript";
+import { equal, getLocalStorage } from "../../utils/javascript";
 import { isLoggedIn } from "../../utils/authentication";
 
 const SignInContainer = () => {
@@ -36,7 +36,7 @@ const SignInContainer = () => {
       const response = await dispatch(api({ name: SIGN_IN, config }));
       const { data, statusCode } = response?.payload?.data ?? {};
 
-      statusCode === SUCCESS_CODE && navigate(`/${data?.role}`);
+      equal(statusCode, SUCCESS_CODE) && navigate(`/${data?.role}`);
       dispatch(resetForm());
     }
   };

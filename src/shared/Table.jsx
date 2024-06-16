@@ -1,5 +1,5 @@
 import React from "react";
-import { capitalize, objectKeys } from "../utils/javascript";
+import { capitalize, equal, objectKeys } from "../utils/javascript";
 import {
   Box,
   Table as MuiTable,
@@ -33,7 +33,7 @@ const Table = ({ tableData }) => {
   const headers = [];
   tableData?.forEach((object) =>
     objectKeys(object).forEach((key) => {
-      if (key !== "_id" && !headers.includes(key)) {
+      if (!equal(key, "_id") && !headers.includes(key)) {
         headers.push(key);
       }
     })

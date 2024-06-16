@@ -1,6 +1,6 @@
 import { setError } from "../redux/slices/formSlice";
 import store from "../redux/store";
-import { capitalize, objectKeys } from "./javascript";
+import { capitalize, equal, objectKeys } from "./javascript";
 import {
   confirmPasswordValidation,
   emailValidation,
@@ -33,7 +33,7 @@ export const validate = (name, value, compare) => {
 };
 
 // Form Validation
-export const validateForm = (formFields, commonMessage) => {
+export const validateForm = (formFields, commonMessage = false) => {
   const { formData } = store.getState().form;
   const dispatch = store.dispatch;
 
@@ -58,5 +58,5 @@ export const validateForm = (formFields, commonMessage) => {
 // Check Existing Errors
 export const checkExistingErrors = () => {
   const { errors } = store.getState().form;
-  return objectKeys(errors).length !== 0;
+  return !equal(objectKeys(errors).length, 0);
 };

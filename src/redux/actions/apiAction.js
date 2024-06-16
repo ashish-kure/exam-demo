@@ -4,7 +4,7 @@ import { addUserInfo } from "../slices/userSlice";
 import { SIGN_IN, SIGN_UP } from "../../constants/nameConstants";
 import { SUCCESS_CODE } from "../../constants/apiConstants";
 import { showToast } from "../slices/toastSlice";
-import { capitalize } from "../../utils/javascript";
+import { capitalize, equal } from "../../utils/javascript";
 
 const api = createAsyncThunk(
   "api",
@@ -21,13 +21,13 @@ const api = createAsyncThunk(
       });
       const { statusCode, message } = response?.data ?? {};
 
-      if (statusCode !== SUCCESS_CODE) {
+      if (!equal(statusCode, SUCCESS_CODE)) {
         throw new Error(message);
       }
 
       // Storing User's Data!
       if ([SIGN_IN, SIGN_UP].includes(name)) {
-        statusCode === SUCCESS_CODE &&
+        equal(statusCode, SUCCESS_CODE) &&
           dispatch(addUserInfo(response?.data?.data));
       }
 

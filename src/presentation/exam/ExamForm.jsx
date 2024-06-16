@@ -6,6 +6,7 @@ import { Box, ButtonGroup, Stack } from "@mui/material";
 import ErrorMessage from "../../shared/ErrorMessage";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
+import { equal } from "../../utils/javascript";
 
 const ExamForm = ({ fields, totalQuestions, onSubmit, loading }) => {
   const {
@@ -27,7 +28,7 @@ const ExamForm = ({ fields, totalQuestions, onSubmit, loading }) => {
     {
       type: button,
       onClick: handlePrevious,
-      disabled: step === 0,
+      disabled: equal(step, 0),
       label: <ArrowBackIosNewOutlinedIcon />,
       variant: "text",
     },
@@ -35,7 +36,7 @@ const ExamForm = ({ fields, totalQuestions, onSubmit, loading }) => {
     {
       type: button,
       onClick: handleNext,
-      disabled: maxStep === step,
+      disabled: equal(maxStep, step),
       label: <ArrowForwardIosOutlinedIcon />,
       variant: "text",
     },
@@ -46,7 +47,7 @@ const ExamForm = ({ fields, totalQuestions, onSubmit, loading }) => {
       type: submit,
       label: !isEdit ? "Submit" : "Update",
       onClick: handleSubmit,
-      disabled: loading || maxStep !== step,
+      disabled: loading || !equal(maxStep, step),
       variant: "outlined",
       loading,
       loaderColor: "dodgerblue",
@@ -69,10 +70,9 @@ const ExamForm = ({ fields, totalQuestions, onSubmit, loading }) => {
         onChange={handleChange}
         attributes={{
           ...attributes,
-          label:
-            attributes.name === "question"
-              ? `Question ${step + 1}`
-              : attributes.label,
+          label: equal(attributes.name, "question")
+            ? `Question ${step + 1}`
+            : attributes.label,
         }}
       />
       <ErrorMessage>{errors[attributes?.name]}</ErrorMessage>

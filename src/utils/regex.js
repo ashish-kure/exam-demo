@@ -1,4 +1,5 @@
 import store from "../redux/store";
+import { equal } from "./javascript";
 
 export const nameValidation = (name) => {
   const regex = /^[a-zA-Z]+$/;
@@ -26,5 +27,5 @@ export const confirmPasswordValidation = (value, compare) => {
 
 export const questionValidation = (value) => {
   const exam = store.getState().teacher.exam;
-  return !exam?.questions?.some(({ question }) => question === value);
+  return !exam?.questions?.some(({ question }) => equal(value, question));
 };

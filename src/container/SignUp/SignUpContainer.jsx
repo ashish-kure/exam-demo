@@ -8,7 +8,7 @@ import { POST, SIGN_UP_EP, SUCCESS_CODE } from "../../constants/apiConstants";
 import api from "../../redux/actions/apiAction";
 import { SIGN_UP } from "../../constants/nameConstants";
 import { isLoggedIn } from "../../utils/authentication";
-import { getLocalStorage } from "../../utils/javascript";
+import { equal, getLocalStorage } from "../../utils/javascript";
 import { showToast } from "../../redux/slices/toastSlice";
 
 const SignUpContainer = () => {
@@ -37,7 +37,7 @@ const SignUpContainer = () => {
       const response = await dispatch(api({ name: SIGN_UP, config }));
       const { statusCode } = response?.payload?.data ?? {};
 
-      if (statusCode === SUCCESS_CODE) {
+      if (equal(statusCode, SUCCESS_CODE)) {
         navigate("/sign-in");
         dispatch(
           showToast({
