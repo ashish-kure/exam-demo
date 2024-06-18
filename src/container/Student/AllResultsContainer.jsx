@@ -8,8 +8,10 @@ import CustomButton from "../../shared/CustomButton";
 import { ALL_RESULTS } from "../../constants/nameConstants";
 import { button } from "../../constants/formConstants";
 import { equal } from "../../utils/javascript";
+import useSignal from "../../hooks/useSignal";
 
 const AllResultsContainer = () => {
+  const [controller, signal] = useSignal();
   const [inputValue, setInputValue] = useState("");
 
   const navigate = useNavigate();
@@ -19,7 +21,7 @@ const AllResultsContainer = () => {
 
   useEffect(() => {
     const fetchAPI = async () => {
-      const config = { method: GET, url: ALL_EXAM_EP };
+      const config = { method: GET, url: ALL_EXAM_EP, signal };
 
       const response = await dispatch(
         api({ name: ALL_RESULTS, config, toast: false })
@@ -39,8 +41,9 @@ const AllResultsContainer = () => {
         dispatch(addAllResults(results));
       }
     };
-
     fetchAPI();
+
+    return () => controller.abort();
   }, [dispatch]);
 
   const handleChange = (event) => {

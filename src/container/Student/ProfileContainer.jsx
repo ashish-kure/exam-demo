@@ -10,8 +10,10 @@ import {
   UPDATE_PROFILE_EP,
 } from "../../constants/apiConstants";
 import { equal } from "../../utils/javascript";
+import useSignal from "../../hooks/useSignal";
 
 const ProfileContainer = () => {
+  const [controller, signal] = useSignal();
   const [profile, setProfile] = useState({});
   const [input, setInput] = useState("");
   const [edit, setEdit] = useState(false);
@@ -21,7 +23,7 @@ const ProfileContainer = () => {
 
   useEffect(() => {
     const fetchAPI = async () => {
-      const config = { method: GET, url: GET_PROFILE_EP };
+      const config = { method: GET, url: GET_PROFILE_EP, signal };
 
       const response = await dispatch(
         api({ name: PROFILE, config, toast: false })
@@ -31,8 +33,9 @@ const ProfileContainer = () => {
       setProfile(data);
       setInput(data?.name);
     };
-
     fetchAPI();
+
+    return () => controller.abort();
   }, [dispatch]);
 
   const handleEdit = () => setEdit(true);
@@ -55,7 +58,6 @@ const ProfileContainer = () => {
       url: UPDATE_PROFILE_EP,
       data: { name: input },
     };
-
     const response = await dispatch(api({ name: UPDATE_PROFILE, config }));
     const { statusCode, data } = response?.payload?.data ?? {};
 

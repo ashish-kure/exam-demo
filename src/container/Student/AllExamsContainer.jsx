@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import useSignal from "../../hooks/useSignal";
 import { addAllExams } from "../../redux/slices/studentSlice";
 import { ALL_EXAMS } from "../../constants/nameConstants";
 import { ALL_EXAM_EP, GET, SUCCESS_CODE } from "../../constants/apiConstants";
@@ -10,6 +11,7 @@ import { button } from "../../constants/formConstants";
 import { equal } from "../../utils/javascript";
 
 const AllExamsContainer = () => {
+  const [controller, signal] = useSignal();
   const [inputValue, setInputValue] = useState("");
   const [status, setStatus] = useState("all");
 
@@ -26,7 +28,7 @@ const AllExamsContainer = () => {
 
   useEffect(() => {
     const fetchAPI = async () => {
-      const config = { method: GET, url: ALL_EXAM_EP };
+      const config = { method: GET, url: ALL_EXAM_EP, signal };
 
       if (!allExams.length) {
         const response = await dispatch(
@@ -36,8 +38,9 @@ const AllExamsContainer = () => {
         equal(statusCode, SUCCESS_CODE) && dispatch(addAllExams(data));
       }
     };
-
     fetchAPI();
+
+    return () => controller.abort();
   }, [allExams.length, dispatch]);
 
   // Attempt Exam Handler!

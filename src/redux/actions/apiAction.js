@@ -10,13 +10,14 @@ const api = createAsyncThunk(
   "api",
   async ({ name, config, toast = true }, { rejectWithValue, dispatch }) => {
     try {
-      const { method, url, params = {}, data = {}, ...rest } = config;
+      const { method, url, params = {}, data = {}, signal, ...rest } = config;
 
       const response = await axiosInstance({
         method,
         url,
         params,
         data,
+        signal,
         ...rest,
       });
       const { statusCode, message } = response?.data ?? {};
@@ -45,7 +46,10 @@ const api = createAsyncThunk(
         errorMessage = error.message;
       }
 
-      dispatch(showToast({ type: "error", message: capitalize(errorMessage) }));
+      toast &&
+        dispatch(
+          showToast({ type: "error", message: capitalize(errorMessage) })
+        );
       return rejectWithValue({ name, message: errorMessage });
     }
   }

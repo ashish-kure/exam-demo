@@ -18,8 +18,10 @@ import {
   GIVE_EXAM_EP,
   EXAM_PAPER_EP,
 } from "../../constants/apiConstants";
+import useSignal from "../../hooks/useSignal";
 
 const GiveExamContainer = () => {
+  const [controller, signal] = useSignal();
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.api.loading);
   const currentExam = useSelector((state) => state.student.currentExam);
@@ -37,6 +39,7 @@ const GiveExamContainer = () => {
         method: GET,
         url: EXAM_PAPER_EP,
         params: { id: searchParams.get("id") },
+        signal,
       };
 
       const response = await dispatch(
@@ -50,7 +53,10 @@ const GiveExamContainer = () => {
     };
 
     fetchAPI();
-    return () => dispatch(resetForm());
+    return () => {
+      controller.abort();
+      dispatch(resetForm());
+    };
   }, [dispatch, notes, searchParams, subject]);
 
   const questionFields = currentExam?.questions?.map(
