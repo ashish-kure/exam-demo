@@ -75,6 +75,7 @@ const AllExamsContainer = () => {
         <CustomButton
           type={button}
           label="Result"
+          variant="outlined"
           onClick={() =>
             handleResult({ ...fields.Result[0], subject: fields.subjectName })
           }
