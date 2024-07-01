@@ -1,3 +1,4 @@
+import { removeUserInfo } from "../redux/slices/userSlice";
 import store from "../redux/store";
 import { Navigate } from "react-router-dom";
 
@@ -19,5 +20,6 @@ export const objectEntries = (object) => Object.entries(object);
 
 export const logOut = () => {
   store.dispatch({ type: "LOGOUT" });
+  store.dispatch(removeUserInfo());
   return <Navigate to="/sign-in" />;
 };
