@@ -16,13 +16,8 @@ const userSlice = createSlice({
   reducers: {
     addUserInfo: (state, action) => {
       const { name, role, token } = action.payload;
-
       token && setLoggedIn();
-      addUserLocalStorage({
-        name,
-        role,
-        token,
-      });
+      addUserLocalStorage({ name, role, token });
 
       return getStateFromLocalStorage();
     },

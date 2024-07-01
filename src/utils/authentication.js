@@ -24,9 +24,7 @@ export const getStateFromLocalStorage = () => {
 };
 
 export const addUserLocalStorage = (obj) =>
-  objectEntries(obj).forEach(([key, value]) => {
-    setLocalStorage(key, value);
-  });
+  objectEntries(obj).forEach(([key, value]) => setLocalStorage(key, value));
 
 export const removeUserLocalStorage = (...rest) =>
   rest.forEach((key) => removeLocalStorage(key));

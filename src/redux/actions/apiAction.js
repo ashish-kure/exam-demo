@@ -4,7 +4,7 @@ import { addUserInfo } from "../slices/userSlice";
 import { SIGN_IN, SIGN_UP } from "../../constants/nameConstants";
 import { SUCCESS_CODE } from "../../constants/apiConstants";
 import { showToast } from "../slices/toastSlice";
-import { capitalize, equal } from "../../utils/javascript";
+import { capitalize, equal, logOut } from "../../utils/javascript";
 
 const api = createAsyncThunk(
   "api",
@@ -23,6 +23,9 @@ const api = createAsyncThunk(
       const { statusCode, message } = response?.data ?? {};
 
       if (!equal(statusCode, SUCCESS_CODE)) {
+        if (equal(statusCode, 401)) {
+          return logOut();
+        }
         throw new Error(message);
       }
 

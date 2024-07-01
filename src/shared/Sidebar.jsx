@@ -1,8 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { removeUserInfo } from "../redux/slices/userSlice";
-import { resetForm, setIsEdit } from "../redux/slices/formSlice";
+import { Link } from "react-router-dom";
 import CustomButton from "./CustomButton";
 import {
   Box,
@@ -20,6 +17,7 @@ import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import SentimentSatisfiedAltOutlinedIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
 import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
+import { logOut } from "../utils/javascript";
 
 const sidebarIcons = {
   exams: <EditNoteOutlinedIcon color="action" />,
@@ -31,16 +29,8 @@ const sidebarIcons = {
 };
 
 const Sidebar = ({ fields }) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const handleSignOut = () => {
-    if (window.confirm("Do you really want to sign out?")) {
-      dispatch(resetForm());
-      dispatch(setIsEdit(false));
-      dispatch(removeUserInfo());
-      navigate("/sign-in");
-    }
+    if (window.confirm("Do you really want to sign out?")) logOut();
   };
 
   return (
